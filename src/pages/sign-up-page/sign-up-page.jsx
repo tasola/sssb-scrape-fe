@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Redirect } from 'react-router-dom'
-import { loginUser } from '../../actions'
+import { Redirect, Link } from 'react-router-dom'
+import { signUpUser } from '../../actions'
 import { withStyles } from '@material-ui/styles'
-import styles from './login-page-style'
+import styles from './sign-up-page-style'
 
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
@@ -13,8 +13,8 @@ import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
 import Container from '@material-ui/core/Container'
 
-class Login extends Component {
-  state = { email: '', password: '' }
+class SignUpPage extends Component {
+  state = { email: '', password: '', hasCheckedPasswords: false }
 
   handleEmailChange = ({ target }) => {
     this.setState({ email: target.value })
@@ -24,14 +24,30 @@ class Login extends Component {
     this.setState({ password: target.value })
   }
 
+  handlePasswordVerificationChange = ({ target }) => {
+    this.setState({ passwordVerification: target.value })
+  }
+
   handleSubmit = () => {
     const { dispatch } = this.props
     const { email, password } = this.state
-    dispatch(loginUser(email, password))
+    if (!this.passwordMatches()) return
+    dispatch(signUpUser(email, password))
+  }
+
+  passwordMatches() {
+    const { password, passwordVerification } = this.state
+    const passwordMatches = password === passwordVerification
+    this.setState({
+      passwordMatches: passwordMatches,
+      hasCheckedPasswords: true
+    })
+    return passwordMatches
   }
 
   render() {
     const { classes, loginError, isAuthenticated } = this.props
+    const { passwordMatches, hasCheckedPasswords } = this.state
     if (isAuthenticated) {
       return <Redirect to="/" />
     } else {
@@ -63,9 +79,24 @@ class Login extends Component {
               id="password"
               onChange={this.handlePasswordChange}
             />
-            {loginError && (
+            <TextField
+              variant="outlined"
+              margin="normal"
+              fullWidth
+              name="passwordVerification"
+              label="Verify password"
+              type="password"
+              id="password"
+              onChange={this.handlePasswordVerificationChange}
+            />
+            {passwordMatches && loginError && (
               <Typography component="p" className={classes.errorText}>
                 Incorrect email or password.
+              </Typography>
+            )}
+            {hasCheckedPasswords && !passwordMatches && (
+              <Typography component="p" className={classes.errorText}>
+                Passwords don't match
               </Typography>
             )}
             <Button
@@ -78,6 +109,7 @@ class Login extends Component {
             >
               Sign In
             </Button>
+            <Link to="/login">Already got an account? Sign in here</Link>
           </Paper>
         </Container>
       )
@@ -93,4 +125,4 @@ function mapStateToProps(state) {
   }
 }
 
-export default withStyles(styles)(connect(mapStateToProps)(Login))
+export default withStyles(styles)(connect(mapStateToProps)(SignUpPage))

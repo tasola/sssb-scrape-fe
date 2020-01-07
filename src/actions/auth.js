@@ -1,5 +1,9 @@
 import { myFirebase } from '../firebase/firebase'
 
+export const SIGN_UP_REQUEST = 'SIGN_UP_REQUEST'
+export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS'
+export const SIGN_UP_FAILURE = 'SIGN_UP_FAILURE'
+
 export const LOGIN_REQUEST = 'LOGIN_REQUEST'
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 export const LOGIN_FAILURE = 'LOGIN_FAILURE'
@@ -10,6 +14,24 @@ export const LOGOUT_FAILURE = 'LOGOUT_FAILURE'
 
 export const VERIFY_REQUEST = 'VERIFY_REQUEST'
 export const VERIFY_SUCCESS = 'VERIFY_SUCCESS'
+
+const requestSignUp = () => {
+  return {
+    type: SIGN_UP_REQUEST
+  }
+}
+
+const receiveSignUp = () => {
+  return {
+    type: SIGN_UP_SUCCESS
+  }
+}
+
+const signUpError = () => {
+  return {
+    type: SIGN_UP_FAILURE
+  }
+}
 
 const requestLogin = () => {
   return {
@@ -60,32 +82,39 @@ const verifySuccess = () => {
   }
 }
 
-export const loginUser = (email, password) => dispatch => {
-  dispatch(requestLogin())
-  myFirebase
-    .auth()
-    .signInWithEmailAndPassword(email, password)
-    .then(user => {
-      dispatch(receiveLogin(user))
-    })
-    .catch(error => {
-      console.error(error)
-      dispatch(loginError())
-    })
+export const signUpUser = (email, password) => async dispatch => {
+  dispatch(requestSignUp())
+  try {
+    await myFirebase.auth().createUserWithEmailAndPassword(email, password)
+    dispatch(receiveSignUp)
+  } catch (error) {
+    console.error(error)
+    dispatch(signUpError())
+  }
 }
 
-export const logoutUser = () => dispatch => {
+export const loginUser = (email, password) => async dispatch => {
+  dispatch(requestLogin())
+  try {
+    const user = await myFirebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+    dispatch(user)
+  } catch (error) {
+    console.error(error)
+    dispatch(loginError())
+  }
+}
+
+export const logoutUser = () => async dispatch => {
   dispatch(requestLogout())
-  myFirebase
-    .auth()
-    .signOut()
-    .then(() => {
-      dispatch(receiveLogout())
-    })
-    .catch(error => {
-      console.error(error)
-      dispatch(logoutError())
-    })
+  try {
+    await myFirebase.auth().signOut()
+    dispatch(receiveLogout())
+  } catch (error) {
+    console.error(error)
+    dispatch(logoutError())
+  }
 }
 
 export const verifyAuth = () => dispatch => {

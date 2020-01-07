@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 
 import ProtectedRoute from './pages/protected-route/protected-route'
 import Home from './pages/home-page/home-page'
+import SignUpPage from './pages/sign-up-page/sign-up-page'
 import Login from './pages/login-page/login-page'
 
 function App(props) {
@@ -18,6 +19,7 @@ function App(props) {
         isAuthenticated={isAuthenticated}
         isVerifying={isVerifying}
       />
+      <Route path="/sign-up" component={SignUpPage} />
       <Route path="/login" component={Login} />
     </Switch>
   )

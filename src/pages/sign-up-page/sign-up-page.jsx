@@ -86,7 +86,7 @@ class SignUpPage extends Component {
               name="passwordVerification"
               label="Verify password"
               type="password"
-              id="password"
+              id="passwordVerification"
               onChange={this.handlePasswordVerificationChange}
             />
             {passwordMatches && loginError && (

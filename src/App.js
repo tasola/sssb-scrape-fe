@@ -4,9 +4,10 @@ import { Route, Switch } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import ProtectedRoute from './pages/protected-route/protected-route'
-import Home from './pages/home-page/home-page'
-import SignUpPage from './pages/sign-up-page/sign-up-page'
+import ProfilePage from './pages/profile-page/profile-page.jsx'
+import SignUpPage from './pages/sign-up-page/sign-up-page.jsx'
 import Login from './pages/login-page/login-page'
+import ProfileModifyPage from './pages/profile-modify-page/profile-modify-page.jsx'
 
 function App(props) {
   const { isAuthenticated, isVerifying } = props
@@ -15,7 +16,14 @@ function App(props) {
       <ProtectedRoute
         exact
         path="/"
-        component={Home}
+        component={ProfilePage}
+        isAuthenticated={isAuthenticated}
+        isVerifying={isVerifying}
+      />
+      <ProtectedRoute
+        exact
+        path="/profile/modify"
+        component={ProfileModifyPage}
         isAuthenticated={isAuthenticated}
         isVerifying={isVerifying}
       />

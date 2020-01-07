@@ -1,13 +1,33 @@
 import React from 'react'
-import './App.css'
-import StartPage from './pages/start-page/start-page'
 
-function App() {
+import { Route, Switch } from 'react-router-dom'
+import { connect } from 'react-redux'
+
+import ProtectedRoute from './pages/protected-route/protected-route'
+import Home from './pages/home-page/home-page'
+import Login from './pages/login-page/login-page'
+
+function App(props) {
+  const { isAuthenticated, isVerifying } = props
   return (
-    <div className="App">
-      <StartPage />
-    </div>
+    <Switch>
+      <ProtectedRoute
+        exact
+        path="/"
+        component={Home}
+        isAuthenticated={isAuthenticated}
+        isVerifying={isVerifying}
+      />
+      <Route path="/login" component={Login} />
+    </Switch>
   )
 }
 
-export default App
+function mapStateToProps(state) {
+  return {
+    isAuthenticated: state.auth.isAuthenticated,
+    isVerifying: state.auth.isVerifying
+  }
+}
+
+export default connect(mapStateToProps)(App)

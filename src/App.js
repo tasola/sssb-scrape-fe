@@ -9,7 +9,7 @@ import SignUpPage from './pages/sign-up-page/sign-up-page.jsx'
 import Login from './pages/login-page/login-page'
 import ProfileModifyPage from './pages/profile-modify-page/profile-modify-page.jsx'
 
-function App(props) {
+const App = props => {
   const { isAuthenticated, isVerifying } = props
   return (
     <Switch>

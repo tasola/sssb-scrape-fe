@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { modifyProfile } from '../../actions'
 import { withStyles } from '@material-ui/styles'
 import styles from './profile-modify-page-style'
+import { fetchAreas } from '../../actions/contentful'
 
 import Button from '@material-ui/core/Button'
 import FormControl from '@material-ui/core/FormControl'
@@ -13,10 +14,34 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Container from '@material-ui/core/Container'
 
 class ProfileModifyPage extends Component {
-  state = {}
+  constructor(props) {
+    super(props)
+    this.state = {
+      chosenArea: ''
+    }
+    this.getAreaTitles = this.getAreaTitles.bind(this)
+  }
 
-  handleAgeChange = ({ target }) => {
-    this.setState({ age: target.value })
+  async componentDidMount() {
+    await this.props.fetchAreas()
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.areas !== prevState.areas) {
+      return { areas: nextProps.areas }
+    } else return null
+  }
+
+  handleClose = () => {
+    this.setState({ isOpen: false })
+  }
+
+  handleOpen = () => {
+    this.setState({ isOpen: true })
+  }
+
+  handleAreaChange = ({ target }) => {
+    this.setState({ chosenArea: target.value })
   }
 
   handleSubmit = () => {
@@ -26,9 +51,19 @@ class ProfileModifyPage extends Component {
     dispatch(modifyProfile(user, age))
   }
 
+  getAreaTitles = () => {
+    this.props.areas.map((area, index) => console.log(area))
+    return this.props.areas.map((area, index) => (
+      <MenuItem key={index} value={area.fields.title}>
+        {area.fields.title}
+      </MenuItem>
+    ))
+  }
+
   render() {
-    const { classes } = this.props
-    // const { passwordMatches, hasCheckedPasswords } = this.state
+    const { classes, areas } = this.props
+    console.log(areas)
+    const { open, chosenArea } = this.state
     console.log(this.state)
     console.log(this.props)
     return (
@@ -36,19 +71,22 @@ class ProfileModifyPage extends Component {
         <Typography component="h1" variant="h5">
           About you
         </Typography>
-        <FormControl className={classes.formControl} fullWidth>
-          <InputLabel id="demo-simple-select-label">Age</InputLabel>
-          <Select
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value="{age}"
-            onChange={this.handleAgeChange}
-          >
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
-          </Select>
-        </FormControl>
+        {this.state.areas && (
+          <FormControl className={classes.formControl} fullWidth>
+            <InputLabel id="demo-simple-select-label">Area</InputLabel>
+            <Select
+              labelId="demo-controlled-open-select-label"
+              id="demo-controlled-open-select"
+              open={open}
+              onClose={this.handleClose}
+              onOpen={this.handleOpen}
+              value={chosenArea}
+              onChange={this.handleAreaChange}
+            >
+              {this.getAreaTitles()}
+            </Select>
+          </FormControl>
+        )}
         <Button
           type="button"
           fullWidth
@@ -69,8 +107,11 @@ function mapStateToProps(state) {
     isLoggingIn: state.auth.isLoggingIn,
     loginError: state.auth.loginError,
     isAuthenticated: state.auth.isAuthenticated,
-    user: state.auth.user
+    user: state.auth.user,
+    areas: state.contentful.areas
   }
 }
 
-export default withStyles(styles)(connect(mapStateToProps)(ProfileModifyPage))
+export default withStyles(styles)(
+  connect(mapStateToProps, { fetchAreas })(ProfileModifyPage)
+)

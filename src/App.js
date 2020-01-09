@@ -34,6 +34,7 @@ const App = props => {
 }
 
 function mapStateToProps(state) {
+  console.log(state)
   return {
     isAuthenticated: state.auth.isAuthenticated,
     isVerifying: state.auth.isVerifying

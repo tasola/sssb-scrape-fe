@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import { modifyProfile } from '../../actions'
 import { withStyles } from '@material-ui/styles'
 import styles from './profile-modify-page-style'
@@ -23,7 +24,7 @@ class ProfileModifyPage extends Component {
   }
 
   async componentDidMount() {
-    await this.props.fetchAreas()
+    await this.props.actions.fetchAreas()
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -45,14 +46,17 @@ class ProfileModifyPage extends Component {
   }
 
   handleSubmit = () => {
-    const { dispatch, user } = this.props
-    const { age } = this.state
-    console.log(user)
-    dispatch(modifyProfile(user, age))
+    // const { actions, user } = this.props
+    const { dispatch, user, actions } = this.props
+    const { chosenArea } = this.state
+    // console.log(dispatch)
+    console.log('i handleSubmit')
+    console.log(actions)
+    actions.modifyProfile(user, chosenArea)
+    // dispatch(modifyProfile(user, chosenArea))
   }
 
   getAreaTitles = () => {
-    this.props.areas.map((area, index) => console.log(area))
     return this.props.areas.map((area, index) => (
       <MenuItem key={index} value={area.fields.title}>
         {area.fields.title}
@@ -61,8 +65,7 @@ class ProfileModifyPage extends Component {
   }
 
   render() {
-    const { classes, areas } = this.props
-    console.log(areas)
+    const { classes } = this.props
     const { open, chosenArea } = this.state
     console.log(this.state)
     console.log(this.props)
@@ -102,7 +105,7 @@ class ProfileModifyPage extends Component {
   }
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
   return {
     isLoggingIn: state.auth.isLoggingIn,
     loginError: state.auth.loginError,
@@ -112,6 +115,18 @@ function mapStateToProps(state) {
   }
 }
 
+const mapDispatchToProps = dispatch => {
+  return {
+    actions: bindActionCreators(
+      {
+        fetchAreas,
+        modifyProfile
+      },
+      dispatch
+    )
+  }
+}
+
 export default withStyles(styles)(
-  connect(mapStateToProps, { fetchAreas })(ProfileModifyPage)
+  connect(mapStateToProps, mapDispatchToProps)(ProfileModifyPage)
 )

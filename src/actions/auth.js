@@ -115,13 +115,15 @@ export const signUpUser = (email, password) => async dispatch => {
   }
 }
 
-export const modifyProfile = (user, age) => async dispatch => {
+export const modifyProfile = (user, chosenArea) => async dispatch => {
+  console.log(user)
+  console.log(chosenArea)
   dispatch(requestProfileModification())
   try {
     await db
       .collection('user')
       .doc(user.uid)
-      .set({ age: age })
+      .set({ chosenArea: chosenArea })
     dispatch(receiveProfileModification())
   } catch (error) {
     console.error(error)

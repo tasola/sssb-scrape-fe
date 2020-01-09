@@ -5,22 +5,19 @@ import { modifyProfile } from '../../actions'
 import { withStyles } from '@material-ui/styles'
 import styles from './profile-modify-page-style'
 import { fetchAreas } from '../../actions/contentful'
+import TextSelect from '../../components/text-select/text-select'
 
 import Button from '@material-ui/core/Button'
-import FormControl from '@material-ui/core/FormControl'
 import Typography from '@material-ui/core/Typography'
-import InputLabel from '@material-ui/core/InputLabel'
-import Select from '@material-ui/core/Select'
-import MenuItem from '@material-ui/core/MenuItem'
 import Container from '@material-ui/core/Container'
 
 class ProfileModifyPage extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      chosenArea: ''
+      chosenArea: '',
+      chosenFloor: ''
     }
-    this.getAreaTitles = this.getAreaTitles.bind(this)
   }
 
   async componentDidMount() {
@@ -45,50 +42,40 @@ class ProfileModifyPage extends Component {
     this.setState({ chosenArea: target.value })
   }
 
-  handleSubmit = () => {
-    // const { actions, user } = this.props
-    const { dispatch, user, actions } = this.props
-    const { chosenArea } = this.state
-    // console.log(dispatch)
-    console.log('i handleSubmit')
-    console.log(actions)
-    actions.modifyProfile(user, chosenArea)
-    // dispatch(modifyProfile(user, chosenArea))
+  handleFloorChange = ({ target }) => {
+    this.setState({ chosenFloor: target.value })
   }
 
-  getAreaTitles = () => {
-    return this.props.areas.map((area, index) => (
-      <MenuItem key={index} value={area.fields.title}>
-        {area.fields.title}
-      </MenuItem>
-    ))
+  handleSubmit = () => {
+    const { user, actions } = this.props
+    const { chosenArea } = this.state
+    actions.modifyProfile(user, chosenArea)
   }
 
   render() {
-    const { classes } = this.props
-    const { open, chosenArea } = this.state
-    console.log(this.state)
-    console.log(this.props)
+    const { areas, chosenArea, chosenFloor } = this.state
     return (
       <Container component="main" maxWidth="xs">
         <Typography component="h1" variant="h5">
-          About you
+          Apartment preferences
         </Typography>
-        {this.state.areas && (
-          <FormControl className={classes.formControl} fullWidth>
-            <InputLabel id="demo-simple-select-label">Area</InputLabel>
-            <Select
-              labelId="demo-controlled-open-select-label"
-              id="demo-controlled-open-select"
-              open={open}
-              onClose={this.handleClose}
-              onOpen={this.handleOpen}
+        {areas && (
+          <>
+            <TextSelect
+              title="area"
+              className="area"
               value={chosenArea}
-              onChange={this.handleAreaChange}
-            >
-              {this.getAreaTitles()}
-            </Select>
-          </FormControl>
+              handleChange={this.handleAreaChange}
+              selectItems={areas.map(a => a.fields.title)}
+            />
+            <TextSelect
+              title="Minimum floor"
+              className="floor"
+              value={chosenFloor}
+              handleChange={this.handleFloorChange}
+              selectItems={[1, 2, 3]}
+            />
+          </>
         )}
         <Button
           type="button"

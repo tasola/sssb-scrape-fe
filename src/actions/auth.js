@@ -123,6 +123,8 @@ export const modifyProfile = (user, chosenArea) => async dispatch => {
     await db
       .collection('user')
       .doc(user.uid)
+      .collection(chosenArea)
+      .doc('floors')
       .set({ chosenArea: chosenArea })
     dispatch(receiveProfileModification())
   } catch (error) {

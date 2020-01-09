@@ -4,8 +4,9 @@ import { bindActionCreators } from 'redux'
 import { modifyProfile } from '../../actions'
 import { withStyles } from '@material-ui/styles'
 import styles from './profile-modify-page-style'
-import { fetchAreas } from '../../actions/contentful'
+import { fetchApartmentMetaData } from '../../actions/contentful'
 import TextSelect from '../../components/text-select/text-select'
+import { range } from '../../utils/utils'
 
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
@@ -21,13 +22,22 @@ class ProfileModifyPage extends Component {
   }
 
   async componentDidMount() {
-    await this.props.actions.fetchAreas()
+    await this.props.actions.fetchApartmentMetaData()
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.areas !== prevState.areas) {
       return { areas: nextProps.areas }
     } else return null
+  }
+
+  getAreaObjectFromName = areaName => {
+    const { areas } = this.state
+    for (let i = 0; i < areas.length; i++) {
+      const area = areas[i]
+      if (area.fields.title === areaName) return area
+    }
+    return 'Not found'
   }
 
   handleClose = () => {
@@ -39,21 +49,32 @@ class ProfileModifyPage extends Component {
   }
 
   handleAreaChange = ({ target }) => {
-    this.setState({ chosenArea: target.value })
+    const areaObject = this.getAreaObjectFromName(target.value)
+    this.setState({
+      chosenArea: areaObject.fields.title,
+      maxFloor: areaObject.fields.floors,
+      chosenFloorRange: range(areaObject.fields.floors),
+      availableFloors: range(areaObject.fields.floors)
+    })
   }
 
   handleFloorChange = ({ target }) => {
-    this.setState({ chosenFloor: target.value })
+    const minimumFloor = target.value
+    this.setState({
+      chosenFloor: minimumFloor,
+      chosenFloorRange: range(minimumFloor, this.state.maxFloor)
+    })
   }
 
   handleSubmit = () => {
     const { user, actions } = this.props
-    const { chosenArea } = this.state
-    actions.modifyProfile(user, chosenArea)
+    const { chosenArea, chosenFloorRange } = this.state
+    actions.modifyProfile(user, chosenArea, chosenFloorRange)
   }
 
   render() {
-    const { areas, chosenArea, chosenFloor } = this.state
+    const { areas, chosenArea, chosenFloor, availableFloors } = this.state
+    console.log(this.state)
     return (
       <Container component="main" maxWidth="xs">
         <Typography component="h1" variant="h5">
@@ -65,6 +86,7 @@ class ProfileModifyPage extends Component {
               title="area"
               className="area"
               value={chosenArea}
+              isDisabled={false}
               handleChange={this.handleAreaChange}
               selectItems={areas.map(a => a.fields.title)}
             />
@@ -72,8 +94,9 @@ class ProfileModifyPage extends Component {
               title="Minimum floor"
               className="floor"
               value={chosenFloor}
+              isDisabled={chosenArea === ''}
               handleChange={this.handleFloorChange}
-              selectItems={[1, 2, 3]}
+              selectItems={availableFloors || []}
             />
           </>
         )}
@@ -106,7 +129,7 @@ const mapDispatchToProps = dispatch => {
   return {
     actions: bindActionCreators(
       {
-        fetchAreas,
+        fetchApartmentMetaData,
         modifyProfile
       },
       dispatch

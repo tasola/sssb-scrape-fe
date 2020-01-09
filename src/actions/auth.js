@@ -115,7 +115,11 @@ export const signUpUser = (email, password) => async dispatch => {
   }
 }
 
-export const modifyProfile = (user, chosenArea) => async dispatch => {
+export const modifyProfile = (
+  user,
+  chosenArea,
+  chosenFloorRange
+) => async dispatch => {
   console.log(user)
   console.log(chosenArea)
   dispatch(requestProfileModification())
@@ -125,7 +129,7 @@ export const modifyProfile = (user, chosenArea) => async dispatch => {
       .doc(user.uid)
       .collection(chosenArea)
       .doc('floors')
-      .set({ chosenArea: chosenArea })
+      .set({ chosenFloorRange: chosenFloorRange })
     dispatch(receiveProfileModification())
   } catch (error) {
     console.error(error)

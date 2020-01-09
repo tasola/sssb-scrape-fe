@@ -32,11 +32,16 @@ class TextSelect extends Component {
 
   render() {
     const { isOpen } = this.state
-    const { title, className, handleChange, value } = this.props
+    const { title, className, handleChange, value, isDisabled } = this.props
     const formClass = `text-select ${className}`
 
     return (
-      <FormControl className={formClass} fullWidth variant="outlined">
+      <FormControl
+        className={formClass}
+        fullWidth
+        variant="outlined"
+        disabled={isDisabled}
+      >
         <InputLabel id="text-select-label">
           {capitalizeFirstLetter(title)}
         </InputLabel>

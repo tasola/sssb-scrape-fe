@@ -11,6 +11,7 @@ import { range } from '../../utils/utils'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
+import ChosenPreferences from '../../components/chosenPreferences/chosenPreferences'
 
 class ProfileModifyPage extends Component {
   constructor(props) {
@@ -76,41 +77,44 @@ class ProfileModifyPage extends Component {
     const { areas, chosenArea, chosenFloor, availableFloors } = this.state
     console.log(this.state)
     return (
-      <Container component="main" maxWidth="xs">
-        <Typography component="h1" variant="h5">
-          Apartment preferences
-        </Typography>
-        {areas && (
-          <>
-            <TextSelect
-              title="area"
-              className="area"
-              value={chosenArea}
-              isDisabled={false}
-              handleChange={this.handleAreaChange}
-              selectItems={areas.map(a => a.fields.title)}
-            />
-            <TextSelect
-              title="Minimum floor"
-              className="floor"
-              value={chosenFloor}
-              isDisabled={chosenArea === ''}
-              handleChange={this.handleFloorChange}
-              selectItems={availableFloors || []}
-            />
-          </>
-        )}
-        <Button
-          type="button"
-          fullWidth
-          variant="contained"
-          color="primary"
-          className="SOMETHING"
-          onClick={this.handleSubmit}
-        >
-          Save
-        </Button>
-      </Container>
+      <>
+        <ChosenPreferences className="modify-profile" />
+        <Container component="main" maxWidth="xs">
+          <Typography component="h1" variant="h5">
+            Apartment preferences
+          </Typography>
+          {areas && (
+            <>
+              <TextSelect
+                title="area"
+                className="area"
+                value={chosenArea}
+                isDisabled={false}
+                handleChange={this.handleAreaChange}
+                selectItems={areas.map(a => a.fields.title)}
+              />
+              <TextSelect
+                title="Minimum floor"
+                className="floor"
+                value={chosenFloor}
+                isDisabled={chosenArea === ''}
+                handleChange={this.handleFloorChange}
+                selectItems={availableFloors || []}
+              />
+            </>
+          )}
+          <Button
+            type="button"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className="SOMETHING"
+            onClick={this.handleSubmit}
+          >
+            Save
+          </Button>
+        </Container>
+      </>
     )
   }
 }

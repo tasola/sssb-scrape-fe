@@ -1,9 +1,23 @@
 import React, { Component } from 'react'
+import { bindActionCreators } from 'redux'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { logoutUser } from '../../actions'
+import { fetchPreferences } from '../../actions/firebase-db'
+import ChosenPreferences from '../../components/chosenPreferences/chosenPreferences'
 
 class ProfilePage extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {}
+  }
+
+  async componentDidMount() {
+    const { uid } = this.props.user
+    console.log(uid)
+    await this.props.actions.fetchPreferences(uid)
+  }
+
   handleLogout = () => {
     const { dispatch } = this.props
     dispatch(logoutUser())
@@ -11,6 +25,7 @@ class ProfilePage extends Component {
 
   render() {
     const { isLoggingOut, logoutError } = this.props
+    console.log(this.props)
     return (
       <div>
         <h1>This is the profile page.</h1>
@@ -19,6 +34,7 @@ class ProfilePage extends Component {
         {isLoggingOut && <p>Logging Out....</p>}
         {logoutError && <p>Error logging out</p>}
         <Link to="profile/modify">Modify your profile</Link>
+        <ChosenPreferences className="profile-page" />
       </div>
     )
   }
@@ -27,8 +43,21 @@ class ProfilePage extends Component {
 function mapStateToProps(state) {
   return {
     isLoggingOut: state.auth.isLoggingOut,
-    logoutError: state.auth.logoutError
+    logoutError: state.auth.logoutError,
+    user: state.auth.user,
+    preferences: state.firebaseDb.preferences
   }
 }
 
-export default connect(mapStateToProps)(ProfilePage)
+const mapDispatchToProps = dispatch => {
+  return {
+    actions: bindActionCreators(
+      {
+        fetchPreferences
+      },
+      dispatch
+    )
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage)

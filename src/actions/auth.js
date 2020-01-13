@@ -104,10 +104,25 @@ const verifySuccess = () => {
   }
 }
 
+const createUserCollection = async user => {
+  try {
+    await db
+      .collection('users')
+      .doc(user.uid)
+      .set({ preferences: [] })
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 export const signUpUser = (email, password) => async dispatch => {
   dispatch(requestSignUp())
   try {
-    await myFirebase.auth().createUserWithEmailAndPassword(email, password)
+    const user = await myFirebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+    console.log(user)
+    createUserCollection(user.user)
     dispatch(receiveSignUp())
   } catch (error) {
     console.error(error)
@@ -115,7 +130,7 @@ export const signUpUser = (email, password) => async dispatch => {
   }
 }
 
-export const modifyProfile = (
+export const modifyProfile = async (
   user,
   chosenArea,
   chosenFloorRange
@@ -123,18 +138,47 @@ export const modifyProfile = (
   console.log(user)
   console.log(chosenArea)
   dispatch(requestProfileModification())
+  const batch = db.batch()
+
+  console.log(batch)
+
+  const userDocRef = db.collection('users').doc(user.uid)
+  // const dbObjectz = await userDocRef.get()
+  // const dbObject = dbObjectz.data().preferences
+  let dbObject = await getPreferences(userDocRef)
+  dbObject = dbObject.preferences
+  console.log(dbObject)
+  let isNewPreference = true
+
+  for (let i = 0; i < dbObject.length; i++) {
+    const preference = dbObject[i]
+    if (preference.area === chosenArea) {
+      if (preference.floors !== chosenFloorRange) {
+        preference.floors = chosenFloorRange
+      }
+      isNewPreference = false
+    }
+  }
+
+  isNewPreference &&
+    dbObject.push({ area: chosenArea, floors: chosenFloorRange })
+
+  batch.update(userDocRef, {
+    preferences: dbObject
+  })
+
   try {
-    await db
-      .collection('user')
-      .doc(user.uid)
-      .collection(chosenArea)
-      .doc('floors')
-      .set({ chosenFloorRange: chosenFloorRange })
+    batch.commit()
     dispatch(receiveProfileModification())
   } catch (error) {
     console.error(error)
     dispatch(profileModificationError())
   }
+}
+
+const getPreferences = async userDocRef => {
+  const req = await userDocRef.get()
+  return req.data()
 }
 
 export const loginUser = (email, password) => async dispatch => {

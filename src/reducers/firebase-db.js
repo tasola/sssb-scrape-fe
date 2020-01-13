@@ -5,7 +5,7 @@ const INITIAL_STATE = { areas: [] }
 export default (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case FETCH_PREFERENCES_REQUEST:
-      return { ...state, preferences: action.payload.data.items }
+      return { ...state, preferences: action.payload }
     default:
       return state
   }

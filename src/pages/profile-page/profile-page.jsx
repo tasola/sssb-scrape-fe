@@ -19,8 +19,7 @@ class ProfilePage extends Component {
   }
 
   handleLogout = () => {
-    const { dispatch } = this.props
-    dispatch(logoutUser())
+    this.props.actions.logoutUser()
   }
 
   render() {
@@ -53,7 +52,8 @@ const mapDispatchToProps = dispatch => {
   return {
     actions: bindActionCreators(
       {
-        fetchPreferences
+        fetchPreferences,
+        logoutUser
       },
       dispatch
     )

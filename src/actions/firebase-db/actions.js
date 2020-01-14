@@ -32,6 +32,7 @@ export const requestPreferences = () => {
 }
 
 export const receivePreferences = preferences => {
+  console.log(preferences)
   return {
     type: FETCH_PREFERENCES_SUCCESS,
     payload: preferences

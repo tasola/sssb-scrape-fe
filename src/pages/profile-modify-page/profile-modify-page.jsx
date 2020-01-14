@@ -78,7 +78,6 @@ class ProfileModifyPage extends Component {
     console.log(this.state)
     return (
       <>
-        <ChosenPreferences className="modify-profile" />
         <Container component="main" maxWidth="xs">
           <Typography component="h1" variant="h5">
             Apartment preferences

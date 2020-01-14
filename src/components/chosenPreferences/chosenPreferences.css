@@ -1,3 +1,20 @@
 .modify-profile.chosen-preferences {
   float: left;
 }
+
+.modify-profile.chosen-preferences .card {
+  max-width: 345;
+}
+
+.areaCard h2 {
+  font-weight: 500;
+}
+
+.areaCard h5.floors {
+  margin-top: -0.4em;
+  margin-bottom: 1em;
+}
+
+.areaCard .learnMore {
+  margin-left: 4px;
+}

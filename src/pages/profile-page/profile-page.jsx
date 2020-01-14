@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { logoutUser } from '../../actions/auth/auth'
 import { fetchPreferences } from '../../actions/firebase-db/firebase-db'
+import { fetchApartmentMetaData } from '../../actions/contentful'
 import ChosenPreferences from '../../components/chosenPreferences/chosenPreferences'
 
 class ProfilePage extends Component {
@@ -12,10 +13,19 @@ class ProfilePage extends Component {
     this.state = {}
   }
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    console.log(nextProps)
+    if (nextProps.preferences !== prevState.preferences) {
+      return { preferences: nextProps.preferences }
+    } else if (nextProps.areas !== prevState.areas) {
+      return { areas: nextProps.areas }
+    } else return null
+  }
+
   async componentDidMount() {
     const { uid } = this.props.user
-    console.log(uid)
     await this.props.actions.fetchPreferences(uid)
+    await this.props.actions.fetchApartmentMetaData()
   }
 
   handleLogout = () => {
@@ -23,7 +33,7 @@ class ProfilePage extends Component {
   }
 
   render() {
-    const { isLoggingOut, logoutError } = this.props
+    const { isLoggingOut, logoutError, areas, preferences } = this.props
     console.log(this.props)
     return (
       <div>
@@ -33,18 +43,27 @@ class ProfilePage extends Component {
         {isLoggingOut && <p>Logging Out....</p>}
         {logoutError && <p>Error logging out</p>}
         <Link to="profile/modify">Modify your profile</Link>
-        <ChosenPreferences className="profile-page" />
+        {preferences && areas.length > 0 && (
+          <ChosenPreferences
+            className="profile-page"
+            preferences={preferences}
+            areas={areas}
+          />
+        )}
       </div>
     )
   }
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
   return {
     isLoggingOut: state.auth.isLoggingOut,
     logoutError: state.auth.logoutError,
     user: state.auth.user,
-    preferences: state.firebaseDb.preferences
+    areas: state.contentful.areas,
+    preferences: state.firebaseDb.preferences,
+    isFetchingPreferences: state.firebaseDb.isFetchingPreferences,
+    preferenceFetchFailed: state.firebaseDb.preferenceFetchFailed
   }
 }
 
@@ -53,6 +72,7 @@ const mapDispatchToProps = dispatch => {
     actions: bindActionCreators(
       {
         fetchPreferences,
+        fetchApartmentMetaData,
         logoutUser
       },
       dispatch

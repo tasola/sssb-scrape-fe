@@ -1,4 +1,4 @@
-import { FETCH_PREFERENCES_REQUEST } from '../actions/firebase-db'
+import { FETCH_PREFERENCES_REQUEST } from '../actions/firebase-db/types'
 
 const INITIAL_STATE = { areas: [] }
 

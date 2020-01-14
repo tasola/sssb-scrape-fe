@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { logoutUser } from '../../actions'
-import { fetchPreferences } from '../../actions/firebase-db'
+import { fetchPreferences } from '../../actions/firebase-db/firebase-db'
 import ChosenPreferences from '../../components/chosenPreferences/chosenPreferences'
 
 class ProfilePage extends Component {

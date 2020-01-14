@@ -14,7 +14,6 @@ class ProfilePage extends Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    console.log(nextProps)
     if (nextProps.preferences !== prevState.preferences) {
       return { preferences: nextProps.preferences }
     } else if (nextProps.areas !== prevState.areas) {
@@ -34,7 +33,6 @@ class ProfilePage extends Component {
 
   render() {
     const { isLoggingOut, logoutError, areas, preferences } = this.props
-    console.log(this.props)
     return (
       <div>
         <h1>This is the profile page.</h1>

@@ -75,7 +75,6 @@ class ProfileModifyPage extends Component {
 
   render() {
     const { areas, chosenArea, chosenFloor, availableFloors } = this.state
-    console.log(this.state)
     return (
       <>
         <Container component="main" maxWidth="xs">

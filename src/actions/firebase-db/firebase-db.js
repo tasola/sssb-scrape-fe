@@ -66,12 +66,10 @@ const getUserFields = async userDocRef => {
 
 export const fetchPreferences = userId => async dispatch => {
   dispatch(requestPreferences())
-  console.log(userId)
   try {
     const userDocRef = db.collection('users').doc(userId)
     const userFields = await getUserFields(userDocRef)
     const preferences = userFields.preferences
-    console.log(preferences)
     dispatch(receivePreferences(preferences))
   } catch (error) {
     console.error(error)

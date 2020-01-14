@@ -2,6 +2,19 @@
   float: left;
 }
 
+.chosen-preferences.profile-page {
+  float: right;
+  margin-right: 5em;
+}
+
+.chosen-preferences > h2 {
+  margin-bottom: 1.5em;
+}
+
+.areaCard {
+  margin-bottom: 50px;
+}
+
 .modify-profile.chosen-preferences .card {
   max-width: 345;
 }
@@ -17,4 +30,5 @@
 
 .areaCard .learnMore {
   margin-left: 4px;
+  margin-bottom: 5px;
 }

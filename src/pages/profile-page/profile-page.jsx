@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { logoutUser } from '../../actions'
+import { logoutUser } from '../../actions/auth/auth'
 import { fetchPreferences } from '../../actions/firebase-db/firebase-db'
 import ChosenPreferences from '../../components/chosenPreferences/chosenPreferences'
 

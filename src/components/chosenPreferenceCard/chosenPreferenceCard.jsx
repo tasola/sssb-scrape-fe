@@ -79,7 +79,6 @@ class ChosenPreferenceCard extends Component {
   render() {
     const { preference, areaObject, id } = this.props
     const areaDescription = this.getAreaDescription(areaObject)
-    console.log(preference)
     return (
       <Grid item xs>
         <Card className="areaCard">

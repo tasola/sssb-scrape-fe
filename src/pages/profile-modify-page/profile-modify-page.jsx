@@ -22,6 +22,7 @@ class ProfileModifyPage extends Component {
   }
 
   async componentDidMount() {
+    await this.props.actions.fetchApartmentMetaData()
     if (this.props.location.state) {
       const { location } = this.props
       location &&
@@ -30,7 +31,6 @@ class ProfileModifyPage extends Component {
           location.state.floors[0]
         )
     }
-    await this.props.actions.fetchApartmentMetaData()
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -95,7 +95,6 @@ class ProfileModifyPage extends Component {
 
   render() {
     const { areas, chosenArea, chosenFloor, availableFloors } = this.state
-    console.log(this.state)
     return (
       <>
         <Container component="main" maxWidth="xs">

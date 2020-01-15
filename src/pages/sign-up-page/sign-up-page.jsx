@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Redirect, Link } from 'react-router-dom'
-import { signUpUser } from '../../actions'
+import { signUpUser } from '../../actions/auth/auth'
 import { withStyles } from '@material-ui/styles'
 import styles from './sign-up-page-style'
 

@@ -23,12 +23,25 @@ class ProfileModifyPage extends Component {
 
   async componentDidMount() {
     await this.props.actions.fetchApartmentMetaData()
+    if (this.props.location.state) {
+      const { location } = this.props
+      location &&
+        this.setupStateFromLinkLocation(
+          location.state.area,
+          location.state.floors[0]
+        )
+    }
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.areas !== prevState.areas) {
       return { areas: nextProps.areas }
     } else return null
+  }
+
+  setupStateFromLinkLocation = (area, floor) => {
+    const areaObject = this.getAreaObjectFromName(area)
+    this.updateState(areaObject, area, floor)
   }
 
   getAreaObjectFromName = areaName => {
@@ -50,11 +63,19 @@ class ProfileModifyPage extends Component {
 
   handleAreaChange = ({ target }) => {
     const areaObject = this.getAreaObjectFromName(target.value)
+    this.updateState(areaObject)
+  }
+
+  updateState = (areaObject, area, floor) => {
+    const title = area ? area : areaObject.fields.title
+    const minFloor = floor ? floor : areaObject.fields.floors
+    const maxFloor = areaObject.fields && areaObject.fields.floors
     this.setState({
-      chosenArea: areaObject.fields.title,
-      maxFloor: areaObject.fields.floors,
-      chosenFloorRange: range(areaObject.fields.floors),
-      availableFloors: range(areaObject.fields.floors)
+      chosenArea: title,
+      maxFloor: maxFloor,
+      chosenFloor: minFloor || '',
+      chosenFloorRange: range(maxFloor),
+      availableFloors: range(maxFloor)
     })
   }
 
@@ -74,43 +95,44 @@ class ProfileModifyPage extends Component {
 
   render() {
     const { areas, chosenArea, chosenFloor, availableFloors } = this.state
-    console.log(this.state)
     return (
-      <Container component="main" maxWidth="xs">
-        <Typography component="h1" variant="h5">
-          Apartment preferences
-        </Typography>
-        {areas && (
-          <>
-            <TextSelect
-              title="area"
-              className="area"
-              value={chosenArea}
-              isDisabled={false}
-              handleChange={this.handleAreaChange}
-              selectItems={areas.map(a => a.fields.title)}
-            />
-            <TextSelect
-              title="Minimum floor"
-              className="floor"
-              value={chosenFloor}
-              isDisabled={chosenArea === ''}
-              handleChange={this.handleFloorChange}
-              selectItems={availableFloors || []}
-            />
-          </>
-        )}
-        <Button
-          type="button"
-          fullWidth
-          variant="contained"
-          color="primary"
-          className="SOMETHING"
-          onClick={this.handleSubmit}
-        >
-          Save
-        </Button>
-      </Container>
+      <>
+        <Container component="main" maxWidth="xs">
+          <Typography component="h1" variant="h5">
+            Apartment preferences
+          </Typography>
+          {areas && (
+            <>
+              <TextSelect
+                title="area"
+                className="area"
+                value={chosenArea}
+                isDisabled={false}
+                handleChange={this.handleAreaChange}
+                selectItems={areas.map(a => a.fields.title)}
+              />
+              <TextSelect
+                title="Minimum floor"
+                className="floor"
+                value={chosenFloor}
+                isDisabled={chosenArea === ''}
+                handleChange={this.handleFloorChange}
+                selectItems={availableFloors || []}
+              />
+            </>
+          )}
+          <Button
+            type="button"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className="SOMETHING"
+            onClick={this.handleSubmit}
+          >
+            Save
+          </Button>
+        </Container>
+      </>
     )
   }
 }

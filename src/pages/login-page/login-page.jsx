@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import { loginUser } from '../../actions'
+import { loginUser } from '../../actions/auth/auth'
 import { withStyles } from '@material-ui/styles'
 import styles from './login-page-style'
 
@@ -27,13 +27,11 @@ class Login extends Component {
   handleSubmit = () => {
     const { dispatch } = this.props
     const { email, password } = this.state
-    console.log(dispatch)
     dispatch(loginUser(email, password))
   }
 
   render() {
     const { classes, loginError, isAuthenticated } = this.props
-    console.log(this.props)
     if (isAuthenticated) {
       return <Redirect to="/" />
     } else {

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import './chosenPreferenceCard.css'
+import { Link } from 'react-router-dom'
 
 import Card from '@material-ui/core/Card'
 import CardMedia from '@material-ui/core/CardMedia'
@@ -78,6 +79,7 @@ class ChosenPreferenceCard extends Component {
   render() {
     const { preference, areaObject, id } = this.props
     const areaDescription = this.getAreaDescription(areaObject)
+    console.log(preference)
     return (
       <Grid item xs>
         <Card className="areaCard">
@@ -124,7 +126,19 @@ class ChosenPreferenceCard extends Component {
               See more at SSSB
             </Button>
             <Button size="small" color="primary" className="edit">
-              Edit
+              <Link
+                to={{
+                  pathname: 'profile/modify',
+                  state: {
+                    fromPreferenceCard: true,
+                    area: preference.area,
+                    floors: preference.floors
+                  }
+                }}
+                style={{ textDecoration: 'none', color: 'inherit' }}
+              >
+                Edit
+              </Link>
             </Button>
           </CardActions>
         </Card>

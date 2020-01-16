@@ -15,7 +15,7 @@ const ProtectedRoute = ({
         <div />
       ) : isAuthenticated ? (
         <>
-          {/* <Navbar /> */}
+          <Navbar />
           <Component {...props} />
         </>
       ) : (

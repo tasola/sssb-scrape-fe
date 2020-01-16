@@ -63,7 +63,7 @@ class ProfileModifyPage extends Component {
   }
 
   handleCancel = () => {
-    this.props.history.push('/')
+    this.goHome()
   }
 
   handleAreaChange = ({ target }) => {
@@ -91,10 +91,25 @@ class ProfileModifyPage extends Component {
     })
   }
 
+  // historyPushObject is for instant preference representation, instead of
+  // having to wait for firestore to update and then fetch
   handleSubmit = () => {
     const { user, actions } = this.props
     const { chosenArea, chosenFloorRange } = this.state
     actions.modifyProfile(user, chosenArea, chosenFloorRange)
+    const historyPushObject = {
+      pathname: '/',
+      isFromProfileModify: true,
+      state: {
+        area: chosenArea,
+        floor: chosenFloorRange
+      }
+    }
+    this.goHome(historyPushObject)
+  }
+
+  goHome = pushObject => {
+    this.props.history.push(pushObject || '/')
   }
 
   render() {

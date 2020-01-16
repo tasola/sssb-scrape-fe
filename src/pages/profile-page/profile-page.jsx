@@ -36,12 +36,8 @@ class ProfilePage extends Component {
     const { isLoggingOut, logoutError, areas, preferences } = this.props
     return (
       <div>
-        <h1>This is the profile page.</h1>
-        <p>Any routes here will also be protected</p>
-        <button onClick={this.handleLogout}>Logout</button>
         {isLoggingOut && <p>Logging Out....</p>}
         {logoutError && <p>Error logging out</p>}
-        <Link to="profile/modify">Modify your profile</Link>
         {preferences && areas.length > 0 && (
           <ChosenPreferences
             className="profile-page"

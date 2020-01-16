@@ -7,6 +7,7 @@ import styles from './profile-modify-page-style'
 import { fetchApartmentMetaData } from '../../actions/contentful'
 import TextSelect from '../../components/text-select/text-select'
 import { range } from '../../utils/utils'
+import './profile-modify-page.css'
 
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
@@ -61,6 +62,10 @@ class ProfileModifyPage extends Component {
     this.setState({ isOpen: true })
   }
 
+  handleCancel = () => {
+    this.props.history.push('/')
+  }
+
   handleAreaChange = ({ target }) => {
     const areaObject = this.getAreaObjectFromName(target.value)
     this.updateState(areaObject)
@@ -68,12 +73,11 @@ class ProfileModifyPage extends Component {
 
   updateState = (areaObject, area, floor) => {
     const title = area ? area : areaObject.fields.title
-    const minFloor = floor ? floor : areaObject.fields.floors
     const maxFloor = areaObject.fields && areaObject.fields.floors
     this.setState({
       chosenArea: title,
       maxFloor: maxFloor,
-      chosenFloor: minFloor || '',
+      chosenFloor: floor || '',
       chosenFloorRange: range(maxFloor),
       availableFloors: range(maxFloor)
     })
@@ -97,7 +101,11 @@ class ProfileModifyPage extends Component {
     const { areas, chosenArea, chosenFloor, availableFloors } = this.state
     return (
       <>
-        <Container component="main" maxWidth="xs">
+        <Container
+          component="main"
+          maxWidth="xs"
+          className="profile-modify-page"
+        >
           <Typography component="h1" variant="h5">
             Apartment preferences
           </Typography>
@@ -105,7 +113,7 @@ class ProfileModifyPage extends Component {
             <>
               <TextSelect
                 title="area"
-                className="area"
+                className="select-preferences area"
                 value={chosenArea}
                 isDisabled={false}
                 handleChange={this.handleAreaChange}
@@ -113,7 +121,7 @@ class ProfileModifyPage extends Component {
               />
               <TextSelect
                 title="Minimum floor"
-                className="floor"
+                className="select-preferences floor"
                 value={chosenFloor}
                 isDisabled={chosenArea === ''}
                 handleChange={this.handleFloorChange}
@@ -121,16 +129,26 @@ class ProfileModifyPage extends Component {
               />
             </>
           )}
-          <Button
-            type="button"
-            fullWidth
-            variant="contained"
-            color="primary"
-            className="SOMETHING"
-            onClick={this.handleSubmit}
-          >
-            Save
-          </Button>
+          <div className="modify-preferences-buttons">
+            <Button
+              type="button"
+              color="primary"
+              className="cancel-preferences"
+              onClick={this.handleCancel}
+            >
+              Cancel
+            </Button>
+            <Button
+              type="button"
+              variant="contained"
+              color="primary"
+              className="save-preferences"
+              disabled={chosenArea === '' || chosenFloor === ''}
+              onClick={this.handleSubmit}
+            >
+              Save
+            </Button>
+          </div>
         </Container>
       </>
     )

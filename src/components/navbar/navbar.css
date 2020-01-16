@@ -1,0 +1,8 @@
+#menu-appbar li.logout {
+  color: red;
+}
+
+.navbar img {
+  max-height: 30px;
+  width: auto;
+}

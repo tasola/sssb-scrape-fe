@@ -3,8 +3,7 @@
 }
 
 .chosen-preferences.profile-page {
-  float: right;
-  margin-right: 5em;
+  margin-top: 1.5em;
 }
 
 .chosen-preferences > h2 {
@@ -31,4 +30,8 @@
 .areaCard .learnMore {
   margin-left: 4px;
   margin-bottom: 5px;
+}
+
+.profile-page .edit-button {
+  float: right;
 }

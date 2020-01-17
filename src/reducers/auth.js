@@ -17,7 +17,6 @@ export default (
     loginError: false,
     logoutError: false,
     isAuthenticated: false,
-    isEmailConfirmed: false,
     user: {}
   },
   action

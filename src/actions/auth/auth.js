@@ -30,19 +30,12 @@ export const signUpUser = (email, password) => async dispatch => {
     const user = await myFirebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-    await createUserCollection(user.user)
+    createUserCollection(user.user)
     dispatch(receiveSignUp())
-    sendVerification(user.user)
   } catch (error) {
     console.error(error)
     dispatch(signUpError())
   }
-}
-
-export const sendVerification = async user => {
-  try {
-    await user.sendEmailVerification()
-  } catch (error) {}
 }
 
 export const loginUser = (email, password) => async dispatch => {

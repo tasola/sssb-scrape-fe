@@ -1,17 +1,17 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { logoutUser } from '../../actions/auth/auth'
 import { fetchPreferences } from '../../actions/firebase-db/firebase-db'
 import { fetchApartmentMetaData } from '../../actions/contentful'
 import ChosenPreferences from '../../components/chosenPreferences/chosenPreferences'
-import { range } from '../../utils/utils'
 import './profile-page.css'
 
 class ProfilePage extends Component {
   constructor(props) {
     super(props)
-    this.state = { isLoading: false }
+    this.state = {}
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -24,36 +24,17 @@ class ProfilePage extends Component {
 
   async componentDidMount() {
     const { uid } = this.props.user
-    this.setState({ isLoading: true })
     await this.props.actions.fetchPreferences(uid)
     await this.props.actions.fetchApartmentMetaData()
-    this.setState({ isLoading: false })
   }
 
   handleLogout = () => {
     this.props.actions.logoutUser()
   }
 
-  // Modifies the floors so that the application does not have to wait for
-  // Firebase to load the changes from /modify
-  renderFloorsFromLocationState = (preferences, locationState) => {
-    preferences.forEach(pref => {
-      if (
-        pref.area === locationState.area &&
-        pref.floors !== range(locationState.floor)
-      ) {
-        pref.floors = locationState.floor
-      }
-    })
-    return preferences
-  }
-
   render() {
-    const { isLoading, isLoggingOut, logoutError, location } = this.props
-    let { areas, preferences } = this.props
-    if (location.isFromProfileModify)
-      this.renderFloorsFromLocationState(preferences, location.state)
-    return !isLoading ? (
+    const { isLoggingOut, logoutError, areas, preferences } = this.props
+    return (
       <div>
         {isLoggingOut && <p>Logging Out....</p>}
         {logoutError && <p>Error logging out</p>}
@@ -65,8 +46,6 @@ class ProfilePage extends Component {
           />
         )}
       </div>
-    ) : (
-      <div>Loading...</div>
     )
   }
 }

@@ -12,7 +12,6 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
 import Container from '@material-ui/core/Container'
-import { useRadioGroup } from '@material-ui/core'
 
 class SignUpPage extends Component {
   state = { email: '', password: '', hasCheckedPasswords: false }
@@ -47,12 +46,10 @@ class SignUpPage extends Component {
   }
 
   render() {
-    const { classes, loginError, isAuthenticated, user } = this.props
+    const { classes, loginError, isAuthenticated } = this.props
     const { passwordMatches, hasCheckedPasswords } = this.state
-    if (isAuthenticated && user.emailVerified) {
+    if (isAuthenticated) {
       return <Redirect to="/" />
-    } else if (user.emailVerified === false) {
-      return <Redirect to="verify-email" />
     } else {
       return (
         <Container component="main" maxWidth="xs">
@@ -124,8 +121,7 @@ function mapStateToProps(state) {
   return {
     isLoggingIn: state.auth.isLoggingIn,
     loginError: state.auth.loginError,
-    isAuthenticated: state.auth.isAuthenticated,
-    user: state.auth.user
+    isAuthenticated: state.auth.isAuthenticated
   }
 }
 

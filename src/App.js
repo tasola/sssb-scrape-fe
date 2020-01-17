@@ -12,11 +12,6 @@ import verifyEmailPage from './pages/verify-email-page/verify-email-page'
 
 const App = props => {
   const { isAuthenticated, isVerifying, user } = props
-  console.log(user)
-  console.log('isVerifying: ' + isVerifying)
-  console.log('isEmailVerified: ' + user.emailVerified)
-  console.log('isAuthenticated: ' + isAuthenticated)
-  // console.log(user.emailVerified)
   return (
     <Switch>
       <ProtectedRoute

@@ -1,85 +1,47 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { logoutUser } from '../../actions/auth/auth'
-import { Redirect, Link } from 'react-router-dom'
-import { signUpUser } from '../../actions/auth/auth'
-import { withStyles } from '@material-ui/styles'
-// import styles from './sign-up-page-style'
-
-import Avatar from '@material-ui/core/Avatar'
-import Button from '@material-ui/core/Button'
-import TextField from '@material-ui/core/TextField'
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
-import Typography from '@material-ui/core/Typography'
-import Paper from '@material-ui/core/Paper'
-import Container from '@material-ui/core/Container'
+import { verifyAuth } from '../../actions/auth/auth'
+import { Redirect } from 'react-router-dom'
 
 class VerifyEmailPage extends Component {
-  state = { email: '', password: '', hasCheckedPasswords: false }
-
-  handleLogout = () => {
-    console.log('logging out user')
-
-    this.props.actions.logoutUser()
+  goHome = async () => {
+    await this.props.actions.verifyAuth()
+    window.location.reload()
+    this.props.history.push('/')
   }
 
-  // handleEmailChange = ({ target }) => {
-  //   this.setState({ email: target.value })
-  // }
-
-  // handlePasswordChange = ({ target }) => {
-  //   this.setState({ password: target.value })
-  // }
-
-  // handlePasswordVerificationChange = ({ target }) => {
-  //   this.setState({ passwordVerification: target.value })
-  // }
-
-  // handleSubmit = () => {
-  //   const { dispatch } = this.props
-  //   const { email, password } = this.state
-  //   if (!this.passwordMatches()) return
-  //   dispatch(signUpUser(email, password))
-  // }
-
-  // passwordMatches() {
-  //   const { password, passwordVerification } = this.state
-  //   const passwordMatches = password === passwordVerification
-  //   this.setState({
-  //     passwordMatches: passwordMatches,
-  //     hasCheckedPasswords: true
-  //   })
-  //   return passwordMatches
-  // }
-
   render() {
-    const { classes, loginError, isAuthenticated } = this.props
-    return (
+    const { user } = this.props
+    return user.emailVerified ? (
+      <Redirect to="/" />
+    ) : (
       <div>
-        Verify your email!<button onClick={this.handleLogout}>Logout</button>
+        <p>Verify your email!</p>
+        <p>
+          Have you verified the email? Click{' '}
+          <button onClick={this.goHome}>here</button> to go to the app!
+        </p>
       </div>
     )
   }
 }
 
-// function mapStateToProps(state) {
-//   return {
-//     isLoggingIn: state.auth.isLoggingIn,
-//     loginError: state.auth.loginError,
-//     isAuthenticated: state.auth.isAuthenticated
-//   }
-// }
+const mapStateToProps = state => {
+  return {
+    user: state.auth.user
+  }
+}
 
 const mapDispatchToProps = dispatch => {
   return {
     actions: bindActionCreators(
       {
-        logoutUser
+        verifyAuth
       },
       dispatch
     )
   }
 }
 
-export default connect(null, mapDispatchToProps)(VerifyEmailPage)
+export default connect(mapStateToProps, mapDispatchToProps)(VerifyEmailPage)

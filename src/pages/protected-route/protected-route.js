@@ -1,11 +1,13 @@
 import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import Navbar from '../../components/navbar/navbar.jsx'
+import VerifyEmailPage from '../../pages/verify-email-page/verify-email-page.jsx'
 
 const ProtectedRoute = ({
   component: Component,
   isAuthenticated,
   isVerifying,
+  isEmailVerified,
   ...rest
 }) => (
   <Route
@@ -13,7 +15,14 @@ const ProtectedRoute = ({
     render={props =>
       isVerifying ? (
         <div />
-      ) : isAuthenticated ? (
+      ) : // ) : !isEmailVerified && isEmailVerified !== undefined ? (
+      //   <Redirect
+      //     to={{
+      //       pathname: '/verify-email',
+      //       state: { from: props.location }
+      //     }}
+      //   />
+      isAuthenticated && isEmailVerified ? (
         <>
           <Navbar />
           <Component {...props} />
@@ -29,4 +38,5 @@ const ProtectedRoute = ({
     }
   />
 )
+
 export default ProtectedRoute

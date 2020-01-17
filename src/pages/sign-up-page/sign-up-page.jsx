@@ -29,6 +29,7 @@ class SignUpPage extends Component {
   }
 
   handleSubmit = () => {
+    console.log('i handleSubmit')
     const { dispatch } = this.props
     const { email, password } = this.state
     if (!this.passwordMatches()) return
@@ -46,6 +47,8 @@ class SignUpPage extends Component {
   }
 
   render() {
+    console.log('I signup, props är:')
+    console.log(this.props)
     const { classes, loginError, isAuthenticated } = this.props
     const { passwordMatches, hasCheckedPasswords } = this.state
     if (isAuthenticated) {

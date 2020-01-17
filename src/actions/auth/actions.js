@@ -8,7 +8,10 @@ import {
   LOGOUT_SUCCESS,
   LOGOUT_FAILURE,
   VERIFY_REQUEST,
-  VERIFY_SUCCESS
+  VERIFY_SUCCESS,
+  SEND_VERIFICATION_REQUEST,
+  SEND_VERIFICATION_SUCCESS,
+  SEND_VERIFICATION_FAILURE
 } from './types'
 
 export const requestSignUp = () => {
@@ -75,5 +78,23 @@ export const verifyRequest = () => {
 export const verifySuccess = () => {
   return {
     type: VERIFY_SUCCESS
+  }
+}
+
+export const requestSendVerification = () => {
+  return {
+    type: SEND_VERIFICATION_REQUEST
+  }
+}
+
+export const receieveSendVerification = () => {
+  return {
+    type: SEND_VERIFICATION_SUCCESS
+  }
+}
+
+export const sendVerificationError = () => {
+  return {
+    type: SEND_VERIFICATION_FAILURE
   }
 }

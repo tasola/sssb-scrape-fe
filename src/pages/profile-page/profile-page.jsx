@@ -49,6 +49,8 @@ class ProfilePage extends Component {
   }
 
   render() {
+    console.log('I profile-page med props:')
+    console.log(this.props)
     const { isLoading, isLoggingOut, logoutError, location } = this.props
     let { areas, preferences } = this.props
     if (location.isFromProfileModify)

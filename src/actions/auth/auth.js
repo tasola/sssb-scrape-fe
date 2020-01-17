@@ -10,10 +10,14 @@ import {
   receiveLogout,
   logoutError,
   verifyRequest,
-  verifySuccess
+  verifySuccess,
+  requestSendVerification,
+  receieveSendVerification,
+  sendVerificationError
 } from './actions'
 
 const createUserCollection = async user => {
+  console.log('Create user collection')
   try {
     await db
       .collection('users')
@@ -27,14 +31,29 @@ const createUserCollection = async user => {
 export const signUpUser = (email, password) => async dispatch => {
   dispatch(requestSignUp())
   try {
+    console.log('creating user...')
     const user = await myFirebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-    createUserCollection(user.user)
+    await createUserCollection(user.user)
     dispatch(receiveSignUp())
+    dispatch(sendVerification(user.user))
   } catch (error) {
     console.error(error)
     dispatch(signUpError())
+  }
+}
+
+export const sendVerification = user => async dispatch => {
+  console.log('sending verification...')
+  dispatch(requestSendVerification())
+  try {
+    await user.sendEmailVerification()
+    console.log('email successfully sent!')
+    dispatch(receieveSendVerification())
+  } catch (error) {
+    console.error(error)
+    dispatch(sendVerificationError())
   }
 }
 
@@ -52,8 +71,10 @@ export const loginUser = (email, password) => async dispatch => {
 }
 
 export const logoutUser = () => async dispatch => {
+  console.log('logout is called')
   dispatch(requestLogout())
   try {
+    console.log('Logging out....')
     await myFirebase.auth().signOut()
     dispatch(receiveLogout())
   } catch (error) {
@@ -63,9 +84,12 @@ export const logoutUser = () => async dispatch => {
 }
 
 export const verifyAuth = () => dispatch => {
+  console.log('Verifying!')
   dispatch(verifyRequest())
   myFirebase.auth().onAuthStateChanged(user => {
+    console.log('i onauthstatechanged')
     if (user !== null) {
+      console.log(user)
       dispatch(receiveLogin(user))
     }
     dispatch(verifySuccess())

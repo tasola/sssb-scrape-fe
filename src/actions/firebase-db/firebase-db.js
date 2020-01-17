@@ -65,6 +65,7 @@ const getUserFields = async userDocRef => {
 }
 
 export const fetchPreferences = userId => async dispatch => {
+  console.log(userId)
   dispatch(requestPreferences())
   try {
     const userDocRef = db.collection('users').doc(userId)

@@ -6,7 +6,10 @@ import {
   LOGOUT_SUCCESS,
   LOGOUT_FAILURE,
   VERIFY_REQUEST,
-  VERIFY_SUCCESS
+  VERIFY_SUCCESS,
+  SEND_VERIFICATION_REQUEST,
+  SEND_VERIFICATION_SUCCESS,
+  SEND_VERIFICATION_FAILURE
 } from '../actions/auth/types'
 
 export default (
@@ -17,10 +20,13 @@ export default (
     loginError: false,
     logoutError: false,
     isAuthenticated: false,
+    isVerificationMailSent: false,
+    isVerificationMailSending: false,
     user: {}
   },
   action
 ) => {
+  console.log(action.type)
   switch (action.type) {
     case LOGIN_REQUEST:
       return {
@@ -71,6 +77,24 @@ export default (
       return {
         ...state,
         isVerifying: false
+      }
+    case SEND_VERIFICATION_REQUEST:
+      return {
+        ...state,
+        isVerificationMailSent: false,
+        isVerificationMailSending: true
+      }
+    case SEND_VERIFICATION_SUCCESS:
+      return {
+        ...state,
+        isVerificationMailSent: true,
+        isVerificationMailSending: false
+      }
+    case SEND_VERIFICATION_FAILURE:
+      return {
+        ...state,
+        isVerificationMailSent: false,
+        isVerificationMailSending: false
       }
     default:
       return state

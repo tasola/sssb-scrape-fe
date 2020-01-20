@@ -1,0 +1,26 @@
+.add-button {
+  display: block;
+  height: 60px;
+  width: 60px;
+  border-radius: 50%;
+  background-color: rgba(65, 84, 175);
+  color: white;
+  float: right;
+  transition: 0.4s;
+}
+
+.add-button * {
+  margin-top: 3px;
+}
+
+.add-button:hover {
+  cursor: pointer;
+}
+
+.add-button:focus {
+  outline: inherit;
+}
+
+.add-button:visited {
+  color: white;
+}

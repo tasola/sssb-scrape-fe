@@ -11,7 +11,7 @@ const unsubscribeDialogText = {
 
 class UnsubscribeDialog extends Component {
   render() {
-    const { handleDialogClose, openDialog } = this.props
+    const { handleDialogClose, openDialog, unsubscribeAction } = this.props
     const {
       heading,
       text,
@@ -26,6 +26,7 @@ class UnsubscribeDialog extends Component {
         text={text}
         secondaryButtonLabel={secondaryButtonLabel}
         primaryButtonLabel={primaryButtonLabel}
+        primaryAction={unsubscribeAction}
       />
     )
   }

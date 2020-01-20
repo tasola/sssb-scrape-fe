@@ -15,7 +15,8 @@ class BaseDialog extends Component {
       heading,
       text,
       secondaryButtonLabel,
-      primaryButtonLabel
+      primaryButtonLabel,
+      primaryAction
     } = this.props
     return (
       <Dialog
@@ -35,7 +36,7 @@ class BaseDialog extends Component {
             {secondaryButtonLabel}
           </Button>
           <Button
-            onClick={handleDialogClose}
+            onClick={primaryAction}
             color="primary"
             id="destructive-button"
           >

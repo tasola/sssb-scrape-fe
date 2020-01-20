@@ -11,9 +11,22 @@
 }
 
 .modify-preferences-buttons {
+  width: 100%;
+}
+
+.modify-preferences-buttons * {
   float: right;
+}
+
+.modify-preferences-buttons .remove-preferences {
+  float: left !important;
+  margin-left: 0px;
 }
 
 .modify-preferences-buttons button {
   margin-left: 10px;
+}
+
+#destructive-button {
+  color: #db4437;
 }

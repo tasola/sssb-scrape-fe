@@ -12,13 +12,20 @@ import './profile-modify-page.css'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
+import Dialog from '@material-ui/core/Dialog'
+import DialogTitle from '@material-ui/core/DialogTitle'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogContentText from '@material-ui/core/DialogContentText'
+import DialogActions from '@material-ui/core/DialogActions'
+import UnsubscribeDialog from '../../components/unsubscribe-dialog/unsubscribe-dialog'
 
 class ProfileModifyPage extends Component {
   constructor(props) {
     super(props)
     this.state = {
       chosenArea: '',
-      chosenFloor: ''
+      chosenFloor: '',
+      openDialog: false
     }
   }
 
@@ -92,6 +99,10 @@ class ProfileModifyPage extends Component {
     })
   }
 
+  handleDialogOpen = () => this.setState({ openDialog: true })
+
+  handleDialogClose = () => this.setState({ openDialog: false })
+
   // historyPushObject is for instant preference representation, instead of
   // having to wait for firestore to update and then fetch
   handleSubmit = () => {
@@ -115,7 +126,13 @@ class ProfileModifyPage extends Component {
   }
 
   render() {
-    const { areas, chosenArea, chosenFloor, availableFloors } = this.state
+    const {
+      areas,
+      chosenArea,
+      chosenFloor,
+      availableFloors,
+      openDialog
+    } = this.state
     return (
       <>
         <Container
@@ -150,10 +167,11 @@ class ProfileModifyPage extends Component {
             <Button
               type="button"
               color="primary"
-              className="cancel-preferences"
-              onClick={this.handleCancel}
+              className="remove-preferences"
+              id="destructive-button"
+              onClick={this.handleDialogOpen}
             >
-              Cancel
+              Remove
             </Button>
             <Button
               type="button"
@@ -165,7 +183,19 @@ class ProfileModifyPage extends Component {
             >
               Save
             </Button>
+            <Button
+              type="button"
+              color="primary"
+              className="cancel-preferences"
+              onClick={this.handleCancel}
+            >
+              Cancel
+            </Button>
           </div>
+          <UnsubscribeDialog
+            handleDialogClose={this.handleDialogClose}
+            openDialog={openDialog}
+          />
         </Container>
       </>
     )

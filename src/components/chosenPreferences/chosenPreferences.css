@@ -35,3 +35,13 @@
 .profile-page .edit-button {
   float: right;
 }
+
+.chosen-preferences .add-button {
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.chosen-preferences .MuiGrid-item {
+  padding-bottom: 0px !important;
+  padding-top: 10px !important;
+}

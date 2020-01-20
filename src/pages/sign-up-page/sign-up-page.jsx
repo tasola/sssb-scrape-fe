@@ -46,10 +46,12 @@ class SignUpPage extends Component {
   }
 
   render() {
-    const { classes, loginError, isAuthenticated } = this.props
+    const { classes, loginError, isAuthenticated, user } = this.props
     const { passwordMatches, hasCheckedPasswords } = this.state
-    if (isAuthenticated) {
+    if (isAuthenticated && user.emailVerified) {
       return <Redirect to="/" />
+    } else if (user.emailVerified === false) {
+      return <Redirect to="verify-email" />
     } else {
       return (
         <Container component="main" maxWidth="xs">
@@ -121,7 +123,8 @@ function mapStateToProps(state) {
   return {
     isLoggingIn: state.auth.isLoggingIn,
     loginError: state.auth.loginError,
-    isAuthenticated: state.auth.isAuthenticated
+    isAuthenticated: state.auth.isAuthenticated,
+    user: state.auth.user
   }
 }
 

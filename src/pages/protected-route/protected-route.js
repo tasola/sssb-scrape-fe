@@ -6,27 +6,38 @@ const ProtectedRoute = ({
   component: Component,
   isAuthenticated,
   isVerifying,
+  isEmailVerified,
   ...rest
-}) => (
-  <Route
-    {...rest}
-    render={props =>
-      isVerifying ? (
-        <div />
-      ) : isAuthenticated ? (
-        <>
-          <Navbar />
-          <Component {...props} />
-        </>
-      ) : (
-        <Redirect
-          to={{
-            pathname: '/sign-up',
-            state: { from: props.location }
-          }}
-        />
-      )
-    }
-  />
-)
+}) => {
+  return (
+    <Route
+      {...rest}
+      render={props =>
+        isVerifying ? (
+          <div />
+        ) : !isEmailVerified && isEmailVerified !== undefined ? (
+          <Redirect
+            to={{
+              pathname: '/verify-email',
+              state: { from: props.location }
+            }}
+          />
+        ) : isAuthenticated ? (
+          <>
+            <Navbar />
+            <Component {...props} />
+          </>
+        ) : (
+          <Redirect
+            to={{
+              pathname: '/sign-up',
+              state: { from: props.location }
+            }}
+          />
+        )
+      }
+    />
+  )
+}
+
 export default ProtectedRoute

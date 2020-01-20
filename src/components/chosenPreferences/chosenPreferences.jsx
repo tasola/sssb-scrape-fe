@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
 import ChosenPreferenceCard from '../chosenPreferenceCard/chosenPreferenceCard.jsx'
+import AddButton from '../add-button/add-button'
 import './chosenPreferences.css'
 
 import Container from '@material-ui/core/Container'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
-import Button from '@material-ui/core/Button'
 
 class ChosenPreferences extends Component {
   constructor(props) {
@@ -54,6 +53,7 @@ class ChosenPreferences extends Component {
 
   render() {
     const { className } = this.props
+    console.log(this.props)
     return (
       <Container
         className={`chosen-preferences ${className}`}
@@ -68,17 +68,10 @@ class ChosenPreferences extends Component {
         >
           Your subscription
         </Typography>
-        <Grid container spacing={6}>
+        <Grid container spacing={10}>
           {this.getSelectItems()}
         </Grid>
-        <Button variant="contained" color="primary" className="edit-button">
-          <Link
-            to="profile/modify"
-            style={{ textDecoration: 'none', color: 'inherit' }}
-          >
-            Edit Preferences
-          </Link>
-        </Button>
+        <AddButton to="profile/modify" />
       </Container>
     )
   }

@@ -80,11 +80,11 @@ class ChosenPreferenceCard extends Component {
     const { preference, areaObject, id } = this.props
     const areaDescription = this.getAreaDescription(areaObject)
     return (
-      <Grid item xs>
+      <Grid item md={6}>
         <Card className="areaCard">
           <CardMedia
             component="img"
-            alt="Contemplative Reptile"
+            alt={preference.area}
             height="140"
             image={this.getImage(areaObject)}
             title={preference.area}

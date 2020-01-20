@@ -34,25 +34,38 @@ class ProfilePage extends Component {
     this.props.actions.logoutUser()
   }
 
-  // Modifies the floors so that the application does not have to wait for
+  // Modifies the state so that the application does not have to wait for
   // Firebase to load the changes from /modify
-  renderFloorsFromLocationState = (preferences, locationState) => {
+  renderObjectFromLocationState = (preferences, locationState) => {
+    let isNewArea = true
     preferences.forEach(pref => {
-      if (
-        pref.area === locationState.area &&
-        pref.floors !== range(locationState.floor)
-      ) {
-        pref.floors = locationState.floor
-      }
+      if (pref.area === locationState.area) isNewArea = false
+      pref = this.handleFloorUpdate(pref, locationState)
     })
+    isNewArea &&
+      preferences.push({
+        area: locationState.area,
+        floors: range(locationState.floor)
+      })
     return preferences
+  }
+
+  // Checks if the floors have updated from /modify, and modifies state accordingly
+  handleFloorUpdate = (preference, locationState) => {
+    if (
+      preference.area === locationState.area &&
+      preference.floors !== range(locationState.floor)
+    ) {
+      preference.floors = locationState.floor
+    }
+    return preference
   }
 
   render() {
     const { isLoading, isLoggingOut, logoutError, location } = this.props
     let { areas, preferences } = this.props
     if (location.isFromProfileModify)
-      this.renderFloorsFromLocationState(preferences, location.state)
+      this.renderObjectFromLocationState(preferences, location.state)
     return !isLoading ? (
       <div>
         {isLoggingOut && <p>Logging Out....</p>}

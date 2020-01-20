@@ -79,7 +79,8 @@ class ProfileModifyPage extends Component {
       maxFloor: maxFloor,
       chosenFloor: floor || '',
       chosenFloorRange: range(maxFloor),
-      availableFloors: range(maxFloor)
+      availableFloors: range(maxFloor),
+      chosenAreaObject: areaObject
     })
   }
 
@@ -95,14 +96,15 @@ class ProfileModifyPage extends Component {
   // having to wait for firestore to update and then fetch
   handleSubmit = () => {
     const { user, actions } = this.props
-    const { chosenArea, chosenFloorRange } = this.state
+    const { chosenArea, chosenFloorRange, chosenAreaObject } = this.state
     actions.modifyProfile(user, chosenArea, chosenFloorRange)
     const historyPushObject = {
       pathname: '/',
       isFromProfileModify: true,
       state: {
         area: chosenArea,
-        floor: chosenFloorRange
+        floor: chosenFloorRange,
+        areaObject: chosenAreaObject
       }
     }
     this.goHome(historyPushObject)

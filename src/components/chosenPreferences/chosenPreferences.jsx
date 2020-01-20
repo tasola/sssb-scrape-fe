@@ -53,7 +53,6 @@ class ChosenPreferences extends Component {
 
   render() {
     const { className } = this.props
-    console.log(this.props)
     return (
       <Container
         className={`chosen-preferences ${className}`}

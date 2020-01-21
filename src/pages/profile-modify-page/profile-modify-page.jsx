@@ -5,6 +5,7 @@ import { modifyProfile } from '../../actions'
 import { withStyles } from '@material-ui/styles'
 import styles from './profile-modify-page-style'
 import { fetchApartmentMetaData } from '../../actions/contentful'
+import { removePrefenceFromDb } from '../../actions/firebase-db/firebase-db'
 import TextSelect from '../../components/text-select/text-select'
 import { range } from '../../utils/utils'
 import './profile-modify-page.css'
@@ -12,13 +13,15 @@ import './profile-modify-page.css'
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
+import UnsubscribeDialog from '../../components/unsubscribe-dialog/unsubscribe-dialog'
 
 class ProfileModifyPage extends Component {
   constructor(props) {
     super(props)
     this.state = {
       chosenArea: '',
-      chosenFloor: ''
+      chosenFloor: '',
+      openDialog: false
     }
   }
 
@@ -79,7 +82,8 @@ class ProfileModifyPage extends Component {
       maxFloor: maxFloor,
       chosenFloor: floor || '',
       chosenFloorRange: range(maxFloor),
-      availableFloors: range(maxFloor)
+      availableFloors: range(maxFloor),
+      chosenAreaObject: areaObject
     })
   }
 
@@ -91,18 +95,31 @@ class ProfileModifyPage extends Component {
     })
   }
 
+  handleDialogOpen = () => this.setState({ openDialog: true })
+
+  handleDialogClose = () => this.setState({ openDialog: false })
+
+  handleRemove = async () => {
+    const { actions, user } = this.props
+    const { chosenArea } = this.state
+    await actions.removePrefenceFromDb(user, chosenArea)
+    this.handleDialogClose()
+    this.goHome()
+  }
+
   // historyPushObject is for instant preference representation, instead of
   // having to wait for firestore to update and then fetch
   handleSubmit = () => {
     const { user, actions } = this.props
-    const { chosenArea, chosenFloorRange } = this.state
+    const { chosenArea, chosenFloorRange, chosenAreaObject } = this.state
     actions.modifyProfile(user, chosenArea, chosenFloorRange)
     const historyPushObject = {
       pathname: '/',
       isFromProfileModify: true,
       state: {
         area: chosenArea,
-        floor: chosenFloorRange
+        floor: chosenFloorRange,
+        areaObject: chosenAreaObject
       }
     }
     this.goHome(historyPushObject)
@@ -113,7 +130,13 @@ class ProfileModifyPage extends Component {
   }
 
   render() {
-    const { areas, chosenArea, chosenFloor, availableFloors } = this.state
+    const {
+      areas,
+      chosenArea,
+      chosenFloor,
+      availableFloors,
+      openDialog
+    } = this.state
     return (
       <>
         <Container
@@ -148,10 +171,11 @@ class ProfileModifyPage extends Component {
             <Button
               type="button"
               color="primary"
-              className="cancel-preferences"
-              onClick={this.handleCancel}
+              className="remove-preferences"
+              id="destructive-button"
+              onClick={this.handleDialogOpen}
             >
-              Cancel
+              Remove
             </Button>
             <Button
               type="button"
@@ -163,12 +187,26 @@ class ProfileModifyPage extends Component {
             >
               Save
             </Button>
+            <Button
+              type="button"
+              color="primary"
+              className="cancel-preferences"
+              onClick={this.handleCancel}
+            >
+              Cancel
+            </Button>
           </div>
+          <UnsubscribeDialog
+            handleDialogClose={this.handleDialogClose}
+            openDialog={openDialog}
+            unsubscribeAction={this.handleRemove}
+          />
         </Container>
       </>
     )
   }
 }
+
 const mapStateToProps = state => {
   return {
     isLoggingIn: state.auth.isLoggingIn,
@@ -178,17 +216,20 @@ const mapStateToProps = state => {
     areas: state.contentful.areas
   }
 }
+
 const mapDispatchToProps = dispatch => {
   return {
     actions: bindActionCreators(
       {
         fetchApartmentMetaData,
-        modifyProfile
+        modifyProfile,
+        removePrefenceFromDb
       },
       dispatch
     )
   }
 }
+
 export default withStyles(styles)(
   connect(mapStateToProps, mapDispatchToProps)(ProfileModifyPage)
 )

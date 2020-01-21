@@ -5,7 +5,10 @@ import {
   profileModificationError,
   requestPreferences,
   receivePreferences,
-  receivePreferencesError
+  receivePreferencesError,
+  requestPreferenceRemoval,
+  receivePreferenceRemoval,
+  removePreferenceError
 } from './actions'
 
 export const modifyProfile = async (
@@ -24,11 +27,10 @@ export const modifyProfile = async (
     const updatedPreferences = modifyUserPreferences(
       preferences,
       chosenArea,
-      chosenFloorRange,
-      userDocRef
+      chosenFloorRange
     )
 
-    await batch.update(userDocRef, {
+    batch.update(userDocRef, {
       preferences: updatedPreferences
     })
     await batch.commit()
@@ -39,7 +41,51 @@ export const modifyProfile = async (
   }
 }
 
-const modifyUserPreferences = (preferences, area, floorRange, docRef) => {
+export const fetchPreferences = userId => async dispatch => {
+  dispatch(requestPreferences())
+  try {
+    const userDocRef = db.collection('users').doc(userId)
+    const userFields = await getUserFields(userDocRef)
+    const preferences = userFields.preferences
+    dispatch(receivePreferences(preferences))
+  } catch (error) {
+    console.error(error)
+    dispatch(receivePreferencesError())
+  }
+}
+
+export const removePrefenceFromDb = (user, area) => async dispatch => {
+  dispatch(requestPreferenceRemoval())
+  try {
+    const batch = db.batch()
+    const userDocRef = db.collection('users').doc(user.uid)
+    const userFields = await getUserFields(userDocRef)
+    const preferences = userFields.preferences
+    const updatedPreferences = removeUserPreference(preferences, area)
+    batch.update(userDocRef, {
+      preferences: updatedPreferences
+    })
+    await batch.commit()
+    dispatch(receivePreferenceRemoval())
+  } catch (error) {
+    console.error(error)
+    dispatch(removePreferenceError())
+  }
+}
+
+const removeUserPreference = (preferences, area) => {
+  let removeIndex
+  for (let i = 0; i < preferences.length; i++) {
+    const preference = preferences[i]
+    if (preference.area === area) {
+      removeIndex = i
+    }
+  }
+  removeIndex !== undefined && preferences.splice(removeIndex, 1)
+  return preferences
+}
+
+const modifyUserPreferences = (preferences, area, floorRange) => {
   let isNewPreference = true
   for (let i = 0; i < preferences.length; i++) {
     const preference = preferences[i]
@@ -62,17 +108,4 @@ const getUserFields = async userDocRef => {
     console.error(error)
   }
   return fields.data()
-}
-
-export const fetchPreferences = userId => async dispatch => {
-  dispatch(requestPreferences())
-  try {
-    const userDocRef = db.collection('users').doc(userId)
-    const userFields = await getUserFields(userDocRef)
-    const preferences = userFields.preferences
-    dispatch(receivePreferences(preferences))
-  } catch (error) {
-    console.error(error)
-    dispatch(receivePreferencesError())
-  }
 }

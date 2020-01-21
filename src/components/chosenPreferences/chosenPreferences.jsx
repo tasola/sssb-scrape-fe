@@ -6,6 +6,7 @@ import './chosenPreferences.css'
 import Container from '@material-ui/core/Container'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
+import NoPreferences from '../no-preferences/no-preferences.jsx'
 
 class ChosenPreferences extends Component {
   constructor(props) {
@@ -53,7 +54,7 @@ class ChosenPreferences extends Component {
 
   render() {
     const { className } = this.props
-    console.log(this.props)
+    const { preferences } = this.state
     return (
       <Container
         className={`chosen-preferences ${className}`}
@@ -68,9 +69,13 @@ class ChosenPreferences extends Component {
         >
           Your subscription
         </Typography>
-        <Grid container spacing={10}>
-          {this.getSelectItems()}
-        </Grid>
+        {preferences.length > 0 ? (
+          <Grid container spacing={10}>
+            {this.getSelectItems()}
+          </Grid>
+        ) : (
+          <NoPreferences />
+        )}
         <AddButton to="profile/modify" />
       </Container>
     )

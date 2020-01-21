@@ -1,0 +1,15 @@
+.no-preferences {
+  /* The height of one Grid row, minus button margin, minus Grid row's odd negative margin */
+  height: calc(451px - 40px - 40px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.no-preferences * {
+  text-align: center;
+}
+
+.no-preferences h4 {
+  color: #bdbdbd;
+}

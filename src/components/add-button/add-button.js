@@ -6,11 +6,11 @@ import AddIcon from '@material-ui/icons/Add'
 
 const AddButton = props => {
   return (
-    <button className="add-button">
-      <Link to={props.to} style={{ textDecoration: 'none', color: 'inherit' }}>
+    <Link to={props.to} style={{ textDecoration: 'none', color: 'inherit' }}>
+      <button className="add-button">
         <AddIcon />
-      </Link>
-    </button>
+      </button>
+    </Link>
   )
 }
 

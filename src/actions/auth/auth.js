@@ -1,4 +1,5 @@
-import { myFirebase, db } from '../../firebase/firebase'
+import { myFirebase } from '../../firebase/firebase'
+import { createUserDocument } from '../firebase-db/firebase-db'
 import {
   requestSignUp,
   receiveSignUp,
@@ -13,24 +14,13 @@ import {
   verifySuccess
 } from './actions'
 
-const createUserCollection = async user => {
-  try {
-    await db
-      .collection('users')
-      .doc(user.uid)
-      .set({ preferences: [] })
-  } catch (error) {
-    console.error(error)
-  }
-}
-
 export const signUpUser = (email, password) => async dispatch => {
   dispatch(requestSignUp())
   try {
     const user = await myFirebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-    await createUserCollection(user.user)
+    await createUserDocument(user.user)
     dispatch(receiveSignUp())
     sendVerification(user.user)
   } catch (error) {

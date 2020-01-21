@@ -22,3 +22,14 @@ export const range = (start, stop, step) => {
 
   return result
 }
+
+export const anglifySwedishLetters = string => {
+  return string
+    .split('')
+    .map(l => {
+      if (l === 'å' || l === 'ä') return 'a'
+      else if (l === 'ö') return 'o'
+      else return l
+    })
+    .join('')
+}

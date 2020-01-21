@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import './chosenPreferenceCard.css'
 import { Link } from 'react-router-dom'
+import { anglifySwedishLetters } from '../../utils/utils'
+import './chosenPreferenceCard.css'
 
 import Card from '@material-ui/core/Card'
 import CardMedia from '@material-ui/core/CardMedia'
@@ -66,10 +67,11 @@ class ChosenPreferenceCard extends Component {
   }
 
   navigateToSssb = areaObject => {
-    const area =
+    let area =
       areaObject.fields.title === 'Hugin' || areaObject.fields.title === 'Munin'
         ? 'hugin-munin'
         : areaObject.fields.title
+    area = anglifySwedishLetters(area)
     const sssbLink = `https://www.sssb.se/en/our-housing/our-areas-in-the-${
       areaObject.fields.cardinalDirection
     }/${area.toLowerCase()}`

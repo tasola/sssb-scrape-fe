@@ -2,10 +2,7 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { logoutUser } from '../../actions/auth/auth'
-import {
-  fetchPreferences,
-  TEST_SCHEME
-} from '../../actions/firebase-db/firebase-db'
+import { fetchPreferences } from '../../actions/firebase-db/firebase-db'
 import { fetchApartmentMetaData } from '../../actions/contentful'
 import ChosenPreferences from '../../components/chosenPreferences/chosenPreferences'
 import { range } from '../../utils/utils'
@@ -28,7 +25,6 @@ class ProfilePage extends Component {
   async componentDidMount() {
     const { uid } = this.props.user
     this.setState({ isLoading: true })
-    await this.props.actions.TEST_SCHEME(uid)
     await this.props.actions.fetchPreferences(uid)
     await this.props.actions.fetchApartmentMetaData()
     this.setState({ isLoading: false })
@@ -42,10 +38,11 @@ class ProfilePage extends Component {
   // Firebase to load the changes from /modify
   renderObjectFromLocationState = (preferences, locationState) => {
     let isNewArea = true
-    preferences.forEach(pref => {
-      if (pref.area === locationState.area) isNewArea = false
-      pref = this.handleFloorUpdate(pref, locationState)
-    })
+    preferences &&
+      preferences.forEach(pref => {
+        if (pref.area === locationState.area) isNewArea = false
+        pref = this.handleFloorUpdate(pref, locationState)
+      })
     isNewArea &&
       preferences.push({
         area: locationState.area,
@@ -106,8 +103,7 @@ const mapDispatchToProps = dispatch => {
       {
         fetchPreferences,
         fetchApartmentMetaData,
-        logoutUser,
-        TEST_SCHEME
+        logoutUser
       },
       dispatch
     )

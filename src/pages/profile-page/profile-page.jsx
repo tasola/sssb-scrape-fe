@@ -2,7 +2,10 @@ import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { logoutUser } from '../../actions/auth/auth'
-import { fetchPreferences } from '../../actions/firebase-db/firebase-db'
+import {
+  fetchPreferences,
+  TEST_SCHEME
+} from '../../actions/firebase-db/firebase-db'
 import { fetchApartmentMetaData } from '../../actions/contentful'
 import ChosenPreferences from '../../components/chosenPreferences/chosenPreferences'
 import { range } from '../../utils/utils'
@@ -25,6 +28,7 @@ class ProfilePage extends Component {
   async componentDidMount() {
     const { uid } = this.props.user
     this.setState({ isLoading: true })
+    await this.props.actions.TEST_SCHEME(uid)
     await this.props.actions.fetchPreferences(uid)
     await this.props.actions.fetchApartmentMetaData()
     this.setState({ isLoading: false })
@@ -102,7 +106,8 @@ const mapDispatchToProps = dispatch => {
       {
         fetchPreferences,
         fetchApartmentMetaData,
-        logoutUser
+        logoutUser,
+        TEST_SCHEME
       },
       dispatch
     )

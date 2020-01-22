@@ -33,10 +33,10 @@ export const modifyProfile = async (
       .collection('users')
       .doc(user.uid)
       .collection('preferences')
-      .doc(chosenArea)
+      .doc(chosenArea.toLowerCase())
       .set({
         email: user.email,
-        area: chosenArea,
+        area: chosenArea.toLowerCase(),
         floors: chosenFloorRange
       })
     dispatch(receiveProfileModification())
@@ -80,7 +80,7 @@ export const removePrefenceFromDb = (user, area) => async dispatch => {
       .collection('users')
       .doc(user.uid)
       .collection('preferences')
-      .doc(area)
+      .doc(area.toLowerCase())
       .delete()
     dispatch(receivePreferenceRemoval())
   } catch (error) {

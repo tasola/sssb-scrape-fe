@@ -25,7 +25,7 @@ class ChosenPreferences extends Component {
     const { areas } = this.props
     for (let i = 0; i < areas.length; i++) {
       const area = areas[i]
-      if (area.fields.title === areaName) return area
+      if (area.fields.title.toLowerCase() === areaName) return area
     }
   }
 
@@ -33,11 +33,23 @@ class ChosenPreferences extends Component {
 
   getAreaDescription = areaObject => areaObject.fields.description
 
+  sortAreaObjectsOnName = arr => {
+    return arr.sort((a, b) => {
+      if (a.area > b.area) return 1
+      else if (a.area < b.area) return -1
+      return 0
+    })
+  }
+
   getSelectItems = () => {
     const { areas } = this.props
+    console.log(this.state.preferences)
+    const preferences = this.sortAreaObjectsOnName(this.state.preferences)
     return areas ? (
-      this.state.preferences.map((preference, index) => {
-        const areaObject = this.getAreaObjectFromName(preference.area)
+      preferences.map((preference, index) => {
+        const areaObject = this.getAreaObjectFromName(
+          preference.area.toLowerCase()
+        )
         return (
           <ChosenPreferenceCard
             preference={preference}
@@ -55,6 +67,8 @@ class ChosenPreferences extends Component {
   render() {
     const { className } = this.props
     const { preferences } = this.state
+    // console.log(this.state)
+    // console.log(this.props)
     return (
       <Container
         className={`chosen-preferences ${className}`}

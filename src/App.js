@@ -10,6 +10,8 @@ import Login from './pages/login-page/login-page'
 import ProfileModifyPage from './pages/profile-modify-page/profile-modify-page.jsx'
 import verifyEmailPage from './pages/verify-email-page/verify-email-page'
 
+import './App.css'
+
 const App = props => {
   const { isAuthenticated, isVerifying, user } = props
   return (

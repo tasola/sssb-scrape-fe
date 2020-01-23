@@ -38,10 +38,11 @@ class ProfilePage extends Component {
   // Firebase to load the changes from /modify
   renderObjectFromLocationState = (preferences, locationState) => {
     let isNewArea = true
-    preferences.forEach(pref => {
-      if (pref.area === locationState.area) isNewArea = false
-      pref = this.handleFloorUpdate(pref, locationState)
-    })
+    preferences &&
+      preferences.forEach(pref => {
+        if (pref.area === locationState.area) isNewArea = false
+        pref = this.handleFloorUpdate(pref, locationState)
+      })
     isNewArea &&
       preferences.push({
         area: locationState.area,

@@ -7,7 +7,7 @@ import styles from './profile-modify-page-style'
 import { fetchApartmentMetaData } from '../../actions/contentful'
 import { removePrefenceFromDb } from '../../actions/firebase-db/firebase-db'
 import TextSelect from '../../components/text-select/text-select'
-import { range } from '../../utils/utils'
+import { range, capitalizeFirstLetter } from '../../utils/utils'
 import './profile-modify-page.css'
 
 import Button from '@material-ui/core/Button'
@@ -52,7 +52,8 @@ class ProfileModifyPage extends Component {
     const { areas } = this.state
     for (let i = 0; i < areas.length; i++) {
       const area = areas[i]
-      if (area.fields.title === areaName) return area
+      if (area.fields.title.toLowerCase() === areaName.toLowerCase())
+        return area
     }
     return 'Not found'
   }
@@ -78,7 +79,7 @@ class ProfileModifyPage extends Component {
     const title = area ? area : areaObject.fields.title
     const maxFloor = areaObject.fields && areaObject.fields.floors
     this.setState({
-      chosenArea: title,
+      chosenArea: capitalizeFirstLetter(title),
       maxFloor: maxFloor,
       chosenFloor: floor || '',
       chosenFloorRange: range(maxFloor),
@@ -112,12 +113,13 @@ class ProfileModifyPage extends Component {
   handleSubmit = () => {
     const { user, actions } = this.props
     const { chosenArea, chosenFloorRange, chosenAreaObject } = this.state
+    const chosenAreaToLowerCase = chosenArea.toLowerCase()
     actions.modifyProfile(user, chosenArea, chosenFloorRange)
     const historyPushObject = {
       pathname: '/',
       isFromProfileModify: true,
       state: {
-        area: chosenArea,
+        area: chosenAreaToLowerCase,
         floor: chosenFloorRange,
         areaObject: chosenAreaObject
       }

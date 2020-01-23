@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { anglifySwedishLetters } from '../../utils/utils'
+import { anglifySwedishLetters, capitalizeFirstLetter } from '../../utils/utils'
 import './chosenPreferenceCard.css'
 
 import Card from '@material-ui/core/Card'
@@ -93,7 +93,7 @@ class ChosenPreferenceCard extends Component {
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
-              {preference.area}
+              {capitalizeFirstLetter(preference.area)}
             </Typography>
             <Typography
               variant="body2"

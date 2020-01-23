@@ -67,7 +67,6 @@ class ChosenPreferenceCard extends Component {
   }
 
   navigateToSssb = areaObject => {
-    console.log(areaObject)
     let area =
       areaObject.fields.title === 'Hugin' || areaObject.fields.title === 'Munin'
         ? 'hugin-munin'

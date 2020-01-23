@@ -65,7 +65,6 @@ class ProfilePage extends Component {
   render() {
     const { isLoading, isLoggingOut, logoutError, location } = this.props
     let { areas, preferences } = this.props
-    console.log(this.props)
     if (location.isFromProfileModify)
       this.renderObjectFromLocationState(preferences, location.state)
     return !isLoading ? (

@@ -46,7 +46,7 @@ const VerifyEmailPage = props => {
   return user.emailVerified ? (
     <Redirect to="/" />
   ) : (
-    <div className={classes.heroContent}>
+    <div className={classes.heroContent + ' verify-email'}>
       <Container maxWidth="sm">
         <Typography
           component="h1"

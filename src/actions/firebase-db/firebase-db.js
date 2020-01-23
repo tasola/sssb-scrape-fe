@@ -37,7 +37,8 @@ export const modifyProfile = async (
       .set({
         email: user.email,
         area: chosenArea.toLowerCase(),
-        floors: chosenFloorRange
+        floors: chosenFloorRange,
+        minFloor: chosenFloorRange[0]
       })
     dispatch(receiveProfileModification())
   } catch (error) {

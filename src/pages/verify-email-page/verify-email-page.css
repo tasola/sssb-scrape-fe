@@ -1,3 +1,7 @@
+.verify-email {
+  background-color: #f5f5f5 !important;
+}
+
 .verify-email-button svg {
   margin-right: 10px;
 }
@@ -5,9 +9,11 @@
 .verify-email-button.gmail {
   background-color: #de5246;
 }
+
 .verify-email-button.gmail:hover {
   background-color: #de2818;
 }
+
 .verify-email-button.outlook {
   background-color: #0072c6;
 }

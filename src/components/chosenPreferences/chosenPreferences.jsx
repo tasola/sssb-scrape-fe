@@ -43,7 +43,6 @@ class ChosenPreferences extends Component {
 
   getSelectItems = () => {
     const { areas } = this.props
-    console.log(this.state.preferences)
     const preferences = this.sortAreaObjectsOnName(this.state.preferences)
     return areas ? (
       preferences.map((preference, index) => {
@@ -67,8 +66,6 @@ class ChosenPreferences extends Component {
   render() {
     const { className } = this.props
     const { preferences } = this.state
-    // console.log(this.state)
-    // console.log(this.props)
     return (
       <Container
         className={`chosen-preferences ${className}`}

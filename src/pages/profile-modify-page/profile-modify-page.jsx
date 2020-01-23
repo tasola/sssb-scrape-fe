@@ -71,13 +71,11 @@ class ProfileModifyPage extends Component {
   }
 
   handleAreaChange = ({ target }) => {
-    console.log(target.value)
     const areaObject = this.getAreaObjectFromName(target.value)
     this.updateState(areaObject)
   }
 
   updateState = (areaObject, area, floor) => {
-    console.log(areaObject)
     const title = area ? area : areaObject.fields.title
     const maxFloor = areaObject.fields && areaObject.fields.floors
     this.setState({
@@ -141,8 +139,6 @@ class ProfileModifyPage extends Component {
       availableFloors,
       openDialog
     } = this.state
-    console.log(this.state)
-    console.log(this.props)
     return (
       <>
         <Container

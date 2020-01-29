@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import { Link } from 'react-router-dom'
 import { useLocation } from 'react-router'
 import { logoutUser } from '../../actions/auth/auth'
-import logo from '../../assets/favicon.ico'
+import logo from '../../assets/logo.png'
 import './navbar.css'
 import { pathnameDict } from '../../utils/pathname-dict'
 

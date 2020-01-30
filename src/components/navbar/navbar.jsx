@@ -47,6 +47,13 @@ const Navbar = props => {
     setAnchorEl(null)
   }
 
+  const displayUsername = () => {
+    if (props.username) return props.username
+    return props.userEmail.substring(0, props.userEmail.indexOf('@'))
+  }
+
+  console.log(props.userEmail)
+
   return (
     <div className={classes.root}>
       <AppBar position="static" className="navbar">
@@ -64,7 +71,8 @@ const Navbar = props => {
           <Typography variant="h6" className={classes.title}>
             {pathnameDict[location.pathname]}
           </Typography>
-          <div>
+          <div className="floatRight">
+            <Typography className="username">{displayUsername()}</Typography>
             <IconButton
               aria-label="account of current user"
               aria-controls="menu-appbar"
@@ -102,6 +110,12 @@ const Navbar = props => {
   )
 }
 
+const mapStateToProps = state => {
+  return {
+    userEmail: state.auth.user.email
+  }
+}
+
 const mapDispatchToProps = dispatch => {
   return {
     actions: bindActionCreators(
@@ -113,4 +127,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(null, mapDispatchToProps)(Navbar)
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar)

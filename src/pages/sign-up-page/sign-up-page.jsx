@@ -4,6 +4,7 @@ import { Redirect, Link } from 'react-router-dom'
 import { signUpUser } from '../../actions/auth/auth'
 import { withStyles } from '@material-ui/styles'
 import styles from './sign-up-page-style'
+import './sign-up-page.css'
 
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
@@ -109,9 +110,14 @@ class SignUpPage extends Component {
               className={classes.submit}
               onClick={this.handleSubmit}
             >
-              Sign In
+              Sign up
             </Button>
-            <Link to="/login">Already got an account? Sign in here</Link>
+            <Typography className={classes.alreadyGotAnAccount}>
+              Already got an account?{' '}
+              <Link className={'goToLogin ' + classes.goToLogin} to="/login">
+                Sign in here
+              </Link>
+            </Typography>
           </Paper>
         </Container>
       )

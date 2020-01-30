@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Redirect } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 import { loginUser } from '../../actions/auth/auth'
 import { withStyles } from '@material-ui/styles'
 import styles from './login-page-style'
@@ -76,8 +76,15 @@ class Login extends Component {
               className={classes.submit}
               onClick={this.handleSubmit}
             >
+              {this.props.isLoggingIn && <LockOutlinedIcon />}
               Sign In
             </Button>
+            <Typography className={classes.alreadyGotAnAccount}>
+              Don't have an account?{' '}
+              <Link className={'goToLogin ' + classes.goToLogin} to="/sign-up">
+                Sign up here
+              </Link>
+            </Typography>
           </Paper>
         </Container>
       )

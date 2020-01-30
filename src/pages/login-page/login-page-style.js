@@ -19,6 +19,13 @@ const styles = () => ({
   form: {
     marginTop: 1
   },
+  submit: {
+    marginTop: 20
+  },
+  alreadyGotAnAccount: {
+    marginTop: 15,
+    fontSize: 13
+  },
   errorText: {
     color: '#f50057',
     marginBottom: 5,

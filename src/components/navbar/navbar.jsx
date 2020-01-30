@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Link } from 'react-router-dom'
@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
 const Navbar = props => {
   const classes = useStyles()
   const location = useLocation()
-  const [anchorEl, setAnchorEl] = React.useState(null)
+  const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
 
   const handleMenu = event => {
@@ -49,10 +49,10 @@ const Navbar = props => {
 
   const displayUsername = () => {
     if (props.username) return props.username
-    return props.userEmail.substring(0, props.userEmail.indexOf('@'))
+    else if (props.userEmail)
+      return props.userEmail.substring(0, props.userEmail.indexOf('@'))
+    else return ''
   }
-
-  console.log(props.userEmail)
 
   return (
     <div className={classes.root}>
@@ -112,7 +112,7 @@ const Navbar = props => {
 
 const mapStateToProps = state => {
   return {
-    userEmail: state.auth.user.email
+    userEmail: state.auth.user.email || state.auth.user.user.email
   }
 }
 

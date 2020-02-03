@@ -26,6 +26,9 @@ const styles = () => ({
     marginTop: 15,
     fontSize: 13
   },
+  loading: {
+    color: 'white'
+  },
   errorText: {
     color: '#f50057',
     marginBottom: 5,

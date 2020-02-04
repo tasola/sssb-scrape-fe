@@ -6,3 +6,13 @@
   max-height: 30px;
   width: auto;
 }
+
+.navbar .username {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.navbar .floatRight {
+  display: table;
+  overflow: hidden;
+}

@@ -4,11 +4,13 @@ import { Redirect, Link } from 'react-router-dom'
 import { signUpUser } from '../../actions/auth/auth'
 import { withStyles } from '@material-ui/styles'
 import styles from './sign-up-page-style'
+import './sign-up-page.css'
 
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
 import Container from '@material-ui/core/Container'
@@ -46,7 +48,13 @@ class SignUpPage extends Component {
   }
 
   render() {
-    const { classes, loginError, isAuthenticated, user } = this.props
+    const {
+      classes,
+      loginError,
+      isAuthenticated,
+      user,
+      isLoggingIn
+    } = this.props
     const { passwordMatches, hasCheckedPasswords } = this.state
     if (isAuthenticated && user.emailVerified) {
       return <Redirect to="/" />
@@ -109,9 +117,23 @@ class SignUpPage extends Component {
               className={classes.submit}
               onClick={this.handleSubmit}
             >
-              Sign In
+              {isLoggingIn ? (
+                <>
+                  <CircularProgress
+                    className={'login-spinner ' + classes.loading}
+                  />{' '}
+                  Loading...{' '}
+                </>
+              ) : (
+                <>Sign up</>
+              )}
             </Button>
-            <Link to="/login">Already got an account? Sign in here</Link>
+            <Typography className={classes.alreadyGotAnAccount}>
+              Already got an account?{' '}
+              <Link className={'goToLogin ' + classes.goToLogin} to="/login">
+                Sign in here
+              </Link>
+            </Typography>
           </Paper>
         </Container>
       )

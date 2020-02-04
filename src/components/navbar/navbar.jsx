@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Link } from 'react-router-dom'
 import { useLocation } from 'react-router'
 import { logoutUser } from '../../actions/auth/auth'
-import logo from '../../assets/favicon.ico'
+import logo from '../../assets/logo.png'
 import './navbar.css'
 import { pathnameDict } from '../../utils/pathname-dict'
 
@@ -32,7 +32,7 @@ const useStyles = makeStyles(theme => ({
 const Navbar = props => {
   const classes = useStyles()
   const location = useLocation()
-  const [anchorEl, setAnchorEl] = React.useState(null)
+  const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
 
   const handleMenu = event => {
@@ -45,6 +45,13 @@ const Navbar = props => {
 
   const handleClose = () => {
     setAnchorEl(null)
+  }
+
+  const displayUsername = () => {
+    if (props.username) return props.username
+    else if (props.userEmail)
+      return props.userEmail.substring(0, props.userEmail.indexOf('@'))
+    else return ''
   }
 
   return (
@@ -64,7 +71,8 @@ const Navbar = props => {
           <Typography variant="h6" className={classes.title}>
             {pathnameDict[location.pathname]}
           </Typography>
-          <div>
+          <div className="floatRight">
+            <Typography className="username">{displayUsername()}</Typography>
             <IconButton
               aria-label="account of current user"
               aria-controls="menu-appbar"
@@ -102,6 +110,12 @@ const Navbar = props => {
   )
 }
 
+const mapStateToProps = state => {
+  return {
+    userEmail: state.auth.user.email || state.auth.user.user.email
+  }
+}
+
 const mapDispatchToProps = dispatch => {
   return {
     actions: bindActionCreators(
@@ -113,4 +127,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(null, mapDispatchToProps)(Navbar)
+export default connect(mapStateToProps, mapDispatchToProps)(Navbar)

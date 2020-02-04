@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { Redirect } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 import { loginUser } from '../../actions/auth/auth'
 import { withStyles } from '@material-ui/styles'
 import styles from './login-page-style'
@@ -9,6 +9,7 @@ import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
 import Container from '@material-ui/core/Container'
@@ -31,7 +32,7 @@ class Login extends Component {
   }
 
   render() {
-    const { classes, loginError, isAuthenticated } = this.props
+    const { classes, loginError, isAuthenticated, isLoggingIn } = this.props
     if (isAuthenticated) {
       return <Redirect to="/" />
     } else {
@@ -76,8 +77,23 @@ class Login extends Component {
               className={classes.submit}
               onClick={this.handleSubmit}
             >
-              Sign In
+              {isLoggingIn ? (
+                <>
+                  <CircularProgress
+                    className={'login-spinner ' + classes.loading}
+                  />{' '}
+                  Loading{' '}
+                </>
+              ) : (
+                <>Sign In</>
+              )}
             </Button>
+            <Typography className={classes.alreadyGotAnAccount}>
+              Don't have an account?{' '}
+              <Link className={'goToLogin ' + classes.goToLogin} to="/sign-up">
+                Sign up here
+              </Link>
+            </Typography>
           </Paper>
         </Container>
       )

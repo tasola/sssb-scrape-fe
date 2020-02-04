@@ -23,6 +23,7 @@ class ProfileModifyPage extends Component {
       chosenArea: '',
       chosenFloor: '',
       openDialog: false,
+      availableTypes: [],
       checkedItems: new Map()
     }
     this.handleCheckboxChange = this.handleCheckboxChange.bind(this)
@@ -61,6 +62,19 @@ class ProfileModifyPage extends Component {
     return 'Not found'
   }
 
+  getAvailableTypes = areaObject => {
+    if (
+      areaObject &&
+      areaObject.fields &&
+      areaObject.fields.types &&
+      areaObject.fields.types.types
+    ) {
+      return areaObject.fields.types.types
+    } else {
+      return []
+    }
+  }
+
   generateChosenTypes = () => {
     const { checkedItems } = this.state
     const chosenTypes = []
@@ -90,13 +104,15 @@ class ProfileModifyPage extends Component {
   updateState = (areaObject, area, floor) => {
     const title = area ? area : areaObject.fields.title
     const maxFloor = areaObject.fields && areaObject.fields.floors
+    const types = this.getAvailableTypes(areaObject)
     this.setState({
       chosenArea: capitalizeFirstLetter(title),
       maxFloor: maxFloor,
       chosenFloor: floor || '',
       chosenFloorRange: range(maxFloor),
       availableFloors: range(maxFloor),
-      chosenAreaObject: areaObject
+      chosenAreaObject: areaObject,
+      availableTypes: types
     })
   }
 
@@ -159,7 +175,8 @@ class ProfileModifyPage extends Component {
       chosenArea,
       chosenFloor,
       availableFloors,
-      openDialog
+      openDialog,
+      availableTypes
     } = this.state
     return (
       <>
@@ -190,7 +207,7 @@ class ProfileModifyPage extends Component {
                 selectItems={availableFloors || []}
               />
               <CheckboxGroup
-                availableApartmentTypes={['x', 'y', 'z']}
+                availableApartmentTypes={availableTypes}
                 handleChange={this.handleCheckboxChange}
                 checkedItems={this.state.checkedItems}
               />

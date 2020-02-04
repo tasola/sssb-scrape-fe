@@ -7,6 +7,7 @@ import styles from './profile-modify-page-style'
 import { fetchApartmentMetaData } from '../../actions/contentful'
 import { removePrefenceFromDb } from '../../actions/firebase-db/firebase-db'
 import TextSelect from '../../components/text-select/text-select'
+import CheckboxGroup from '../../components/checkbox/checkbox-group/checkbox-group.jsx'
 import { range, capitalizeFirstLetter } from '../../utils/utils'
 import './profile-modify-page.css'
 
@@ -21,8 +22,10 @@ class ProfileModifyPage extends Component {
     this.state = {
       chosenArea: '',
       chosenFloor: '',
-      openDialog: false
+      openDialog: false,
+      checkedItems: new Map()
     }
+    this.handleCheckboxChange = this.handleCheckboxChange.bind(this)
   }
 
   async componentDidMount() {
@@ -56,6 +59,15 @@ class ProfileModifyPage extends Component {
         return area
     }
     return 'Not found'
+  }
+
+  generateChosenTypes = () => {
+    const { checkedItems } = this.state
+    const chosenTypes = []
+    for (let [key, value] of checkedItems) {
+      if (value) chosenTypes.push(key)
+    }
+    return chosenTypes
   }
 
   handleClose = () => {
@@ -96,6 +108,14 @@ class ProfileModifyPage extends Component {
     })
   }
 
+  handleCheckboxChange(e) {
+    const item = e.target.id
+    const isChecked = e.target.checked
+    this.setState(prevState => ({
+      checkedItems: prevState.checkedItems.set(item, isChecked)
+    }))
+  }
+
   handleDialogOpen = () => this.setState({ openDialog: true })
 
   handleDialogClose = () => this.setState({ openDialog: false })
@@ -113,6 +133,8 @@ class ProfileModifyPage extends Component {
   handleSubmit = () => {
     const { user, actions } = this.props
     const { chosenArea, chosenFloorRange, chosenAreaObject } = this.state
+    const chosenTypes = this.generateChosenTypes()
+    console.log(chosenTypes)
     const chosenAreaToLowerCase = chosenArea.toLowerCase()
     actions.modifyProfile(user, chosenArea, chosenFloorRange)
     const historyPushObject = {
@@ -166,6 +188,11 @@ class ProfileModifyPage extends Component {
                 isDisabled={chosenArea === ''}
                 handleChange={this.handleFloorChange}
                 selectItems={availableFloors || []}
+              />
+              <CheckboxGroup
+                availableApartmentTypes={['x', 'y', 'z']}
+                handleChange={this.handleCheckboxChange}
+                checkedItems={this.state.checkedItems}
               />
             </>
           )}

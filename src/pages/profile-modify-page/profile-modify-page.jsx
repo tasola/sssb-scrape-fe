@@ -36,7 +36,8 @@ class ProfileModifyPage extends Component {
       location &&
         this.setupStateFromLinkLocation(
           location.state.area,
-          location.state.floors[0]
+          location.state.floors[0],
+          location.state.types
         )
     }
   }
@@ -47,9 +48,9 @@ class ProfileModifyPage extends Component {
     } else return null
   }
 
-  setupStateFromLinkLocation = (area, floor) => {
+  setupStateFromLinkLocation = (area, floor, savedTypes) => {
     const areaObject = this.getAreaObjectFromName(area)
-    this.updateState(areaObject, area, floor)
+    this.updateState(areaObject, area, floor, savedTypes)
   }
 
   getAreaObjectFromName = areaName => {
@@ -84,6 +85,12 @@ class ProfileModifyPage extends Component {
     return chosenTypes
   }
 
+  generateChosenTypesMap = types => {
+    const typesMap = new Map()
+    types.forEach(type => typesMap.set(type, true))
+    return typesMap
+  }
+
   handleClose = () => {
     this.setState({ isOpen: false })
   }
@@ -101,18 +108,21 @@ class ProfileModifyPage extends Component {
     this.updateState(areaObject)
   }
 
-  updateState = (areaObject, area, floor) => {
+  updateState = (areaObject, area, floor, savedTypes) => {
     const title = area ? area : areaObject.fields.title
     const maxFloor = areaObject.fields && areaObject.fields.floors
+    const chosenFloorRange = floor ? range(floor, maxFloor) : range(maxFloor)
     const types = this.getAvailableTypes(areaObject)
+    const chosenTypesMap = savedTypes && this.generateChosenTypesMap(savedTypes)
     this.setState({
       chosenArea: capitalizeFirstLetter(title),
       maxFloor: maxFloor,
       chosenFloor: floor || '',
-      chosenFloorRange: range(maxFloor),
+      chosenFloorRange: chosenFloorRange,
       availableFloors: range(maxFloor),
       chosenAreaObject: areaObject,
-      availableTypes: types
+      availableTypes: types,
+      checkedItems: chosenTypesMap || new Map()
     })
   }
 
@@ -150,9 +160,8 @@ class ProfileModifyPage extends Component {
     const { user, actions } = this.props
     const { chosenArea, chosenFloorRange, chosenAreaObject } = this.state
     const chosenTypes = this.generateChosenTypes()
-    console.log(chosenTypes)
     const chosenAreaToLowerCase = chosenArea.toLowerCase()
-    actions.modifyProfile(user, chosenArea, chosenFloorRange)
+    actions.modifyProfile(user, chosenArea, chosenFloorRange, chosenTypes)
     const historyPushObject = {
       pathname: '/',
       isFromProfileModify: true,

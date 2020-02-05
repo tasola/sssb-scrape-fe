@@ -6,7 +6,6 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 class CheckboxGroup extends Component {
   generateCheckboxes = () => {
     const { availableApartmentTypes } = this.props
-    console.log(availableApartmentTypes)
     return availableApartmentTypes.map(type => {
       return (
         <FormControlLabel

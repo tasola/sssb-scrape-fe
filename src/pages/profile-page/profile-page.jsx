@@ -11,7 +11,7 @@ import './profile-page.css'
 class ProfilePage extends Component {
   constructor(props) {
     super(props)
-    this.state = { isLoading: false }
+    this.state = { isLoading: false, fetchDataIsNecessary: true }
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -23,11 +23,16 @@ class ProfilePage extends Component {
   }
 
   async componentDidMount() {
-    const { uid } = this.props.user
-    this.setState({ isLoading: true })
-    await this.props.actions.fetchPreferences(uid)
-    await this.props.actions.fetchApartmentMetaData()
-    this.setState({ isLoading: false })
+    const { location, preferences } = this.props
+    if (location.isFromProfileModify) {
+      this.renderObjectFromLocationState(preferences, location.state)
+    } else {
+      const { uid } = this.props.user
+      this.setState({ isLoading: true })
+      await this.props.actions.fetchPreferences(uid)
+      await this.props.actions.fetchApartmentMetaData()
+      this.setState({ isLoading: false })
+    }
   }
 
   handleLogout = () => {
@@ -39,11 +44,12 @@ class ProfilePage extends Component {
   renderObjectFromLocationState = (preferences, locationState) => {
     let isNewArea = true
     preferences &&
-      preferences.forEach(pref => {
+      preferences.map(pref => {
         if (pref.area === locationState.area) isNewArea = false
-        pref = this.handleFloorUpdate(pref, locationState)
+        return this.handleFloorUpdate(pref, locationState)
       })
     isNewArea &&
+      preferences &&
       preferences.push({
         area: locationState.area,
         floors: range(locationState.floor)
@@ -63,10 +69,13 @@ class ProfilePage extends Component {
   }
 
   render() {
-    const { isLoading, isLoggingOut, logoutError, location } = this.props
-    let { areas, preferences } = this.props
-    if (location.isFromProfileModify)
-      this.renderObjectFromLocationState(preferences, location.state)
+    const {
+      isLoading,
+      isLoggingOut,
+      logoutError,
+      areas,
+      preferences
+    } = this.props
     return !isLoading ? (
       <div>
         {isLoggingOut && <p>Logging Out....</p>}

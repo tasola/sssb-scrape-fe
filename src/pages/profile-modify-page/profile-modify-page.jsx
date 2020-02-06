@@ -154,13 +154,29 @@ class ProfileModifyPage extends Component {
     this.goHome()
   }
 
+  // In case the floor drop down was not interacted with, this.handleFloor() was not
+  // called, hence chosenFloorRange will just be the chosen floor, not the actual range.
+  // In this case, adjust it to the range.
+  setFloorRange = chosenFloorRange => {
+    if (
+      chosenFloorRange.length === 1 &&
+      typeof chosenFloorRange[0] === 'string'
+    ) {
+      const { maxFloor } = this.state
+      return (chosenFloorRange = range(parseInt(chosenFloorRange[0]), maxFloor))
+    }
+    return chosenFloorRange
+  }
+
   // historyPushObject is for instant preference representation, instead of
   // having to wait for firestore to update and then fetch
   handleSubmit = () => {
     const { user, actions } = this.props
-    const { chosenArea, chosenFloorRange, chosenAreaObject } = this.state
+    const { chosenArea, chosenAreaObject } = this.state
+    let { chosenFloorRange } = this.state
     const chosenTypes = this.generateChosenTypes()
     const chosenAreaToLowerCase = chosenArea.toLowerCase()
+    chosenFloorRange = this.setFloorRange(chosenFloorRange)
     actions.modifyProfile(user, chosenArea, chosenFloorRange, chosenTypes)
     const historyPushObject = {
       pathname: '/',
@@ -168,7 +184,8 @@ class ProfileModifyPage extends Component {
       state: {
         area: chosenAreaToLowerCase,
         floor: chosenFloorRange,
-        areaObject: chosenAreaObject
+        areaObject: chosenAreaObject,
+        types: chosenTypes
       }
     }
     this.goHome(historyPushObject)

@@ -5,7 +5,7 @@ import { logoutUser } from '../../actions/auth/auth'
 import { fetchPreferences } from '../../actions/firebase-db/firebase-db'
 import { fetchApartmentMetaData } from '../../actions/contentful'
 import ChosenPreferences from '../../components/chosenPreferences/chosenPreferences'
-import { range } from '../../utils/utils'
+import { range, arraysEqual } from '../../utils/utils'
 import './profile-page.css'
 
 class ProfilePage extends Component {
@@ -46,26 +46,38 @@ class ProfilePage extends Component {
     preferences &&
       preferences.map(pref => {
         if (pref.area === locationState.area) isNewArea = false
-        return this.handleFloorUpdate(pref, locationState)
+        return this.checkPreferenceUpdate(pref, locationState)
       })
     isNewArea &&
       preferences &&
       preferences.push({
         area: locationState.area,
-        floors: range(locationState.floor)
+        floors: range(locationState.floor),
+        types: locationState.types
       })
     return preferences
   }
 
-  // Checks if the floors have updated from /modify, and modifies state accordingly
-  handleFloorUpdate = (preference, locationState) => {
-    if (
-      preference.area === locationState.area &&
-      preference.floors !== range(locationState.floor)
-    ) {
-      preference.floors = locationState.floor
+  checkPreferenceUpdate = (preference, locationState) => {
+    if (preference.area === locationState.area) {
+      this.handleFloorUpdate(preference, locationState)
+      this.handleTypeUpdate(preference, locationState)
     }
     return preference
+  }
+
+  // Checks if the floors have updated from /modify, and modifies state accordingly
+  handleFloorUpdate = (preference, locationState) => {
+    if (preference.floors !== range(locationState.floor)) {
+      preference.floors = locationState.floor
+    }
+  }
+
+  // Checks if the types have updated from /modify, and modifies state accordingly
+  handleTypeUpdate = (preference, locationState) => {
+    if (!arraysEqual(preference.types, locationState.types)) {
+      preference.types = locationState.types
+    }
   }
 
   render() {

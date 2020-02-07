@@ -198,6 +198,15 @@ class ProfileModifyPage extends Component {
     this.props.history.push(pushObject || '/')
   }
 
+  checkedItemsIsEmpty = () => {
+    const { checkedItems } = this.state
+    if (checkedItems.size < 1) return true
+    for (let [_, value] of checkedItems) {
+      if (value === true) return false
+    }
+    return true
+  }
+
   render() {
     const {
       areas,
@@ -257,7 +266,11 @@ class ProfileModifyPage extends Component {
               variant="contained"
               color="primary"
               className="save-preferences"
-              disabled={chosenArea === '' || chosenFloor === ''}
+              disabled={
+                chosenArea === '' ||
+                chosenFloor === '' ||
+                this.checkedItemsIsEmpty()
+              }
               onClick={this.handleSubmit}
             >
               Save

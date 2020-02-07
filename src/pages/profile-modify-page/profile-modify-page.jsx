@@ -113,7 +113,10 @@ class ProfileModifyPage extends Component {
     const maxFloor = areaObject.fields && areaObject.fields.floors
     const chosenFloorRange = floor ? range(floor, maxFloor) : range(maxFloor)
     const types = this.getAvailableTypes(areaObject)
-    const chosenTypesMap = savedTypes && this.generateChosenTypesMap(savedTypes)
+    const chosenTypesMap =
+      savedTypes.length > 0
+        ? this.generateChosenTypesMap(savedTypes)
+        : this.generateChosenTypesMap(areaObject.fields.types.types)
     this.setState({
       chosenArea: capitalizeFirstLetter(title),
       maxFloor: maxFloor,

@@ -26,7 +26,13 @@ class CheckboxGroup extends Component {
   getCheckedState = type => {
     const savedType = this.props.checkedItems.get(type)
     const { hasSavedValues } = this.state
-    if (savedType === undefined && !hasSavedValues) return true
+    const { availableApartmentTypes } = this.props
+    if (
+      savedType === undefined &&
+      !hasSavedValues &&
+      availableApartmentTypes.includes(type)
+    )
+      return true
     return savedType || false
   }
 

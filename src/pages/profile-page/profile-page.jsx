@@ -25,7 +25,11 @@ class ProfilePage extends Component {
   async componentDidMount() {
     const { location, preferences } = this.props
     if (location.isFromProfileModify) {
-      this.renderObjectFromLocationState(preferences, location.state)
+      const newPreferences = this.renderObjectFromLocationState(
+        preferences,
+        location.state
+      )
+      this.setState({ preferences: newPreferences })
     } else {
       const { uid } = this.props.user
       this.setState({ isLoading: true })
@@ -52,9 +56,11 @@ class ProfilePage extends Component {
       preferences &&
       preferences.push({
         area: locationState.area,
-        floors: range(locationState.floor),
+        floors: locationState.floor,
         types: locationState.types
       })
+
+    this.forceUpdate()
     return preferences
   }
 
@@ -81,13 +87,8 @@ class ProfilePage extends Component {
   }
 
   render() {
-    const {
-      isLoading,
-      isLoggingOut,
-      logoutError,
-      areas,
-      preferences
-    } = this.props
+    const { isLoading, isLoggingOut, logoutError, areas } = this.props
+    const { preferences } = this.state
     return !isLoading ? (
       <div>
         {isLoggingOut && <p>Logging Out....</p>}

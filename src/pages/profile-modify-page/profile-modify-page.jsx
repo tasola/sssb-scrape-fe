@@ -114,7 +114,7 @@ class ProfileModifyPage extends Component {
     const chosenFloorRange = floor ? range(floor, maxFloor) : range(maxFloor)
     const types = this.getAvailableTypes(areaObject)
     const chosenTypesMap =
-      savedTypes.length > 0
+      savedTypes && savedTypes.length > 0
         ? this.generateChosenTypesMap(savedTypes)
         : this.generateChosenTypesMap(areaObject.fields.types.types)
     this.setState({

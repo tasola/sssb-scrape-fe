@@ -25,7 +25,8 @@ export const createUserDocument = async user => {
 export const modifyProfile = async (
   user,
   chosenArea,
-  chosenFloorRange
+  chosenFloorRange,
+  chosenTypes
 ) => async dispatch => {
   dispatch(requestProfileModification())
   try {
@@ -38,7 +39,8 @@ export const modifyProfile = async (
         email: user.email,
         area: chosenArea.toLowerCase(),
         floors: chosenFloorRange,
-        minFloor: chosenFloorRange[0]
+        minFloor: chosenFloorRange[0],
+        types: chosenTypes
       })
     dispatch(receiveProfileModification())
   } catch (error) {
@@ -60,10 +62,16 @@ export const fetchPreferences = userId => async dispatch => {
       .then(querySnapshot => {
         querySnapshot.forEach(documentSnapshot => {
           if (!documentSnapshot._document.proto) return
-          const { area, floors } = documentSnapshot._document.proto.fields
+          const {
+            area,
+            floors,
+            types
+          } = documentSnapshot._document.proto.fields
+          const savedTypes = getSavedTypes(types)
           preferences.push({
             area: area.stringValue,
-            floors: floors.arrayValue.values.map(i => i.integerValue)
+            floors: floors.arrayValue.values.map(i => i.integerValue),
+            types: savedTypes.map(t => t.stringValue)
           })
         })
       })
@@ -72,6 +80,14 @@ export const fetchPreferences = userId => async dispatch => {
     console.error(error)
     dispatch(receivePreferencesError())
   }
+}
+
+const getSavedTypes = types => {
+  const savedTypes =
+    types && types.arrayValue && types.arrayValue.values
+      ? types.arrayValue.values
+      : []
+  return savedTypes
 }
 
 export const removePrefenceFromDb = (user, area) => async dispatch => {

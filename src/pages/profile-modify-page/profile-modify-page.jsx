@@ -7,6 +7,7 @@ import styles from './profile-modify-page-style'
 import { fetchApartmentMetaData } from '../../actions/contentful'
 import { removePrefenceFromDb } from '../../actions/firebase-db/firebase-db'
 import TextSelect from '../../components/text-select/text-select'
+import CheckboxGroup from '../../components/checkbox/checkbox-group/checkbox-group.jsx'
 import { range, capitalizeFirstLetter } from '../../utils/utils'
 import './profile-modify-page.css'
 
@@ -21,8 +22,11 @@ class ProfileModifyPage extends Component {
     this.state = {
       chosenArea: '',
       chosenFloor: '',
-      openDialog: false
+      openDialog: false,
+      availableTypes: [],
+      checkedItems: new Map()
     }
+    this.handleCheckboxChange = this.handleCheckboxChange.bind(this)
   }
 
   async componentDidMount() {
@@ -32,7 +36,8 @@ class ProfileModifyPage extends Component {
       location &&
         this.setupStateFromLinkLocation(
           location.state.area,
-          location.state.floors[0]
+          location.state.floors[0],
+          location.state.types
         )
     }
   }
@@ -43,9 +48,9 @@ class ProfileModifyPage extends Component {
     } else return null
   }
 
-  setupStateFromLinkLocation = (area, floor) => {
+  setupStateFromLinkLocation = (area, floor, savedTypes) => {
     const areaObject = this.getAreaObjectFromName(area)
-    this.updateState(areaObject, area, floor)
+    this.updateState(areaObject, area, floor, savedTypes)
   }
 
   getAreaObjectFromName = areaName => {
@@ -56,6 +61,34 @@ class ProfileModifyPage extends Component {
         return area
     }
     return 'Not found'
+  }
+
+  getAvailableTypes = areaObject => {
+    if (
+      areaObject &&
+      areaObject.fields &&
+      areaObject.fields.types &&
+      areaObject.fields.types.types
+    ) {
+      return areaObject.fields.types.types
+    } else {
+      return []
+    }
+  }
+
+  generateChosenTypes = () => {
+    const { checkedItems } = this.state
+    const chosenTypes = []
+    for (let [key, value] of checkedItems) {
+      if (value) chosenTypes.push(key)
+    }
+    return chosenTypes
+  }
+
+  generateChosenTypesMap = types => {
+    const typesMap = new Map()
+    types.forEach(type => typesMap.set(type, true))
+    return typesMap
   }
 
   handleClose = () => {
@@ -75,16 +108,24 @@ class ProfileModifyPage extends Component {
     this.updateState(areaObject)
   }
 
-  updateState = (areaObject, area, floor) => {
+  updateState = (areaObject, area, floor, savedTypes) => {
     const title = area ? area : areaObject.fields.title
     const maxFloor = areaObject.fields && areaObject.fields.floors
+    const chosenFloorRange = floor ? range(floor, maxFloor) : range(maxFloor)
+    const types = this.getAvailableTypes(areaObject)
+    const chosenTypesMap =
+      savedTypes && savedTypes.length > 0
+        ? this.generateChosenTypesMap(savedTypes)
+        : this.generateChosenTypesMap(areaObject.fields.types.types)
     this.setState({
       chosenArea: capitalizeFirstLetter(title),
       maxFloor: maxFloor,
       chosenFloor: floor || '',
-      chosenFloorRange: range(maxFloor),
+      chosenFloorRange: chosenFloorRange,
       availableFloors: range(maxFloor),
-      chosenAreaObject: areaObject
+      chosenAreaObject: areaObject,
+      availableTypes: types,
+      checkedItems: chosenTypesMap || new Map()
     })
   }
 
@@ -94,6 +135,14 @@ class ProfileModifyPage extends Component {
       chosenFloor: minimumFloor,
       chosenFloorRange: range(minimumFloor, this.state.maxFloor)
     })
+  }
+
+  handleCheckboxChange(e) {
+    const item = e.target.id
+    const isChecked = e.target.checked
+    this.setState(prevState => ({
+      checkedItems: prevState.checkedItems.set(item, isChecked)
+    }))
   }
 
   handleDialogOpen = () => this.setState({ openDialog: true })
@@ -108,20 +157,38 @@ class ProfileModifyPage extends Component {
     this.goHome()
   }
 
+  // In case the floor drop down was not interacted with, this.handleFloor() was not
+  // called, hence chosenFloorRange will just be the chosen floor, not the actual range.
+  // In this case, adjust it to the range.
+  setFloorRange = chosenFloorRange => {
+    if (
+      chosenFloorRange.length === 1 &&
+      typeof chosenFloorRange[0] === 'string'
+    ) {
+      const { maxFloor } = this.state
+      return (chosenFloorRange = range(parseInt(chosenFloorRange[0]), maxFloor))
+    }
+    return chosenFloorRange
+  }
+
   // historyPushObject is for instant preference representation, instead of
   // having to wait for firestore to update and then fetch
   handleSubmit = () => {
     const { user, actions } = this.props
-    const { chosenArea, chosenFloorRange, chosenAreaObject } = this.state
+    const { chosenArea, chosenAreaObject } = this.state
+    let { chosenFloorRange } = this.state
+    const chosenTypes = this.generateChosenTypes()
     const chosenAreaToLowerCase = chosenArea.toLowerCase()
-    actions.modifyProfile(user, chosenArea, chosenFloorRange)
+    chosenFloorRange = this.setFloorRange(chosenFloorRange)
+    actions.modifyProfile(user, chosenArea, chosenFloorRange, chosenTypes)
     const historyPushObject = {
       pathname: '/',
       isFromProfileModify: true,
       state: {
         area: chosenAreaToLowerCase,
         floor: chosenFloorRange,
-        areaObject: chosenAreaObject
+        areaObject: chosenAreaObject,
+        types: chosenTypes
       }
     }
     this.goHome(historyPushObject)
@@ -131,13 +198,23 @@ class ProfileModifyPage extends Component {
     this.props.history.push(pushObject || '/')
   }
 
+  checkedItemsIsEmpty = () => {
+    const { checkedItems } = this.state
+    if (checkedItems.size < 1) return true
+    for (let [_, value] of checkedItems) {
+      if (value === true) return false
+    }
+    return true
+  }
+
   render() {
     const {
       areas,
       chosenArea,
       chosenFloor,
       availableFloors,
-      openDialog
+      openDialog,
+      availableTypes
     } = this.state
     return (
       <>
@@ -167,6 +244,11 @@ class ProfileModifyPage extends Component {
                 handleChange={this.handleFloorChange}
                 selectItems={availableFloors || []}
               />
+              <CheckboxGroup
+                availableApartmentTypes={availableTypes}
+                handleChange={this.handleCheckboxChange}
+                checkedItems={this.state.checkedItems}
+              />
             </>
           )}
           <div className="modify-preferences-buttons">
@@ -184,7 +266,11 @@ class ProfileModifyPage extends Component {
               variant="contained"
               color="primary"
               className="save-preferences"
-              disabled={chosenArea === '' || chosenFloor === ''}
+              disabled={
+                chosenArea === '' ||
+                chosenFloor === '' ||
+                this.checkedItemsIsEmpty()
+              }
               onClick={this.handleSubmit}
             >
               Save

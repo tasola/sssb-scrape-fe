@@ -133,7 +133,8 @@ class ChosenPreferenceCard extends Component {
                   state: {
                     fromPreferenceCard: true,
                     area: preference.area,
-                    floors: preference.floors
+                    floors: preference.floors,
+                    types: preference.types
                   }
                 }}
                 style={{ textDecoration: 'none', color: 'inherit' }}

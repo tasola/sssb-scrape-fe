@@ -5,13 +5,13 @@ import { logoutUser } from '../../actions/auth/auth'
 import { fetchPreferences } from '../../actions/firebase-db/firebase-db'
 import { fetchApartmentMetaData } from '../../actions/contentful'
 import ChosenPreferences from '../../components/chosenPreferences/chosenPreferences'
-import { range } from '../../utils/utils'
+import { range, arraysEqual } from '../../utils/utils'
 import './profile-page.css'
 
 class ProfilePage extends Component {
   constructor(props) {
     super(props)
-    this.state = { isLoading: false }
+    this.state = { isLoading: false, fetchDataIsNecessary: true }
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -23,11 +23,20 @@ class ProfilePage extends Component {
   }
 
   async componentDidMount() {
-    const { uid } = this.props.user
-    this.setState({ isLoading: true })
-    await this.props.actions.fetchPreferences(uid)
-    await this.props.actions.fetchApartmentMetaData()
-    this.setState({ isLoading: false })
+    const { location, preferences } = this.props
+    if (location.isFromProfileModify) {
+      const newPreferences = this.renderObjectFromLocationState(
+        preferences,
+        location.state
+      )
+      this.setState({ preferences: newPreferences })
+    } else {
+      const { uid } = this.props.user
+      this.setState({ isLoading: true })
+      await this.props.actions.fetchPreferences(uid)
+      await this.props.actions.fetchApartmentMetaData()
+      this.setState({ isLoading: false })
+    }
   }
 
   handleLogout = () => {
@@ -39,34 +48,47 @@ class ProfilePage extends Component {
   renderObjectFromLocationState = (preferences, locationState) => {
     let isNewArea = true
     preferences &&
-      preferences.forEach(pref => {
+      preferences.map(pref => {
         if (pref.area === locationState.area) isNewArea = false
-        pref = this.handleFloorUpdate(pref, locationState)
+        return this.checkPreferenceUpdate(pref, locationState)
       })
     isNewArea &&
+      preferences &&
       preferences.push({
         area: locationState.area,
-        floors: range(locationState.floor)
+        floors: locationState.floor,
+        types: locationState.types
       })
+
+    this.forceUpdate()
     return preferences
   }
 
-  // Checks if the floors have updated from /modify, and modifies state accordingly
-  handleFloorUpdate = (preference, locationState) => {
-    if (
-      preference.area === locationState.area &&
-      preference.floors !== range(locationState.floor)
-    ) {
-      preference.floors = locationState.floor
+  checkPreferenceUpdate = (preference, locationState) => {
+    if (preference.area === locationState.area) {
+      this.handleFloorUpdate(preference, locationState)
+      this.handleTypeUpdate(preference, locationState)
     }
     return preference
   }
 
+  // Checks if the floors have updated from /modify, and modifies state accordingly
+  handleFloorUpdate = (preference, locationState) => {
+    if (preference.floors !== range(locationState.floor)) {
+      preference.floors = locationState.floor
+    }
+  }
+
+  // Checks if the types have updated from /modify, and modifies state accordingly
+  handleTypeUpdate = (preference, locationState) => {
+    if (!arraysEqual(preference.types, locationState.types)) {
+      preference.types = locationState.types
+    }
+  }
+
   render() {
-    const { isLoading, isLoggingOut, logoutError, location } = this.props
-    let { areas, preferences } = this.props
-    if (location.isFromProfileModify)
-      this.renderObjectFromLocationState(preferences, location.state)
+    const { isLoading, isLoggingOut, logoutError, areas } = this.props
+    const { preferences } = this.state
     return !isLoading ? (
       <div>
         {isLoggingOut && <p>Logging Out....</p>}

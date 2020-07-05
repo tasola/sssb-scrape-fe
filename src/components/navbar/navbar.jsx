@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import { Link } from 'react-router-dom'
 import { useLocation } from 'react-router'
 import { logoutUser } from '../../actions/auth/auth'
-import logo from '../../assets/logo.png'
+import logo from '../../assets/favicon.ico'
 import './navbar.css'
 import { pathnameDict } from '../../utils/pathname-dict'
 
@@ -17,25 +17,25 @@ import AccountCircle from '@material-ui/icons/AccountCircle'
 import MenuItem from '@material-ui/core/MenuItem'
 import Menu from '@material-ui/core/Menu'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
   },
   menuButton: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
   },
   title: {
-    flexGrow: 1
-  }
+    flexGrow: 1,
+  },
 }))
 
-const Navbar = props => {
+const Navbar = (props) => {
   const classes = useStyles()
   const location = useLocation()
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
 
-  const handleMenu = event => {
+  const handleMenu = (event) => {
     setAnchorEl(event.currentTarget)
   }
 
@@ -87,12 +87,12 @@ const Navbar = props => {
               anchorEl={anchorEl}
               anchorOrigin={{
                 vertical: 'top',
-                horizontal: 'right'
+                horizontal: 'right',
               }}
               keepMounted
               transformOrigin={{
                 vertical: 'top',
-                horizontal: 'right'
+                horizontal: 'right',
               }}
               open={open}
               onClose={handleClose}
@@ -110,20 +110,20 @@ const Navbar = props => {
   )
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    userEmail: state.auth.user.email || state.auth.user.user.email
+    userEmail: state.auth.user.email || state.auth.user.user.email,
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     actions: bindActionCreators(
       {
-        logoutUser
+        logoutUser,
       },
       dispatch
-    )
+    ),
   }
 }
 

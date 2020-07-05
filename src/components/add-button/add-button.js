@@ -4,7 +4,7 @@ import './add-button.css'
 
 import AddIcon from '@material-ui/icons/Add'
 
-const AddButton = props => {
+const AddButton = (props) => {
   return (
     <Link to={props.to} style={{ textDecoration: 'none', color: 'inherit' }}>
       <button className="add-button">

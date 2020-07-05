@@ -6,6 +6,7 @@
   background-color: rgba(65, 84, 175);
   color: white;
   float: right;
+  border: 0;
   transition: 0.4s;
 }
 

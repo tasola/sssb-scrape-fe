@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Link } from 'react-router-dom'
@@ -33,6 +34,7 @@ const Navbar = (props) => {
   const classes = useStyles()
   const location = useLocation()
   const [anchorEl, setAnchorEl] = useState(null)
+  const history = useHistory()
   const open = Boolean(anchorEl)
 
   const handleMenu = (event) => {
@@ -46,6 +48,8 @@ const Navbar = (props) => {
   const handleClose = () => {
     setAnchorEl(null)
   }
+
+  const goToMyAccountPage = () => history.push('/my-account')
 
   const displayUsername = () => {
     if (props.username) return props.username
@@ -98,7 +102,7 @@ const Navbar = (props) => {
               onClose={handleClose}
             >
               <MenuItem onClick={handleClose}>Profile</MenuItem>
-              <MenuItem onClick={handleClose}>My account</MenuItem>
+              <MenuItem onClick={goToMyAccountPage}>My account</MenuItem>
               <MenuItem onClick={handleLogout} className="logout">
                 Logout
               </MenuItem>

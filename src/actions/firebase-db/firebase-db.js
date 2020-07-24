@@ -8,15 +8,15 @@ import {
   receivePreferencesError,
   requestPreferenceRemoval,
   receivePreferenceRemoval,
-  removePreferenceError
+  removePreferenceError,
 } from './actions'
 
-export const createUserDocument = async user => {
+export const createUserDocument = async (user) => {
   try {
     await db
       .collection('users')
       .doc(user.uid)
-      .set({ email: user.email })
+      .set({ email: user.email, isActive: true })
   } catch (error) {
     console.error(error)
   }
@@ -27,7 +27,7 @@ export const modifyProfile = async (
   chosenArea,
   chosenFloorRange,
   chosenTypes
-) => async dispatch => {
+) => async (dispatch) => {
   dispatch(requestProfileModification())
   try {
     await db
@@ -40,7 +40,7 @@ export const modifyProfile = async (
         area: chosenArea.toLowerCase(),
         floors: chosenFloorRange,
         minFloor: chosenFloorRange[0],
-        types: chosenTypes
+        types: chosenTypes,
       })
     dispatch(receiveProfileModification())
   } catch (error) {
@@ -49,7 +49,21 @@ export const modifyProfile = async (
   }
 }
 
-export const fetchPreferences = userId => async dispatch => {
+export const updateAccountActivity = async (user, isActive) => async (
+  dispatch
+) => {
+  //dispatch
+  try {
+    const dbUser = db.collection('users').doc(user.uid)
+    await dbUser.update({ isActive: isActive })
+    //dispatch(receiveAccountActivity())
+  } catch (error) {
+    console.error(error)
+    //dispatch
+  }
+}
+
+export const fetchPreferences = (userId) => async (dispatch) => {
   dispatch(requestPreferences())
   try {
     const preferences = []
@@ -59,19 +73,19 @@ export const fetchPreferences = userId => async dispatch => {
       .collection('preferences')
       .limit(10)
       .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(documentSnapshot => {
+      .then((querySnapshot) => {
+        querySnapshot.forEach((documentSnapshot) => {
           if (!documentSnapshot._document.proto) return
           const {
             area,
             floors,
-            types
+            types,
           } = documentSnapshot._document.proto.fields
           const savedTypes = getSavedTypes(types)
           preferences.push({
             area: area.stringValue,
-            floors: floors.arrayValue.values.map(i => i.integerValue),
-            types: savedTypes.map(t => t.stringValue)
+            floors: floors.arrayValue.values.map((i) => i.integerValue),
+            types: savedTypes.map((t) => t.stringValue),
           })
         })
       })
@@ -82,7 +96,7 @@ export const fetchPreferences = userId => async dispatch => {
   }
 }
 
-const getSavedTypes = types => {
+const getSavedTypes = (types) => {
   const savedTypes =
     types && types.arrayValue && types.arrayValue.values
       ? types.arrayValue.values
@@ -90,7 +104,7 @@ const getSavedTypes = types => {
   return savedTypes
 }
 
-export const removePrefenceFromDb = (user, area) => async dispatch => {
+export const removePrefenceFromDb = (user, area) => async (dispatch) => {
   dispatch(requestPreferenceRemoval())
   try {
     await db

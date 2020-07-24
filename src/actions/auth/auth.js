@@ -11,10 +11,10 @@ import {
   receiveLogout,
   logoutError,
   verifyRequest,
-  verifySuccess
+  verifySuccess,
 } from './actions'
 
-export const signUpUser = (email, password) => async dispatch => {
+export const signUpUser = (email, password) => async (dispatch) => {
   dispatch(requestSignUp())
   try {
     const user = await myFirebase
@@ -29,26 +29,27 @@ export const signUpUser = (email, password) => async dispatch => {
   }
 }
 
-export const sendVerification = async user => {
+export const sendVerification = async (user) => {
   try {
     await user.sendEmailVerification()
   } catch (error) {}
 }
 
-export const loginUser = (email, password) => async dispatch => {
+export const loginUser = (email, password) => async (dispatch) => {
   dispatch(requestLogin())
   try {
     const user = await myFirebase
       .auth()
       .signInWithEmailAndPassword(email, password)
     dispatch(receiveLogin(user))
+    console.log(user)
   } catch (error) {
     console.error(error)
     dispatch(loginError())
   }
 }
 
-export const logoutUser = () => async dispatch => {
+export const logoutUser = () => async (dispatch) => {
   dispatch(requestLogout())
   try {
     await myFirebase.auth().signOut()
@@ -59,9 +60,9 @@ export const logoutUser = () => async dispatch => {
   }
 }
 
-export const verifyAuth = () => dispatch => {
+export const verifyAuth = () => (dispatch) => {
   dispatch(verifyRequest())
-  myFirebase.auth().onAuthStateChanged(user => {
+  myFirebase.auth().onAuthStateChanged((user) => {
     if (user !== null) {
       dispatch(receiveLogin(user))
     }

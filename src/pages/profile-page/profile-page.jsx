@@ -48,7 +48,7 @@ class ProfilePage extends Component {
   renderObjectFromLocationState = (preferences, locationState) => {
     let isNewArea = true
     preferences &&
-      preferences.map(pref => {
+      preferences.map((pref) => {
         if (pref.area === locationState.area) isNewArea = false
         return this.checkPreferenceUpdate(pref, locationState)
       })
@@ -57,7 +57,7 @@ class ProfilePage extends Component {
       preferences.push({
         area: locationState.area,
         floors: locationState.floor,
-        types: locationState.types
+        types: locationState.types,
       })
 
     this.forceUpdate()
@@ -107,7 +107,7 @@ class ProfilePage extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     isLoggingOut: state.auth.isLoggingOut,
     logoutError: state.auth.logoutError,
@@ -115,20 +115,20 @@ const mapStateToProps = state => {
     areas: state.contentful.areas,
     preferences: state.firebaseDb.preferences,
     isFetchingPreferences: state.firebaseDb.isFetchingPreferences,
-    preferenceFetchFailed: state.firebaseDb.preferenceFetchFailed
+    preferenceFetchFailed: state.firebaseDb.preferenceFetchFailed,
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     actions: bindActionCreators(
       {
         fetchPreferences,
         fetchApartmentMetaData,
-        logoutUser
+        logoutUser,
       },
       dispatch
-    )
+    ),
   }
 }
 

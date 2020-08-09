@@ -41,9 +41,7 @@ export const loginUser = (email, password) => async (dispatch) => {
     const user = await myFirebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-    console.log(user)
     dispatch(receiveLogin(user))
-    console.log(user)
   } catch (error) {
     console.error(error)
     dispatch(loginError())
@@ -69,4 +67,18 @@ export const verifyAuth = () => (dispatch) => {
     }
     dispatch(verifySuccess())
   })
+}
+
+export const deleteUserAccount = () => async (dispatch) => {
+  // dispatch start
+  console.log('starting to delete account')
+  try {
+    const user = myFirebase.auth().currentUser
+    await user.delete()
+    console.log('deleted the account')
+    // dispatch success
+  } catch (error) {
+    console.error(error)
+    // dispatch fail
+  }
 }

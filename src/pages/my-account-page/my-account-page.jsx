@@ -5,7 +5,9 @@ import { connect } from 'react-redux'
 import {
   fetchAccountActivity,
   updateAccountActivity,
+  deleteAccountData,
 } from '../../actions/firebase-db/firebase-db'
+import { deleteUserAccount } from '../../actions/auth/auth'
 import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { withStyles } from '@material-ui/styles'
@@ -20,7 +22,11 @@ const MyAccountPage = (props) => {
     props.actions.updateAccountActivity(props.user, !props.isActive)
   }
 
-  console.log(props)
+  const deleteAccount = () => {
+    props.actions.deleteAccountData(props.user)
+    props.actions.deleteUserAccount()
+  }
+
   return (
     <div>
       <h1>My account</h1>
@@ -38,7 +44,9 @@ const MyAccountPage = (props) => {
             <CircularProgress className={props.classes.spinner} />
           )}
         </Button>
-        <Button color="secondary">Delete account</Button>
+        <Button color="secondary" onClick={() => deleteAccount()}>
+          Delete account
+        </Button>
       </div>
     </div>
   )
@@ -58,6 +66,8 @@ const mapDispatchToProps = (dispatch) => {
       {
         fetchAccountActivity,
         updateAccountActivity,
+        deleteAccountData,
+        deleteUserAccount,
       },
       dispatch
     ),

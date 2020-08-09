@@ -67,14 +67,26 @@ export const updateAccountActivity = async (user, isActive) => async (
   dispatch
 ) => {
   dispatch(requestAccountActivity())
-  console.log(isActive)
   try {
     const dbUser = db.collection('users').doc(user.uid)
     await dbUser.update({ isActive: isActive })
     dispatch(receiveAccountActivity(isActive))
   } catch (error) {
     console.error(error)
-    //dispatch
+    //dispatch fail
+  }
+}
+
+export const deleteAccountData = async (user) => async (dispatch) => {
+  //dispatch start
+  console.log('starting to delete data')
+  try {
+    await db.collection('users').doc(user.uid).delete()
+    console.log('deleted the data')
+    //dispatch success
+  } catch (error) {
+    console.error(error)
+    //dispatch fail
   }
 }
 

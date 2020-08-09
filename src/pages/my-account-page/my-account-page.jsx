@@ -1,13 +1,21 @@
 import React from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { updateAccountActivity } from '../../actions/firebase-db/firebase-db'
+import {
+  fetchAccountActivity,
+  updateAccountActivity,
+} from '../../actions/firebase-db/firebase-db'
 import Button from '@material-ui/core/Button'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import { useEffect } from 'react'
 
 const MyAccountPage = (props) => {
-  const deactivateAccount = () => {
-    console.log(props.user)
-    props.actions.updateAccountActivity(props.user, true)
+  useEffect(() => {
+    props.actions.fetchAccountActivity(props.user.uid)
+  }, [props.actions, props.actions.fetchAccountActivity, props.user.uid])
+
+  const changeAccountActivity = () => {
+    props.actions.updateAccountActivity(props.user, !props.isActive)
   }
 
   console.log(props)
@@ -21,9 +29,10 @@ const MyAccountPage = (props) => {
         <Button
           variant="outlined"
           color="secondary"
-          onClick={() => deactivateAccount()}
+          onClick={() => changeAccountActivity()}
         >
-          Deactivate account
+          {`${props.isActive ? 'Deactivate' : 'Activate'} account`}
+          {props.isRequestingAccountActivity && <CircularProgress />}
         </Button>
         <Button color="secondary">Delete account</Button>
       </div>
@@ -34,6 +43,8 @@ const MyAccountPage = (props) => {
 const mapStateToProps = (state) => {
   return {
     user: state.auth.user,
+    isActive: state.firebaseDb.userIsActive,
+    isRequestingAccountActivity: state.firebaseDb.isRequestingAccountActivity,
   }
 }
 
@@ -41,6 +52,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     actions: bindActionCreators(
       {
+        fetchAccountActivity,
         updateAccountActivity,
       },
       dispatch

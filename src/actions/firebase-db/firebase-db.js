@@ -3,6 +3,8 @@ import {
   requestProfileModification,
   receiveProfileModification,
   profileModificationError,
+  requestAccountActivity,
+  receiveAccountActivity,
   requestPreferences,
   receivePreferences,
   receivePreferencesError,
@@ -49,14 +51,27 @@ export const modifyProfile = async (
   }
 }
 
+export const fetchAccountActivity = async (userId) => async (dispatch) => {
+  console.log('hallp')
+  try {
+    const userDocument = await db.collection('users').doc(userId).get()
+    const userData = userDocument.data()
+    console.log(userData)
+    dispatch(receiveAccountActivity(userData.isActive))
+  } catch (error) {
+    console.error(error)
+  }
+}
+
 export const updateAccountActivity = async (user, isActive) => async (
   dispatch
 ) => {
-  //dispatch
+  dispatch(requestAccountActivity())
+  console.log(isActive)
   try {
     const dbUser = db.collection('users').doc(user.uid)
     await dbUser.update({ isActive: isActive })
-    //dispatch(receiveAccountActivity())
+    dispatch(receiveAccountActivity(isActive))
   } catch (error) {
     console.error(error)
     //dispatch

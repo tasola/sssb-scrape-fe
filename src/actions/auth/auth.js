@@ -41,6 +41,7 @@ export const loginUser = (email, password) => async (dispatch) => {
     const user = await myFirebase
       .auth()
       .signInWithEmailAndPassword(email, password)
+    console.log(user)
     dispatch(receiveLogin(user))
     console.log(user)
   } catch (error) {

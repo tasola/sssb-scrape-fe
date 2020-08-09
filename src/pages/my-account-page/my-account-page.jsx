@@ -1,4 +1,5 @@
 import React from 'react'
+import { useEffect } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import {
@@ -7,7 +8,8 @@ import {
 } from '../../actions/firebase-db/firebase-db'
 import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import { useEffect } from 'react'
+import { withStyles } from '@material-ui/styles'
+import styles from './my-account-page'
 
 const MyAccountPage = (props) => {
   useEffect(() => {
@@ -32,7 +34,9 @@ const MyAccountPage = (props) => {
           onClick={() => changeAccountActivity()}
         >
           {`${props.isActive ? 'Deactivate' : 'Activate'} account`}
-          {props.isRequestingAccountActivity && <CircularProgress />}
+          {props.isRequestingAccountActivity && (
+            <CircularProgress className={props.classes.spinner} />
+          )}
         </Button>
         <Button color="secondary">Delete account</Button>
       </div>
@@ -60,4 +64,6 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MyAccountPage)
+export default withStyles(styles)(
+  connect(mapStateToProps, mapDispatchToProps)(MyAccountPage)
+)

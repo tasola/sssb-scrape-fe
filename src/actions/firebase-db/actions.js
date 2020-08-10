@@ -4,6 +4,8 @@ import {
   MODIFY_PROFILE_FAILURE,
   CHANGE_ACCOUNT_ACTIVITY_REQUEST,
   CHANGE_ACCOUNT_ACTIVITY_SUCCESS,
+  DELETE_ACCOUNT_REQUEST,
+  DELETE_ACCOUNT_SUCCESS,
   FETCH_PREFERENCES_REQUEST,
   FETCH_PREFERENCES_SUCCESS,
   FETCH_PREFERENCES_FAILURE,
@@ -40,6 +42,18 @@ export const receiveAccountActivity = (isActive) => {
   return {
     type: CHANGE_ACCOUNT_ACTIVITY_SUCCESS,
     payload: isActive,
+  }
+}
+
+export const requestAccountDataDeletion = () => {
+  return {
+    type: DELETE_ACCOUNT_REQUEST,
+  }
+}
+
+export const receiveAccountDataDeletion = () => {
+  return {
+    type: DELETE_ACCOUNT_SUCCESS,
   }
 }
 

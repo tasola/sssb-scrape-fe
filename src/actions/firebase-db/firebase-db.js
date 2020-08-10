@@ -5,6 +5,8 @@ import {
   profileModificationError,
   requestAccountActivity,
   receiveAccountActivity,
+  requestAccountDataDeletion,
+  receiveAccountDataDeletion,
   requestPreferences,
   receivePreferences,
   receivePreferencesError,
@@ -52,14 +54,14 @@ export const modifyProfile = async (
 }
 
 export const fetchAccountActivity = async (userId) => async (dispatch) => {
-  console.log('hallp')
+  // dispatch start
   try {
     const userDocument = await db.collection('users').doc(userId).get()
     const userData = userDocument.data()
-    console.log(userData)
     dispatch(receiveAccountActivity(userData.isActive))
   } catch (error) {
     console.error(error)
+    // dispatch fail
   }
 }
 
@@ -78,11 +80,10 @@ export const updateAccountActivity = async (user, isActive) => async (
 }
 
 export const deleteAccountData = async (user) => async (dispatch) => {
-  //dispatch start
-  console.log('starting to delete data')
+  dispatch(requestAccountDataDeletion())
   try {
     await db.collection('users').doc(user.uid).delete()
-    console.log('deleted the data')
+    dispatch(receiveAccountDataDeletion())
     //dispatch success
   } catch (error) {
     console.error(error)

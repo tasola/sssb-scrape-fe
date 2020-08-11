@@ -2,6 +2,8 @@ import {
   CHANGE_ACCOUNT_ACTIVITY_REQUEST,
   CHANGE_ACCOUNT_ACTIVITY_SUCCESS,
   DELETE_ACCOUNT_REQUEST,
+  DELETE_ACCOUNT_DATA_SUCCESS,
+  DELETE_ACCOUNT_DATA_FAILURE,
   FETCH_PREFERENCES_REQUEST,
   FETCH_PREFERENCES_SUCCESS,
   FETCH_PREFERENCES_FAILURE,
@@ -14,6 +16,8 @@ const INITIAL_STATE = {
   areas: [],
   isRequestingAccountActivity: false,
   isDeletingUserData: false,
+  isUserDataDeleted: false,
+  userDataDeletionError: false,
   preferenceFetchFailed: false,
   isFetchingPreferences: false,
   isRemovingPreference: false,
@@ -37,6 +41,18 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isDeletingUserData: true,
+      }
+    case DELETE_ACCOUNT_DATA_SUCCESS:
+      return {
+        ...state,
+        isDeletingUserData: false,
+        userDataDeletionError: false,
+      }
+    case DELETE_ACCOUNT_DATA_FAILURE:
+      return {
+        ...state,
+        isDeletingUserData: false,
+        userDataDeletionError: true,
       }
     case FETCH_PREFERENCES_REQUEST:
       return {

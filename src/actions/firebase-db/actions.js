@@ -5,7 +5,8 @@ import {
   CHANGE_ACCOUNT_ACTIVITY_REQUEST,
   CHANGE_ACCOUNT_ACTIVITY_SUCCESS,
   DELETE_ACCOUNT_REQUEST,
-  DELETE_ACCOUNT_SUCCESS,
+  DELETE_ACCOUNT_DATA_SUCCESS,
+  DELETE_ACCOUNT_DATA_FAILURE,
   FETCH_PREFERENCES_REQUEST,
   FETCH_PREFERENCES_SUCCESS,
   FETCH_PREFERENCES_FAILURE,
@@ -53,7 +54,13 @@ export const requestAccountDataDeletion = () => {
 
 export const receiveAccountDataDeletion = () => {
   return {
-    type: DELETE_ACCOUNT_SUCCESS,
+    type: DELETE_ACCOUNT_DATA_SUCCESS,
+  }
+}
+
+export const accountDataDeletionError = () => {
+  return {
+    type: DELETE_ACCOUNT_DATA_FAILURE,
   }
 }
 

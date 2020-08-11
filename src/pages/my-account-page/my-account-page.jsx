@@ -27,6 +27,8 @@ const MyAccountPage = (props) => {
     props.actions.deleteUserAccount()
   }
 
+  console.log(props)
+
   return (
     <div>
       <h1>My account</h1>
@@ -53,10 +55,23 @@ const MyAccountPage = (props) => {
 }
 
 const mapStateToProps = (state) => {
+  const {
+    userIsActive,
+    isDeletingUserData,
+    isUserDataDeleted,
+    userDataDeletionError,
+    isRequestingAccountActivity,
+  } = state.firebaseDb
+  const { isDeletingUser, userDeletionError } = state.auth
   return {
     user: state.auth.user,
-    isActive: state.firebaseDb.userIsActive,
-    isRequestingAccountActivity: state.firebaseDb.isRequestingAccountActivity,
+    isActive: userIsActive,
+    isDeletingUserData: isDeletingUserData,
+    isUserDataDeleted: isUserDataDeleted,
+    userDataDeletionError: userDataDeletionError,
+    isRequestingAccountActivity: isRequestingAccountActivity,
+    isDeletingUser: isDeletingUser,
+    userDeletionError: userDeletionError,
   }
 }
 

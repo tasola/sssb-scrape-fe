@@ -7,6 +7,7 @@ import {
   receiveAccountActivity,
   requestAccountDataDeletion,
   receiveAccountDataDeletion,
+  accountDataDeletionError,
   requestPreferences,
   receivePreferences,
   receivePreferencesError,
@@ -84,10 +85,9 @@ export const deleteAccountData = async (user) => async (dispatch) => {
   try {
     await db.collection('users').doc(user.uid).delete()
     dispatch(receiveAccountDataDeletion())
-    //dispatch success
   } catch (error) {
     console.error(error)
-    //dispatch fail
+    dispatch(accountDataDeletionError())
   }
 }
 

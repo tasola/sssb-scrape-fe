@@ -12,6 +12,9 @@ import {
   logoutError,
   verifyRequest,
   verifySuccess,
+  requestAccountDeletion,
+  receiveAccountDeletion,
+  accountDeletionError,
 } from './actions'
 
 export const signUpUser = (email, password) => async (dispatch) => {
@@ -70,15 +73,13 @@ export const verifyAuth = () => (dispatch) => {
 }
 
 export const deleteUserAccount = () => async (dispatch) => {
-  // dispatch start
-  console.log('starting to delete account')
+  dispatch(requestAccountDeletion())
   try {
     const user = myFirebase.auth().currentUser
     await user.delete()
-    console.log('deleted the account')
-    // dispatch success
+    dispatch(receiveAccountDeletion())
   } catch (error) {
     console.error(error)
-    // dispatch fail
+    dispatch(accountDeletionError())
   }
 }

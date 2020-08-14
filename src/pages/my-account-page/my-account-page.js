@@ -45,6 +45,23 @@ const styles = () => ({
       minWidth: '85vw',
     },
   },
+  dialog: {
+    width: '40vw',
+    minWidth: 550,
+    padding: '1rem 1.5rem',
+    margin: '0 auto',
+    '& p': {
+      marginTop: 5,
+      marginBottom: 0,
+      opacity: 0.6,
+    },
+    '& h2': {
+      opacity: 0.87,
+    },
+    '@media (max-width: 700px)': {
+      minWidth: '85vw',
+    },
+  },
 })
 
 export default styles

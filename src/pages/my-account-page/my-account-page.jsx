@@ -10,9 +10,11 @@ import {
 import { deleteUserAccount } from '../../actions/auth/auth'
 import Button from '@material-ui/core/Button'
 import Card from '@material-ui/core/Card'
+import Dialog from '@material-ui/core/Dialog'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { withStyles } from '@material-ui/styles'
 import styles from './my-account-page'
+import { useState } from 'react'
 
 const MyAccountPage = ({
   actions,
@@ -20,7 +22,10 @@ const MyAccountPage = ({
   classes,
   isActive,
   isRequestingAccountActivity,
+  isDeletingUserData,
+  isDeletingUser,
 }) => {
+  const [dialogIsOpen, setDialogIsOpen] = useState(false)
   useEffect(() => {
     actions.fetchAccountActivity(user.uid)
   }, [actions, actions.fetchAccountActivity, user.uid])
@@ -58,7 +63,7 @@ const MyAccountPage = ({
           <div className={classes.buttonWrapper}>
             <Button
               color="secondary"
-              onClick={() => deleteAccount()}
+              onClick={() => setDialogIsOpen(true)}
               className={classes.accountButton}
             >
               Delete account
@@ -79,6 +84,67 @@ const MyAccountPage = ({
           <CircularProgress className={classes.spinner} />
         )}
       </Card>
+      <Dialog open={dialogIsOpen} onClose={() => setDialogIsOpen(false)}>
+        <div className={classes.section}>
+          <h2>Are you sure you want to delete your account?</h2>
+          <p>
+            Deleting your account means that you will lose all of your
+            subscription data. You will be logged out instantly and will never
+            be notified of a SSSB release again.
+          </p>
+          {isActive && (
+            <p>
+              Are you sure you don't want to deactivate your account instead?
+            </p>
+          )}
+          <div className={classes.buttonWrapper}>
+            {isActive ? (
+              <>
+                <Button
+                  color="secondary"
+                  onClick={() => deleteAccount()}
+                  className={classes.accountButton}
+                >
+                  Delete account
+                  {(isDeletingUserData || isDeletingUser) && (
+                    <CircularProgress className={classes.spinner} />
+                  )}
+                </Button>
+                <Button
+                  variant="contained"
+                  color={'secondary'}
+                  onClick={() => {
+                    changeAccountActivity()
+                    setDialogIsOpen(false)
+                  }}
+                  className={classes.accountButton}
+                >
+                  {`Deactivate account`}
+                  {isRequestingAccountActivity && (
+                    <CircularProgress className={classes.spinner} />
+                  )}
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  color="primary"
+                  onClick={() => setDialogIsOpen(false)}
+                  className={classes.accountButton}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="contained"
+                  color={'secondary'}
+                  onClick={() => deleteAccount()}
+                  className={classes.accountButton}
+                ></Button>
+              </>
+            )}
+          </div>
+        </div>
+      </Dialog>
     </div>
   )
 }

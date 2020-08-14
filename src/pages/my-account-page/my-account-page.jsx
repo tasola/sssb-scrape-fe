@@ -9,6 +9,7 @@ import {
 } from '../../actions/firebase-db/firebase-db'
 import { deleteUserAccount } from '../../actions/auth/auth'
 import Button from '@material-ui/core/Button'
+import Card from '@material-ui/core/Card'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { withStyles } from '@material-ui/styles'
 import styles from './my-account-page'
@@ -38,11 +39,21 @@ const MyAccountPage = ({
 
   return (
     <div>
-      <h1>My account</h1>
-      <div>
-        <h3>Delete account</h3>
-        <hr />
-        <p>Lorem ipsum</p>
+      <div className={classes.headerWrapper}>
+        <h1>My account</h1>
+      </div>
+      <Card className={classes.section}>
+        <h2>Handle account</h2>
+        <p>
+          Are you temporarily uninterested in getting updated about the
+          releases? Feel free to deactivate your subscription! Your account and
+          preferences are saved for the next time you're looking for a new
+          place.
+        </p>
+        <p>
+          You can also delete account, but once you do that there is no going
+          back.
+        </p>
         {isActive !== undefined ? (
           <div className={classes.buttonWrapper}>
             <Button
@@ -67,7 +78,7 @@ const MyAccountPage = ({
         ) : (
           <CircularProgress className={classes.spinner} />
         )}
-      </div>
+      </Card>
     </div>
   )
 }

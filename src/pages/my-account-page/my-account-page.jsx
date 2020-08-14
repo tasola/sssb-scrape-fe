@@ -13,21 +13,28 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import { withStyles } from '@material-ui/styles'
 import styles from './my-account-page'
 
-const MyAccountPage = (props) => {
+const MyAccountPage = ({
+  actions,
+  user,
+  classes,
+  isActive,
+  isRequestingAccountActivity,
+}) => {
   useEffect(() => {
-    props.actions.fetchAccountActivity(props.user.uid)
-  }, [props.actions, props.actions.fetchAccountActivity, props.user.uid])
+    actions.fetchAccountActivity(user.uid)
+  }, [actions, actions.fetchAccountActivity, user.uid])
 
   const changeAccountActivity = () => {
-    props.actions.updateAccountActivity(props.user, !props.isActive)
+    actions.updateAccountActivity(user, !isActive)
   }
 
   const deleteAccount = () => {
-    props.actions.deleteAccountData(props.user)
-    props.actions.deleteUserAccount()
+    actions.deleteAccountData(user)
+    actions.deleteUserAccount()
   }
 
-  console.log(props)
+  console.log(isActive)
+  console.log(user)
 
   return (
     <div>
@@ -36,19 +43,30 @@ const MyAccountPage = (props) => {
         <h3>Delete account</h3>
         <hr />
         <p>Lorem ipsum</p>
-        <Button
-          variant="outlined"
-          color="secondary"
-          onClick={() => changeAccountActivity()}
-        >
-          {`${props.isActive ? 'Deactivate' : 'Activate'} account`}
-          {props.isRequestingAccountActivity && (
-            <CircularProgress className={props.classes.spinner} />
-          )}
-        </Button>
-        <Button color="secondary" onClick={() => deleteAccount()}>
-          Delete account
-        </Button>
+        {isActive !== undefined ? (
+          <div className={classes.buttonWrapper}>
+            <Button
+              color="secondary"
+              onClick={() => deleteAccount()}
+              className={classes.accountButton}
+            >
+              Delete account
+            </Button>
+            <Button
+              variant="contained"
+              color={isActive ? 'secondary' : 'primary'}
+              onClick={() => changeAccountActivity()}
+              className={classes.accountButton}
+            >
+              {`${isActive ? 'Deactivate' : 'Activate'} account`}
+              {isRequestingAccountActivity && (
+                <CircularProgress className={classes.spinner} />
+              )}
+            </Button>
+          </div>
+        ) : (
+          <CircularProgress className={classes.spinner} />
+        )}
       </div>
     </div>
   )

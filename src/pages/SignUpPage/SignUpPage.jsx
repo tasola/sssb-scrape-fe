@@ -120,7 +120,8 @@ class SignUpPage extends Component {
             >
               {isLoggingIn ? (
                 <>
-                  <CircularProgress className={classes.loading} /> Loading...{' '}
+                  <CircularProgress className={classes.loading} size={18} />{' '}
+                  Loading...{' '}
                 </>
               ) : (
                 <>Sign up</>

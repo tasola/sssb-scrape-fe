@@ -1,39 +1,47 @@
 const styles = () => ({
   '@global': {
     body: {
-      backgroundColor: '#fff'
-    }
+      backgroundColor: '#fff',
+    },
   },
   paper: {
     marginTop: 100,
     display: 'flex',
     padding: 20,
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   avatar: {
     marginLeft: 'auto',
     marginRight: 'auto',
-    backgroundColor: '#f50057'
+    backgroundColor: '#f50057',
   },
   form: {
-    marginTop: 1
+    marginTop: 1,
   },
   submit: {
-    marginTop: 20
+    marginTop: 20,
   },
   alreadyGotAnAccount: {
     marginTop: 15,
-    fontSize: 13
+    fontSize: 13,
   },
   loading: {
-    color: 'white'
+    color: 'white',
+    marginRight: 18,
+  },
+  goToSignUp: {
+    textDecoration: 'none',
+    color: '#0366d6',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
   },
   errorText: {
     color: '#f50057',
     marginBottom: 5,
-    textAlign: 'center'
-  }
+    textAlign: 'center',
+  },
 })
 
 export default styles

@@ -28,6 +28,7 @@ const styles = () => ({
   },
   loading: {
     color: 'white',
+    marginRight: 18,
   },
   errorText: {
     color: '#f50057',
@@ -37,17 +38,9 @@ const styles = () => ({
   goToLogin: {
     textDecoration: 'none',
     color: '#0366d6',
-    '&:visited': {
-      color: 'initial',
-    },
     '&:hover': {
       textDecoration: 'underline',
     },
-  },
-  loginSpinner: {
-    marginRight: 18,
-    width: 18,
-    height: 18,
   },
 })
 

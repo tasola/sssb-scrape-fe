@@ -81,7 +81,8 @@ class Login extends Component {
             >
               {isLoggingIn ? (
                 <>
-                  <CircularProgress className={classes.loading} /> Loading{' '}
+                  <CircularProgress className={classes.loading} size={18} />{' '}
+                  Loading
                 </>
               ) : (
                 <>Sign In</>
@@ -89,7 +90,7 @@ class Login extends Component {
             </Button>
             <Typography className={classes.alreadyGotAnAccount}>
               Don't have an account?{' '}
-              <Link className={classes.goToLogin} to="/sign-up">
+              <Link className={classes.goToSignUp} to="/sign-up">
                 Sign up here
               </Link>
             </Typography>

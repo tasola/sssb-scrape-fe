@@ -9,7 +9,6 @@ import { removePrefenceFromDb } from '../../actions/firebase-db/firebase-db'
 import TextSelect from '../../components/TextSelect/TextSelect'
 import CheckboxGroup from '../../components/Checkbox/CheckboxGroup/CheckboxGroup.jsx'
 import { range, capitalizeFirstLetter } from '../../utils/utils'
-import './ProfileModifyPage.css'
 
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
@@ -216,12 +215,13 @@ class ProfileModifyPage extends Component {
       openDialog,
       availableTypes,
     } = this.state
+    const { classes } = this.props
     return (
       <>
         <Container
           component="main"
           maxWidth="xs"
-          className="profile-modify-page"
+          className={classes.profileModifyPage}
         >
           <Typography component="h1" variant="h5">
             Apartment preferences
@@ -230,7 +230,7 @@ class ProfileModifyPage extends Component {
             <>
               <TextSelect
                 title="area"
-                className="select-preferences area"
+                className={classes.selectPreferences}
                 value={chosenArea}
                 isDisabled={false}
                 handleChange={this.handleAreaChange}
@@ -238,7 +238,7 @@ class ProfileModifyPage extends Component {
               />
               <TextSelect
                 title="Minimum floor"
-                className="select-preferences floor"
+                className={classes.selectPreferences}
                 value={chosenFloor}
                 isDisabled={chosenArea === ''}
                 handleChange={this.handleFloorChange}
@@ -251,12 +251,12 @@ class ProfileModifyPage extends Component {
               />
             </>
           )}
-          <div className="modify-preferences-buttons">
+          <div className={classes.modifyPreferencesButtons}>
             <Button
               type="button"
               color="primary"
-              className="remove-preferences"
-              id="destructive-button"
+              className={`${classes.removePreferences} ${classes.destructiveButton}`}
+              disabled={!chosenArea}
               onClick={this.handleDialogOpen}
             >
               Remove

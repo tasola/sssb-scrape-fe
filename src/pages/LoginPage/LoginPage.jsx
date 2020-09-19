@@ -33,6 +33,7 @@ class Login extends Component {
 
   render() {
     const { classes, loginError, isAuthenticated, isLoggingIn } = this.props
+    console.log(classes)
     if (isAuthenticated) {
       return <Redirect to="/" />
     } else {

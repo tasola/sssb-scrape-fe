@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { Redirect, Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+
 import { signUpUser } from '../../actions/auth/auth'
-import { withStyles } from '@material-ui/styles'
-import styles from './SignUpPageStyle'
-import './SignUpPage.css'
 
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
@@ -14,6 +12,9 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
 import Container from '@material-ui/core/Container'
+
+import { withStyles } from '@material-ui/styles'
+import styles from './SignUpPageStyle'
 
 class SignUpPage extends Component {
   state = { email: '', password: '', hasCheckedPasswords: false }
@@ -130,7 +131,7 @@ class SignUpPage extends Component {
             </Button>
             <Typography className={classes.alreadyGotAnAccount}>
               Already got an account?{' '}
-              <Link className={'goToLogin ' + classes.goToLogin} to="/login">
+              <Link className={classes.goToLogin} to="/login">
                 Sign in here
               </Link>
             </Typography>

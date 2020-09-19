@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+
 import { logoutUser } from '../../actions/auth/auth'
 import { fetchPreferences } from '../../actions/firebase-db/firebase-db'
 import { fetchApartmentMetaData } from '../../actions/contentful'
+
 import ChosenPreferences from '../../components/ChosenPreferences/ChosenPreferences'
+
 import { range, arraysEqual } from '../../utils/utils'
-import './ProfilePage.css'
 
 class ProfilePage extends Component {
   constructor(props) {
@@ -94,11 +96,7 @@ class ProfilePage extends Component {
         {isLoggingOut && <p>Logging Out....</p>}
         {logoutError && <p>Error logging out</p>}
         {preferences && areas.length > 0 && (
-          <ChosenPreferences
-            className="profile-page"
-            preferences={preferences}
-            areas={areas}
-          />
+          <ChosenPreferences preferences={preferences} areas={areas} />
         )}
       </div>
     ) : (

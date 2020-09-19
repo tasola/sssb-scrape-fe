@@ -1,10 +1,9 @@
 import React from 'react'
+import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+
 import { verifyAuth } from '../../actions/auth/auth'
-import { Redirect } from 'react-router-dom'
-import { makeStyles } from '@material-ui/core/styles'
-import './VerifyEmailPage.css'
 
 import { GmailLogo } from '../../assets/email-logos/gmail.js'
 import { OutlookLogo } from '../../assets/email-logos/outlook.js'
@@ -13,6 +12,9 @@ import Container from '@material-ui/core/Container'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
+
+import { makeStyles, withStyles } from '@material-ui/core/styles'
+import styles from './VerifyEmailPageStyle'
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -41,12 +43,12 @@ const VerifyEmailPage = (props) => {
     window.open('https://outlook.com', '_blank')
   }
 
-  const classes = useStyles()
-  const { user } = props
+  const styles = useStyles()
+  const { user, classes } = props
   return user.emailVerified ? (
     <Redirect to="/" />
   ) : (
-    <div className={classes.heroContent + ' verify-email'}>
+    <div className={`${styles.heroContent} ${classes.verifyEmail}`}>
       <Container maxWidth="sm">
         <Typography
           component="h1"
@@ -61,16 +63,16 @@ const VerifyEmailPage = (props) => {
           We have sent an email to you to check that you really are you. Some
           large email providers are linked below.
         </Typography>
-        <div className={classes.heroButtons}>
+        <div className={styles.heroButtons}>
           <Grid container spacing={2} justify="center">
             <Grid item>
               <Button
                 variant="contained"
                 color="primary"
                 onClick={goToGmail}
-                className="verify-email-button gmail"
+                className={`${classes.verifyEmailButton} ${classes.gmail}`}
               >
-                <GmailLogo />
+                <GmailLogo className={classes.svg} />
                 Gmail
               </Button>
             </Grid>
@@ -81,13 +83,13 @@ const VerifyEmailPage = (props) => {
                 onClick={goToOutlook}
                 className="verify-email-button outlook"
               >
-                <OutlookLogo />
+                <OutlookLogo className={classes.svg} />
                 Outlook
               </Button>
             </Grid>
           </Grid>
         </div>
-        <div className={classes.heroButtons}>
+        <div className={styles.heroButtons}>
           <Grid container spacing={2} justify="center">
             <Grid item>
               <Button color="primary" onClick={goHome}>
@@ -118,4 +120,6 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(VerifyEmailPage)
+export default withStyles(styles)(
+  connect(mapStateToProps, mapDispatchToProps)(VerifyEmailPage)
+)

@@ -2,18 +2,21 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { modifyProfile } from '../../actions'
-import { withStyles } from '@material-ui/styles'
-import styles from './ProfileModifyPageStyle'
 import { fetchApartmentMetaData } from '../../actions/contentful'
 import { removePrefenceFromDb } from '../../actions/firebase-db/firebase-db'
-import TextSelect from '../../components/TextSelect/TextSelect'
+
+import UnsubscribeDialog from '../../components/Dialogs/UnsubscribeDialog/UnsubscribeDialog'
 import CheckboxGroup from '../../components/Checkbox/CheckboxGroup/CheckboxGroup.jsx'
-import { range, capitalizeFirstLetter } from '../../utils/utils'
+import TextSelect from '../../components/TextSelect/TextSelect'
 
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
-import UnsubscribeDialog from '../../components/Dialogs/UnsubscribeDialog/UnsubscribeDialog'
+
+import { range, capitalizeFirstLetter } from '../../utils/utils'
+
+import { withStyles } from '@material-ui/styles'
+import styles from './ProfileModifyPageStyle'
 
 class ProfileModifyPage extends Component {
   constructor(props) {

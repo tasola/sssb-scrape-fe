@@ -1,9 +1,7 @@
 import React, { Component } from 'react'
-import { connect } from 'react-redux'
 import { Redirect, Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 import { loginUser } from '../../actions/auth/auth'
-import { withStyles } from '@material-ui/styles'
-import styles from './LoginPageStyle'
 
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
@@ -13,6 +11,9 @@ import CircularProgress from '@material-ui/core/CircularProgress'
 import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper'
 import Container from '@material-ui/core/Container'
+
+import { withStyles } from '@material-ui/styles'
+import styles from './LoginPageStyle'
 
 class Login extends Component {
   state = { email: '', password: '' }

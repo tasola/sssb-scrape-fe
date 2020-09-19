@@ -6,7 +6,7 @@ import { fetchPreferences } from '../../actions/firebase-db/firebase-db'
 import { fetchApartmentMetaData } from '../../actions/contentful'
 import ChosenPreferences from '../../components/ChosenPreferences/ChosenPreferences'
 import { range, arraysEqual } from '../../utils/utils'
-import './profile-page.css'
+import './ProfilePage.css'
 
 class ProfilePage extends Component {
   constructor(props) {

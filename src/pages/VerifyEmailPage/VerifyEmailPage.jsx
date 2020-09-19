@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux'
 import { verifyAuth } from '../../actions/auth/auth'
 import { Redirect } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
-import './verify-email-page.css'
+import './VerifyEmailPage.css'
 
 import { GmailLogo } from '../../assets/email-logos/gmail.js'
 import { OutlookLogo } from '../../assets/email-logos/outlook.js'
@@ -14,20 +14,20 @@ import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   icon: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
   },
   heroContent: {
     backgroundColor: theme.palette.background.paper,
-    padding: theme.spacing(8, 0, 6)
+    padding: theme.spacing(8, 0, 6),
   },
   heroButtons: {
-    marginTop: theme.spacing(4)
-  }
+    marginTop: theme.spacing(4),
+  },
 }))
 
-const VerifyEmailPage = props => {
+const VerifyEmailPage = (props) => {
   const goHome = async () => {
     await props.actions.verifyAuth()
     window.location.reload()
@@ -101,20 +101,20 @@ const VerifyEmailPage = props => {
   )
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
-    user: state.auth.user
+    user: state.auth.user,
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     actions: bindActionCreators(
       {
-        verifyAuth
+        verifyAuth,
       },
       dispatch
-    )
+    ),
   }
 }
 

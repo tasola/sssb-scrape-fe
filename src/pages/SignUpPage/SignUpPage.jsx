@@ -3,8 +3,8 @@ import { connect } from 'react-redux'
 import { Redirect, Link } from 'react-router-dom'
 import { signUpUser } from '../../actions/auth/auth'
 import { withStyles } from '@material-ui/styles'
-import styles from './sign-up-page-style'
-import './sign-up-page.css'
+import styles from './SignUpPageStyle'
+import './SignUpPage.css'
 
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
@@ -42,7 +42,7 @@ class SignUpPage extends Component {
     const passwordMatches = password === passwordVerification
     this.setState({
       passwordMatches: passwordMatches,
-      hasCheckedPasswords: true
+      hasCheckedPasswords: true,
     })
     return passwordMatches
   }
@@ -53,7 +53,7 @@ class SignUpPage extends Component {
       loginError,
       isAuthenticated,
       user,
-      isLoggingIn
+      isLoggingIn,
     } = this.props
     const { passwordMatches, hasCheckedPasswords } = this.state
     if (isAuthenticated && user.emailVerified) {
@@ -146,7 +146,7 @@ function mapStateToProps(state) {
     isLoggingIn: state.auth.isLoggingIn,
     loginError: state.auth.loginError,
     isAuthenticated: state.auth.isAuthenticated,
-    user: state.auth.user
+    user: state.auth.user,
   }
 }
 

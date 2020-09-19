@@ -1,12 +1,15 @@
 import React, { Component } from 'react'
-import ChosenPreferenceCard from '../chosenPreferenceCard/chosenPreferenceCard.jsx'
-import AddButton from '../add-button/add-button'
-import './chosenPreferences.css'
+
+import ChosenPreferenceCard from '../ChosenPreferenceCard/ChosenPreferenceCard.jsx'
+import AddButton from '../Buttons/AddButton/AddButton'
 
 import Container from '@material-ui/core/Container'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
-import NoPreferences from '../no-preferences/no-preferences.jsx'
+import NoPreferences from '../NoPreferences/NoPreferences.jsx'
+
+import { withStyles } from '@material-ui/core'
+import styles from './ChosenPreferencesStyles'
 
 class ChosenPreferences extends Component {
   constructor(props) {
@@ -21,7 +24,7 @@ class ChosenPreferences extends Component {
   }
 
   // Improve this
-  getAreaObjectFromName = areaName => {
+  getAreaObjectFromName = (areaName) => {
     const { areas } = this.props
     for (let i = 0; i < areas.length; i++) {
       const area = areas[i]
@@ -29,11 +32,11 @@ class ChosenPreferences extends Component {
     }
   }
 
-  getImage = areaObject => 'https:' + areaObject.fields.image.fields.file.url
+  getImage = (areaObject) => 'https:' + areaObject.fields.image.fields.file.url
 
-  getAreaDescription = areaObject => areaObject.fields.description
+  getAreaDescription = (areaObject) => areaObject.fields.description
 
-  sortAreaObjectsOnName = arr => {
+  sortAreaObjectsOnName = (arr) => {
     return arr.sort((a, b) => {
       if (a.area > b.area) return 1
       else if (a.area < b.area) return -1
@@ -64,11 +67,11 @@ class ChosenPreferences extends Component {
   }
 
   render() {
-    const { className } = this.props
+    const { classes } = this.props
     const { preferences } = this.state
     return (
       <Container
-        className={`chosen-preferences ${className}`}
+        className={classes.chosenPreferences}
         component="main"
         maxWidth="md"
       >
@@ -76,7 +79,7 @@ class ChosenPreferences extends Component {
           variant="h4"
           color="textPrimary"
           component="h2"
-          className="chosenPreferences"
+          className={classes.header}
         >
           Your subscription
         </Typography>
@@ -93,4 +96,4 @@ class ChosenPreferences extends Component {
   }
 }
 
-export default ChosenPreferences
+export default withStyles(styles)(ChosenPreferences)

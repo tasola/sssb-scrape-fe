@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { anglifySwedishLetters, capitalizeFirstLetter } from '../../utils/utils'
-import './chosenPreferenceCard.css'
 
 import Card from '@material-ui/core/Card'
 import CardMedia from '@material-ui/core/CardMedia'
@@ -10,6 +9,9 @@ import Typography from '@material-ui/core/Typography'
 import CardActions from '@material-ui/core/CardActions'
 import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
+
+import { withStyles } from '@material-ui/core'
+import styles from './ChosenPreferenceCardStyles'
 
 class ChosenPreferenceCard extends Component {
   constructor(props) {
@@ -21,11 +23,11 @@ class ChosenPreferenceCard extends Component {
     this.setState({ id: this.props.id })
   }
 
-  getImage = areaObject => 'https:' + areaObject.fields.image.fields.file.url
+  getImage = (areaObject) => 'https:' + areaObject.fields.image.fields.file.url
 
-  getAreaDescription = areaObject => areaObject.fields.description
+  getAreaDescription = (areaObject) => areaObject.fields.description
 
-  getFloorsOfInterestText = preference => {
+  getFloorsOfInterestText = (preference) => {
     let floorsOfInterestText
     if (preference.floors.length > 1) {
       floorsOfInterestText = `Floors of interest: ${preference.floors[0]} - ${
@@ -37,7 +39,7 @@ class ChosenPreferenceCard extends Component {
     return floorsOfInterestText
   }
 
-  generateCollapsableDescription = description => {
+  generateCollapsableDescription = (description) => {
     const preview = description.substr(0, 150)
     const rest = description.substr(150, description.length)
     const { id } = this.state
@@ -45,7 +47,7 @@ class ChosenPreferenceCard extends Component {
       <p>
         {preview}
         <span id={'dots' + id}>...</span>
-        <span className={'rest rest' + id}>{rest}</span>
+        <span className={`${this.props.classes.rest} rest${id}`}>{rest}</span>
       </p>
     )
   }
@@ -66,7 +68,7 @@ class ChosenPreferenceCard extends Component {
     }
   }
 
-  navigateToSssb = areaObject => {
+  navigateToSssb = (areaObject) => {
     let area =
       areaObject.fields.title === 'Hugin' || areaObject.fields.title === 'Munin'
         ? 'hugin-munin'
@@ -79,11 +81,11 @@ class ChosenPreferenceCard extends Component {
   }
 
   render() {
-    const { preference, areaObject, id } = this.props
+    const { preference, areaObject, id, classes } = this.props
     const areaDescription = this.getAreaDescription(areaObject)
     return (
       <Grid item md={6}>
-        <Card className="areaCard">
+        <Card className={classes.areaCard}>
           <CardMedia
             component="img"
             alt={preference.area}
@@ -99,7 +101,7 @@ class ChosenPreferenceCard extends Component {
               variant="body2"
               color="textSecondary"
               component="h5"
-              className="floors"
+              className={classes.floors}
             >
               {this.getFloorsOfInterestText(preference)}
             </Typography>
@@ -109,7 +111,7 @@ class ChosenPreferenceCard extends Component {
             <Button
               size="small"
               color="primary"
-              className="learnMore"
+              className={classes.readMore}
               onClick={this.showMore}
               id={'readMoreButton' + id}
             >
@@ -121,12 +123,12 @@ class ChosenPreferenceCard extends Component {
               variant="outlined"
               size="small"
               color="primary"
-              className="learnMore"
+              className={classes.toSssbButton}
               onClick={() => this.navigateToSssb(areaObject)}
             >
               See more at SSSB
             </Button>
-            <Button size="small" color="primary" className="edit">
+            <Button size="small" color="primary">
               <Link
                 to={{
                   pathname: 'profile/modify',
@@ -134,8 +136,8 @@ class ChosenPreferenceCard extends Component {
                     fromPreferenceCard: true,
                     area: preference.area,
                     floors: preference.floors,
-                    types: preference.types
-                  }
+                    types: preference.types,
+                  },
                 }}
                 style={{ textDecoration: 'none', color: 'inherit' }}
               >
@@ -149,4 +151,4 @@ class ChosenPreferenceCard extends Component {
   }
 }
 
-export default ChosenPreferenceCard
+export default withStyles(styles)(ChosenPreferenceCard)

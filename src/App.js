@@ -3,16 +3,16 @@ import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 import { connect } from 'react-redux'
 
-import ProtectedRoute from './pages/protected-route/protected-route'
-import ProfilePage from './pages/profile-page/profile-page.jsx'
-import SignUpPage from './pages/sign-up-page/sign-up-page.jsx'
-import Login from './pages/login-page/login-page'
-import ProfileModifyPage from './pages/profile-modify-page/profile-modify-page.jsx'
-import verifyEmailPage from './pages/verify-email-page/verify-email-page'
+import ProtectedRoute from './pages/ProtectedRoute/ProtectedRoute'
+import ProfilePage from './pages/ProfilePage/ProfilePage'
+import SignUpPage from './pages/SignUpPage/SignUpPage'
+import Login from './pages/LoginPage/LoginPage'
+import ProfileModifyPage from './pages/ProfileModifyPage/ProfileModifyPage'
+import verifyEmailPage from './pages/VerifyEmailPage/VerifyEmailPage'
 
 import './App.css'
 
-const App = props => {
+const App = (props) => {
   const { isAuthenticated, isVerifying, user } = props
   return (
     <Switch>
@@ -43,7 +43,7 @@ function mapStateToProps(state) {
   return {
     isAuthenticated: state.auth.isAuthenticated,
     isVerifying: state.auth.isVerifying,
-    user: state.auth.user
+    user: state.auth.user,
   }
 }
 

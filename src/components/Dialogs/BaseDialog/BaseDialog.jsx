@@ -16,7 +16,7 @@ class BaseDialog extends Component {
       text,
       secondaryButtonLabel,
       primaryButtonLabel,
-      primaryAction
+      primaryAction,
     } = this.props
     return (
       <Dialog

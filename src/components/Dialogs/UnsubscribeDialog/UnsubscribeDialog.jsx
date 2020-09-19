@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import BaseDialog from '../base-dialog/base-dialog.jsx'
+import BaseDialog from '../BaseDialog/BaseDialog.jsx'
 
 const unsubscribeDialogText = {
   heading: 'Do you really want to unsubscribe?',
   text:
     'Deleting this object prevents you from getting subscription emails about releases related to this area in the future. Are you sure you want to unsubscribe?',
   secondaryButtonLabel: 'Cancel',
-  primaryButtonLabel: 'Unsubscribe'
+  primaryButtonLabel: 'Unsubscribe',
 }
 
 class UnsubscribeDialog extends Component {
@@ -16,7 +16,7 @@ class UnsubscribeDialog extends Component {
       heading,
       text,
       secondaryButtonLabel,
-      primaryButtonLabel
+      primaryButtonLabel,
     } = unsubscribeDialogText
     return (
       <BaseDialog

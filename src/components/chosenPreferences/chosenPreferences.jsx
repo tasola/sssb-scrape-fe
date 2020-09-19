@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
-import ChosenPreferenceCard from '../chosenPreferenceCard/chosenPreferenceCard.jsx'
-import AddButton from '../add-button/add-button'
-import './chosenPreferences.css'
+import ChosenPreferenceCard from '../ChosenPreferenceCard/ChosenPreferenceCard.jsx'
+import AddButton from '../Buttons/AddButton/AddButton'
+import './ChosenPreferences.css'
 
 import Container from '@material-ui/core/Container'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
-import NoPreferences from '../no-preferences/no-preferences.jsx'
+import NoPreferences from '../NoPreferences/NoPreferences.jsx'
 
 class ChosenPreferences extends Component {
   constructor(props) {
@@ -21,7 +21,7 @@ class ChosenPreferences extends Component {
   }
 
   // Improve this
-  getAreaObjectFromName = areaName => {
+  getAreaObjectFromName = (areaName) => {
     const { areas } = this.props
     for (let i = 0; i < areas.length; i++) {
       const area = areas[i]
@@ -29,11 +29,11 @@ class ChosenPreferences extends Component {
     }
   }
 
-  getImage = areaObject => 'https:' + areaObject.fields.image.fields.file.url
+  getImage = (areaObject) => 'https:' + areaObject.fields.image.fields.file.url
 
-  getAreaDescription = areaObject => areaObject.fields.description
+  getAreaDescription = (areaObject) => areaObject.fields.description
 
-  sortAreaObjectsOnName = arr => {
+  sortAreaObjectsOnName = (arr) => {
     return arr.sort((a, b) => {
       if (a.area > b.area) return 1
       else if (a.area < b.area) return -1

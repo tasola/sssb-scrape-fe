@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { anglifySwedishLetters, capitalizeFirstLetter } from '../../utils/utils'
-import './chosenPreferenceCard.css'
+import './ChosenPreferenceCard.css'
 
 import Card from '@material-ui/core/Card'
 import CardMedia from '@material-ui/core/CardMedia'
@@ -21,11 +21,11 @@ class ChosenPreferenceCard extends Component {
     this.setState({ id: this.props.id })
   }
 
-  getImage = areaObject => 'https:' + areaObject.fields.image.fields.file.url
+  getImage = (areaObject) => 'https:' + areaObject.fields.image.fields.file.url
 
-  getAreaDescription = areaObject => areaObject.fields.description
+  getAreaDescription = (areaObject) => areaObject.fields.description
 
-  getFloorsOfInterestText = preference => {
+  getFloorsOfInterestText = (preference) => {
     let floorsOfInterestText
     if (preference.floors.length > 1) {
       floorsOfInterestText = `Floors of interest: ${preference.floors[0]} - ${
@@ -37,7 +37,7 @@ class ChosenPreferenceCard extends Component {
     return floorsOfInterestText
   }
 
-  generateCollapsableDescription = description => {
+  generateCollapsableDescription = (description) => {
     const preview = description.substr(0, 150)
     const rest = description.substr(150, description.length)
     const { id } = this.state
@@ -66,7 +66,7 @@ class ChosenPreferenceCard extends Component {
     }
   }
 
-  navigateToSssb = areaObject => {
+  navigateToSssb = (areaObject) => {
     let area =
       areaObject.fields.title === 'Hugin' || areaObject.fields.title === 'Munin'
         ? 'hugin-munin'
@@ -134,8 +134,8 @@ class ChosenPreferenceCard extends Component {
                     fromPreferenceCard: true,
                     area: preference.area,
                     floors: preference.floors,
-                    types: preference.types
-                  }
+                    types: preference.types,
+                  },
                 }}
                 style={{ textDecoration: 'none', color: 'inherit' }}
               >

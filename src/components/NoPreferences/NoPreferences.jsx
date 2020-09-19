@@ -1,6 +1,6 @@
 import React from 'react'
 
-import './no-preferences.css'
+import './NoPreferences.css'
 
 import Typography from '@material-ui/core/Typography'
 

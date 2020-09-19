@@ -6,15 +6,15 @@ import { withStyles } from '@material-ui/styles'
 import styles from './profile-modify-page-style'
 import { fetchApartmentMetaData } from '../../actions/contentful'
 import { removePrefenceFromDb } from '../../actions/firebase-db/firebase-db'
-import TextSelect from '../../components/text-select/text-select'
-import CheckboxGroup from '../../components/checkbox/checkbox-group/checkbox-group.jsx'
+import TextSelect from '../../components/TextSelect/TextSelect'
+import CheckboxGroup from '../../components/Checkbox/CheckboxGroup/CheckboxGroup.jsx'
 import { range, capitalizeFirstLetter } from '../../utils/utils'
 import './profile-modify-page.css'
 
 import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 import Container from '@material-ui/core/Container'
-import UnsubscribeDialog from '../../components/unsubscribe-dialog/unsubscribe-dialog'
+import UnsubscribeDialog from '../../components/Dialogs/UnsubscribeDialog/UnsubscribeDialog'
 
 class ProfileModifyPage extends Component {
   constructor(props) {
@@ -24,7 +24,7 @@ class ProfileModifyPage extends Component {
       chosenFloor: '',
       openDialog: false,
       availableTypes: [],
-      checkedItems: new Map()
+      checkedItems: new Map(),
     }
     this.handleCheckboxChange = this.handleCheckboxChange.bind(this)
   }
@@ -53,7 +53,7 @@ class ProfileModifyPage extends Component {
     this.updateState(areaObject, area, floor, savedTypes)
   }
 
-  getAreaObjectFromName = areaName => {
+  getAreaObjectFromName = (areaName) => {
     const { areas } = this.state
     for (let i = 0; i < areas.length; i++) {
       const area = areas[i]
@@ -63,7 +63,7 @@ class ProfileModifyPage extends Component {
     return 'Not found'
   }
 
-  getAvailableTypes = areaObject => {
+  getAvailableTypes = (areaObject) => {
     if (
       areaObject &&
       areaObject.fields &&
@@ -85,9 +85,9 @@ class ProfileModifyPage extends Component {
     return chosenTypes
   }
 
-  generateChosenTypesMap = types => {
+  generateChosenTypesMap = (types) => {
     const typesMap = new Map()
-    types.forEach(type => typesMap.set(type, true))
+    types.forEach((type) => typesMap.set(type, true))
     return typesMap
   }
 
@@ -125,7 +125,7 @@ class ProfileModifyPage extends Component {
       availableFloors: range(maxFloor),
       chosenAreaObject: areaObject,
       availableTypes: types,
-      checkedItems: chosenTypesMap || new Map()
+      checkedItems: chosenTypesMap || new Map(),
     })
   }
 
@@ -133,15 +133,15 @@ class ProfileModifyPage extends Component {
     const minimumFloor = target.value
     this.setState({
       chosenFloor: minimumFloor,
-      chosenFloorRange: range(minimumFloor, this.state.maxFloor)
+      chosenFloorRange: range(minimumFloor, this.state.maxFloor),
     })
   }
 
   handleCheckboxChange(e) {
     const item = e.target.id
     const isChecked = e.target.checked
-    this.setState(prevState => ({
-      checkedItems: prevState.checkedItems.set(item, isChecked)
+    this.setState((prevState) => ({
+      checkedItems: prevState.checkedItems.set(item, isChecked),
     }))
   }
 
@@ -160,7 +160,7 @@ class ProfileModifyPage extends Component {
   // In case the floor drop down was not interacted with, this.handleFloor() was not
   // called, hence chosenFloorRange will just be the chosen floor, not the actual range.
   // In this case, adjust it to the range.
-  setFloorRange = chosenFloorRange => {
+  setFloorRange = (chosenFloorRange) => {
     if (
       chosenFloorRange.length === 1 &&
       typeof chosenFloorRange[0] === 'string'
@@ -188,13 +188,13 @@ class ProfileModifyPage extends Component {
         area: chosenAreaToLowerCase,
         floor: chosenFloorRange,
         areaObject: chosenAreaObject,
-        types: chosenTypes
-      }
+        types: chosenTypes,
+      },
     }
     this.goHome(historyPushObject)
   }
 
-  goHome = pushObject => {
+  goHome = (pushObject) => {
     this.props.history.push(pushObject || '/')
   }
 
@@ -214,7 +214,7 @@ class ProfileModifyPage extends Component {
       chosenFloor,
       availableFloors,
       openDialog,
-      availableTypes
+      availableTypes,
     } = this.state
     return (
       <>
@@ -234,7 +234,7 @@ class ProfileModifyPage extends Component {
                 value={chosenArea}
                 isDisabled={false}
                 handleChange={this.handleAreaChange}
-                selectItems={areas.map(a => a.fields.title)}
+                selectItems={areas.map((a) => a.fields.title)}
               />
               <TextSelect
                 title="Minimum floor"
@@ -295,26 +295,26 @@ class ProfileModifyPage extends Component {
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     isLoggingIn: state.auth.isLoggingIn,
     loginError: state.auth.loginError,
     isAuthenticated: state.auth.isAuthenticated,
     user: state.auth.user,
-    areas: state.contentful.areas
+    areas: state.contentful.areas,
   }
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     actions: bindActionCreators(
       {
         fetchApartmentMetaData,
         modifyProfile,
-        removePrefenceFromDb
+        removePrefenceFromDb,
       },
       dispatch
-    )
+    ),
   }
 }
 

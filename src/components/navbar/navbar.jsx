@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { useLocation } from 'react-router'
 import { logoutUser } from '../../actions/auth/auth'
 import logo from '../../assets/favicon.ico'
-import './navbar.css'
+import './Navbar.css'
 import { pathnameDict } from '../../utils/pathname-dict'
 
 import { makeStyles } from '@material-ui/core/styles'

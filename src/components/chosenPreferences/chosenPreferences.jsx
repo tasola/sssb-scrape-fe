@@ -1,12 +1,15 @@
 import React, { Component } from 'react'
+
 import ChosenPreferenceCard from '../ChosenPreferenceCard/ChosenPreferenceCard.jsx'
 import AddButton from '../Buttons/AddButton/AddButton'
-import './ChosenPreferences.css'
 
 import Container from '@material-ui/core/Container'
 import Typography from '@material-ui/core/Typography'
 import Grid from '@material-ui/core/Grid'
 import NoPreferences from '../NoPreferences/NoPreferences.jsx'
+
+import { withStyles } from '@material-ui/core'
+import styles from './ChosenPreferencesStyles'
 
 class ChosenPreferences extends Component {
   constructor(props) {
@@ -64,11 +67,11 @@ class ChosenPreferences extends Component {
   }
 
   render() {
-    const { className } = this.props
+    const { classes } = this.props
     const { preferences } = this.state
     return (
       <Container
-        className={`chosen-preferences ${className}`}
+        className={classes.chosenPreferences}
         component="main"
         maxWidth="md"
       >
@@ -76,7 +79,7 @@ class ChosenPreferences extends Component {
           variant="h4"
           color="textPrimary"
           component="h2"
-          className="chosenPreferences"
+          className={classes.header}
         >
           Your subscription
         </Typography>
@@ -93,4 +96,4 @@ class ChosenPreferences extends Component {
   }
 }
 
-export default ChosenPreferences
+export default withStyles(styles)(ChosenPreferences)

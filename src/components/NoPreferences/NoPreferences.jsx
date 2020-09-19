@@ -1,22 +1,19 @@
 import React from 'react'
 
-import './NoPreferences.css'
-
 import Typography from '@material-ui/core/Typography'
 
-const NoPreferences = () => {
+import { withStyles } from '@material-ui/core'
+import styles from './NoPreferencesStyles'
+
+const NoPreferences = (props) => {
+  const { classes } = props
   return (
-    <div className="no-preferences">
-      <Typography
-        variant="h6"
-        color="textPrimary"
-        component="h4"
-        className="chosenPreferences"
-      >
+    <div className={classes.noPreferences}>
+      <Typography variant="h6" color="textPrimary" component="h4">
         You don't have any subscriptions... <br /> Add one below!
       </Typography>
     </div>
   )
 }
 
-export default NoPreferences
+export default withStyles(styles)(NoPreferences)

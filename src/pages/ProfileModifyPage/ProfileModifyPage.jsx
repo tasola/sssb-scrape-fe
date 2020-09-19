@@ -16,7 +16,7 @@ import Container from '@material-ui/core/Container'
 import { range, capitalizeFirstLetter } from '../../utils/utils'
 
 import { withStyles } from '@material-ui/styles'
-import styles from './ProfileModifyPageStyle'
+import styles from './ProfileModifyPageStyles'
 
 class ProfileModifyPage extends Component {
   constructor(props) {
@@ -268,7 +268,6 @@ class ProfileModifyPage extends Component {
               type="button"
               variant="contained"
               color="primary"
-              className="save-preferences"
               disabled={
                 chosenArea === '' ||
                 chosenFloor === '' ||
@@ -278,12 +277,7 @@ class ProfileModifyPage extends Component {
             >
               Save
             </Button>
-            <Button
-              type="button"
-              color="primary"
-              className="cancel-preferences"
-              onClick={this.handleCancel}
-            >
+            <Button type="button" color="primary" onClick={this.handleCancel}>
               Cancel
             </Button>
           </div>

@@ -14,7 +14,7 @@ import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
 
 import { makeStyles, withStyles } from '@material-ui/core/styles'
-import styles from './VerifyEmailPageStyle'
+import styles from './VerifyEmailPageStyles'
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -81,7 +81,7 @@ const VerifyEmailPage = (props) => {
                 variant="contained"
                 color="primary"
                 onClick={goToOutlook}
-                className="verify-email-button outlook"
+                className={`${classes.verifyEmailButton} ${classes.outlook}`}
               >
                 <OutlookLogo className={classes.svg} />
                 Outlook

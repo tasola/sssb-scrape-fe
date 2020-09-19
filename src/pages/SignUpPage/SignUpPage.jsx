@@ -14,7 +14,7 @@ import Paper from '@material-ui/core/Paper'
 import Container from '@material-ui/core/Container'
 
 import { withStyles } from '@material-ui/styles'
-import styles from './SignUpPageStyle'
+import styles from './SignUpPageStyles'
 
 class SignUpPage extends Component {
   state = { email: '', password: '', hasCheckedPasswords: false }
@@ -120,10 +120,7 @@ class SignUpPage extends Component {
             >
               {isLoggingIn ? (
                 <>
-                  <CircularProgress
-                    className={'login-spinner ' + classes.loading}
-                  />{' '}
-                  Loading...{' '}
+                  <CircularProgress className={classes.loading} /> Loading...{' '}
                 </>
               ) : (
                 <>Sign up</>

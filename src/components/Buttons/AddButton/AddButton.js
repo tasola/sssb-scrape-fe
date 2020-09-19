@@ -1,17 +1,19 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import './AddButton.css'
 
 import AddIcon from '@material-ui/icons/Add'
+
+import { withStyles } from '@material-ui/core'
+import styles from './AddButtonStyles'
 
 const AddButton = (props) => {
   return (
     <Link to={props.to} style={{ textDecoration: 'none', color: 'inherit' }}>
-      <button className="add-button">
+      <button className={props.classes.addButton}>
         <AddIcon />
       </button>
     </Link>
   )
 }
 
-export default AddButton
+export default withStyles(styles)(AddButton)

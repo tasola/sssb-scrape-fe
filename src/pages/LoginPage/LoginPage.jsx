@@ -13,7 +13,7 @@ import Paper from '@material-ui/core/Paper'
 import Container from '@material-ui/core/Container'
 
 import { withStyles } from '@material-ui/styles'
-import styles from './LoginPageStyle'
+import styles from './LoginPageStyles'
 
 class Login extends Component {
   state = { email: '', password: '' }
@@ -81,10 +81,7 @@ class Login extends Component {
             >
               {isLoggingIn ? (
                 <>
-                  <CircularProgress
-                    className={'login-spinner ' + classes.loading}
-                  />{' '}
-                  Loading{' '}
+                  <CircularProgress className={classes.loading} /> Loading{' '}
                 </>
               ) : (
                 <>Sign In</>
@@ -92,7 +89,7 @@ class Login extends Component {
             </Button>
             <Typography className={classes.alreadyGotAnAccount}>
               Don't have an account?{' '}
-              <Link className={'goToLogin ' + classes.goToLogin} to="/sign-up">
+              <Link className={classes.goToLogin} to="/sign-up">
                 Sign up here
               </Link>
             </Typography>

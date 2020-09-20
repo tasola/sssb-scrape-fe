@@ -7,6 +7,8 @@ The goal of this project is to help students carry this burden by automating the
 
 This repository serves as the user client in the SSSB Scrape application. It lets users authenticate to handle their custom subscriptions; add/edit/remove housing preferences such as area, apartment type and minimum floor.
 
+The app is live [here](https://sssb-scrape.firebaseapp.com/)
+
 
 ### :rocket: Get started
 To get the app up and running, simply `npm install` and then `npm run start`, and the app should be up and spinning on [http://localhost:3000](http://localhost:3000). However, a few environment keys are needed in order to setup the connection to Firebase etc.

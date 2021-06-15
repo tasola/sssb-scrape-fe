@@ -1,0 +1,43 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true
+    },
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 12,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "react",
+        "jsx-a11y",
+        "import"
+    ],
+    "rules": {
+        "quotes": ["error", "single"],
+        "indent": ["error", 2],
+        "no-multi-spaces": ["error"],
+        "no-console": ["warn"],
+        "import/order": [
+            "error",
+            {
+                "groups": ["builtin", "external", "internal"],
+                "pathGroups": [
+                {
+                    "pattern": "react",
+                    "group": "external",
+                    "position": "before"
+                }
+                ],
+                "pathGroupsExcludedImportTypes": ["react"],
+                "newlines-between": "always",
+                "alphabetize": {
+                "order": "asc",
+                "caseInsensitive": true
+                }
+            }
+        ]
+    }
+}

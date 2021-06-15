@@ -10,7 +10,7 @@ class CheckboxGroup extends Component {
     super(props)
     this.state = {
       checkedItems: new Map(),
-      hasSavedValues: false
+      hasSavedValues: false,
     }
   }
 
@@ -18,12 +18,12 @@ class CheckboxGroup extends Component {
     if (nextProps.checkedItems !== prevState.checkedItems) {
       return {
         checkedItems: nextProps.checkedItems,
-        hasSavedValues: nextProps.checkedItems.size > 0
+        hasSavedValues: nextProps.checkedItems.size > 0,
       }
     } else return null
   }
 
-  getCheckedState = type => {
+  getCheckedState = (type) => {
     const savedType = this.props.checkedItems.get(type)
     const { hasSavedValues } = this.state
     const { availableApartmentTypes } = this.props
@@ -38,7 +38,7 @@ class CheckboxGroup extends Component {
 
   generateCheckboxes = () => {
     const { availableApartmentTypes } = this.props
-    return availableApartmentTypes.map(type => {
+    return availableApartmentTypes.map((type) => {
       return (
         <FormControlLabel
           control={

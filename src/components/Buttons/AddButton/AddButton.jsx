@@ -1,12 +1,14 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-
-import AddIcon from '@material-ui/icons/Add'
 
 import { withStyles } from '@material-ui/core'
+import AddIcon from '@material-ui/icons/Add'
+import { Link } from 'react-router-dom'
+
 import styles from './AddButtonStyles'
 
 const AddButton = (props) => {
+  console.log('sdad')
+
   return (
     <Link to={props.to} style={{ textDecoration: 'none', color: 'inherit' }}>
       <button className={props.classes.addButton}>

@@ -1,10 +1,10 @@
-export const capitalizeFirstLetter = string =>
+export const capitalizeFirstLetter = (string) =>
   string && string.charAt(0).toUpperCase() + string.slice(1)
 
-export const anglifySwedishLetters = string => {
+export const anglifySwedishLetters = (string) => {
   return string
     .split('')
-    .map(l => {
+    .map((l) => {
       if (l === 'å' || l === 'ä') return 'a'
       else if (l === 'ö') return 'o'
       else return l

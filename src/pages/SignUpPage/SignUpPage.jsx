@@ -49,13 +49,8 @@ class SignUpPage extends Component {
   }
 
   render() {
-    const {
-      classes,
-      loginError,
-      isAuthenticated,
-      user,
-      isLoggingIn,
-    } = this.props
+    const { classes, loginError, isAuthenticated, user, isLoggingIn } =
+      this.props
     const { passwordMatches, hasCheckedPasswords } = this.state
     if (isAuthenticated && user.emailVerified) {
       return <Redirect to="/" />

@@ -6,7 +6,7 @@ import {
   LOGOUT_SUCCESS,
   LOGOUT_FAILURE,
   VERIFY_REQUEST,
-  VERIFY_SUCCESS
+  VERIFY_SUCCESS,
 } from '../actions/auth/types'
 
 export default (
@@ -17,7 +17,7 @@ export default (
     loginError: false,
     logoutError: false,
     isAuthenticated: false,
-    user: {}
+    user: {},
   },
   action
 ) => {
@@ -26,51 +26,51 @@ export default (
       return {
         ...state,
         isLoggingIn: true,
-        loginError: false
+        loginError: false,
       }
     case LOGIN_SUCCESS:
       return {
         ...state,
         isLoggingIn: false,
         isAuthenticated: true,
-        user: action.user
+        user: action.user,
       }
     case LOGIN_FAILURE:
       return {
         ...state,
         isLoggingIn: false,
         isAuthenticated: false,
-        loginError: true
+        loginError: true,
       }
     case LOGOUT_REQUEST:
       return {
         ...state,
         isLoggingOut: true,
-        logoutError: false
+        logoutError: false,
       }
     case LOGOUT_SUCCESS:
       return {
         ...state,
         isLoggingOut: false,
         isAuthenticated: false,
-        user: {}
+        user: {},
       }
     case LOGOUT_FAILURE:
       return {
         ...state,
         isLoggingOut: false,
-        logoutError: true
+        logoutError: true,
       }
     case VERIFY_REQUEST:
       return {
         ...state,
         isVerifying: true,
-        verifyingError: false
+        verifyingError: false,
       }
     case VERIFY_SUCCESS:
       return {
         ...state,
-        isVerifying: false
+        isVerifying: false,
       }
     default:
       return state

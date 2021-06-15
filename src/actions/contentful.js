@@ -7,6 +7,6 @@ export const fetchApartmentMetaData = async () => {
   const res = await client.getEntries()
   return {
     type: FETCH_APARTMENT_META_DATA,
-    payload: res
+    payload: res,
   }
 }

@@ -4,7 +4,7 @@ import {
   FETCH_PREFERENCES_FAILURE,
   REMOVE_PREFERENCE_REQUEST,
   REMOVE_PREFERENCE_SUCCESS,
-  REMOVE_PREFERENCE_FAILURE
+  REMOVE_PREFERENCE_FAILURE,
 } from '../actions/firebase-db/types'
 
 const INITIAL_STATE = {
@@ -12,7 +12,7 @@ const INITIAL_STATE = {
   preferenceFetchFailed: false,
   isFetchingPreferences: false,
   isRemovingPreference: false,
-  preferenceRemovalFailed: false
+  preferenceRemovalFailed: false,
 }
 
 export default (state = INITIAL_STATE, action) => {
@@ -22,36 +22,36 @@ export default (state = INITIAL_STATE, action) => {
       return {
         ...state,
         preferenceFetchFailed: preferenceFetchFailed,
-        isFetchingPreferences: true
+        isFetchingPreferences: true,
       }
     case FETCH_PREFERENCES_SUCCESS:
       return {
         ...state,
         preferences: action.payload,
         preferenceFetchFailed: preferenceFetchFailed,
-        isFetchingPreferences: false
+        isFetchingPreferences: false,
       }
     case FETCH_PREFERENCES_FAILURE:
       return {
         ...state,
         preferenceFetchFailed: true,
-        isFetchingPreferences: false
+        isFetchingPreferences: false,
       }
     case REMOVE_PREFERENCE_REQUEST:
       return {
         ...state,
-        isRemovingPreference: true
+        isRemovingPreference: true,
       }
     case REMOVE_PREFERENCE_SUCCESS:
       return {
         ...state,
-        isRemovingPreference: false
+        isRemovingPreference: false,
       }
     case REMOVE_PREFERENCE_FAILURE:
       return {
         ...state,
         isRemovingPreference: false,
-        preferenceRemovalFailed: true
+        preferenceRemovalFailed: true,
       }
     default:
       return state

@@ -10,7 +10,7 @@ const firebaseConfig = {
   storageBucket: 'sssb-scrape.appspot.com',
   messagingSenderId: '42502418862',
   appId: '1:42502418862:web:6b4bd1962d5a6d8f8cd83f',
-  measurementId: 'G-WPL7610NFK'
+  measurementId: 'G-WPL7610NFK',
 }
 
 export const myFirebase = firebase.initializeApp(firebaseConfig)

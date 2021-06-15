@@ -10,7 +10,7 @@ class TextSelect extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      isOpen: false
+      isOpen: false,
     }
   }
 

@@ -1,9 +1,8 @@
 import React from 'react'
 
-import { capitalizeFirstLetter } from '../../../utils/utils'
-
-import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Checkbox from 'src/components/Checkbox/Checkbox/Checkbox.jsx'
+import { capitalizeFirstLetter } from 'src/utils/utils'
 
 const CheckboxGroup = ({
   availableApartmentTypes,

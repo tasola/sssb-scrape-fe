@@ -1,13 +1,13 @@
 {
     "env": {
         "browser": true,
-        "es2021": true
+        "es6": true
     },
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
         },
-        "ecmaVersion": 12,
+        "ecmaVersion": 9,
         "sourceType": "module"
     },
     "plugins": [
@@ -17,9 +17,7 @@
     ],
     "rules": {
         "quotes": ["error", "single"],
-        "indent": ["error", 2, { "SwitchCase": 1 }],
         "no-multi-spaces": ["error"],
-        "no-console": ["warn", { "Allow": ["warn", "error"]}],
         "import/order": [
             "error",
             {

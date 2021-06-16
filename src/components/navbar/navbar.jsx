@@ -1,24 +1,21 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
-import { useLocation } from 'react-router'
+
+import AppBar from '@material-ui/core/AppBar'
+import IconButton from '@material-ui/core/IconButton'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
+import { makeStyles, withStyles } from '@material-ui/core/styles'
+import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
+import AccountCircle from '@material-ui/icons/AccountCircle'
 import { connect } from 'react-redux'
+import { useLocation } from 'react-router'
+import { Link } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 
 import { logoutUser } from '../../actions/auth/auth'
-
 import logo from '../../assets/favicon.ico'
-
 import { pathnameDict } from '../../utils/pathname-dict'
-
-import AppBar from '@material-ui/core/AppBar'
-import Toolbar from '@material-ui/core/Toolbar'
-import Typography from '@material-ui/core/Typography'
-import IconButton from '@material-ui/core/IconButton'
-import AccountCircle from '@material-ui/icons/AccountCircle'
-import MenuItem from '@material-ui/core/MenuItem'
-import Menu from '@material-ui/core/Menu'
-
-import { makeStyles, withStyles } from '@material-ui/core/styles'
 import styles from './NavbarStyles'
 
 const useStyles = makeStyles((theme) => ({
@@ -33,32 +30,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Navbar = (props) => {
+const Navbar = ({ actions, username, userEmail, classes }) => {
+  const [anchorEl, setAnchorEl] = useState(null)
+
   const styles = useStyles()
   const location = useLocation()
-  const [anchorEl, setAnchorEl] = useState(null)
-  const open = Boolean(anchorEl)
 
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget)
-  }
+  const handleMenu = (event) => setAnchorEl(event.currentTarget)
 
-  const handleLogout = () => {
-    props.actions.logoutUser()
-  }
+  const handleClose = () => setAnchorEl(null)
 
-  const handleClose = () => {
-    setAnchorEl(null)
-  }
+  const handleLogout = () => actions.logoutUser()
 
   const displayUsername = () => {
-    if (props.username) return props.username
-    else if (props.userEmail)
-      return props.userEmail.substring(0, props.userEmail.indexOf('@'))
-    else return ''
+    if (username) {
+      return username
+    } else if (userEmail) {
+      return userEmail.substring(0, userEmail.indexOf('@'))
+    } else return ''
   }
-
-  const { classes } = props
 
   return (
     <div className={styles.root}>
@@ -102,7 +92,7 @@ const Navbar = (props) => {
                 vertical: 'top',
                 horizontal: 'right',
               }}
-              open={open}
+              open={!!anchorEl}
               onClose={handleClose}
             >
               <MenuItem onClick={handleClose}>Profile</MenuItem>

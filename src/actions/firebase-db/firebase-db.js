@@ -54,21 +54,12 @@ export const fetchPreferences = (userId) => async (dispatch) => {
       .limit(10)
       .get()
       .then((querySnapshot) => {
-        querySnapshot.forEach((documentSnapshot) => {
-          if (
-            !documentSnapshot ||
-            !documentSnapshot._document ||
-            !documentSnapshot._document.proto
-          ) {
-            return
-          }
-          const { area, floors, types } =
-            documentSnapshot._document.proto.fields
-          const savedTypes = getSavedTypes(types)
+        querySnapshot.forEach((document) => {
+          const { area, floors, types } = document.data()
           preferences.push({
-            area: area.stringValue,
-            floors: floors.arrayValue.values.map((i) => i.integerValue),
-            types: savedTypes.map((t) => t.stringValue),
+            area,
+            floors,
+            types,
           })
         })
       })
@@ -77,14 +68,6 @@ export const fetchPreferences = (userId) => async (dispatch) => {
     console.error(error)
     dispatch(receivePreferencesError())
   }
-}
-
-const getSavedTypes = (types) => {
-  const savedTypes =
-    types && types.arrayValue && types.arrayValue.values
-      ? types.arrayValue.values
-      : []
-  return savedTypes
 }
 
 export const removePrefenceFromDb = (user, area) => async (dispatch) => {

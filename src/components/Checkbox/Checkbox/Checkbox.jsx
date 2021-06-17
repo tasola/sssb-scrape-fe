@@ -1,9 +1,9 @@
 import React from 'react'
 
-import _Checkbox from '@material-ui/core/Checkbox'
+import MUICheckbox from '@material-ui/core/Checkbox'
 
 const Checkbox = (props) => {
-  return <_Checkbox {...props} />
+  return <MUICheckbox {...props} />
 }
 
 export default Checkbox

@@ -4,9 +4,9 @@ import { withStyles } from '@material-ui/core'
 import Container from '@material-ui/core/Container'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
+import ChosenPreferenceCard from 'src/components/ChosenPreferenceCard/ChosenPreferenceCard'
 
 import AddButton from '../Buttons/AddButton/AddButton'
-import ChosenPreferenceCard from '../ChosenPreferenceCard/ChosenPreferenceCard.jsx'
 import NoPreferences from '../NoPreferences/NoPreferences.jsx'
 import styles from './ChosenPreferencesStyles'
 

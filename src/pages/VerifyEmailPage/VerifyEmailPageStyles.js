@@ -1,5 +1,3 @@
-import { GmailLogo } from '../../assets/email-logos/gmail'
-
 const styles = () => ({
   verifyEmail: {
     backgroundColor: '#f5f5f5',

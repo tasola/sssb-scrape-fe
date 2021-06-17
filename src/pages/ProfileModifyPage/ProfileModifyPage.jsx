@@ -169,7 +169,7 @@ const ProfileModifyPage = ({ actions, areas, user, location, classes }) => {
 
   const checkedItemsIsEmpty = () => {
     if (checkedItems.size < 1) return true
-    for (let [_, value] of checkedItems) {
+    for (let [, value] of checkedItems) {
       if (value === true) return false
     }
     return true

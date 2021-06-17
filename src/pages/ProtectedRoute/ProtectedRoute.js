@@ -1,8 +1,7 @@
 import React from 'react'
 
 import { Route, Redirect } from 'react-router-dom'
-
-import Navbar from '../../components/Navbar/Navbar.jsx'
+import Navbar from 'src/components/Navbar/Navbar'
 
 const ProtectedRoute = ({
   component: Component,

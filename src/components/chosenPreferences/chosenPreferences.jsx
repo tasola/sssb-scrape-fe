@@ -1,42 +1,20 @@
-import React, { Component } from 'react'
-
-import ChosenPreferenceCard from '../ChosenPreferenceCard/ChosenPreferenceCard.jsx'
-import AddButton from '../Buttons/AddButton/AddButton'
-
-import Container from '@material-ui/core/Container'
-import Typography from '@material-ui/core/Typography'
-import Grid from '@material-ui/core/Grid'
-import NoPreferences from '../NoPreferences/NoPreferences.jsx'
+import React from 'react'
 
 import { withStyles } from '@material-ui/core'
+import Container from '@material-ui/core/Container'
+import Grid from '@material-ui/core/Grid'
+import Typography from '@material-ui/core/Typography'
+
+import AddButton from '../Buttons/AddButton/AddButton'
+import ChosenPreferenceCard from '../ChosenPreferenceCard/ChosenPreferenceCard.jsx'
+import NoPreferences from '../NoPreferences/NoPreferences.jsx'
 import styles from './ChosenPreferencesStyles'
 
-class ChosenPreferences extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {}
-  }
+const ChosenPreferences = ({ areas, classes, preferences }) => {
+  const getAreaObjectFromName = (areaName) =>
+    areas.find((area) => area.fields.title.toLowerCase() === areaName)
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.preferences !== prevState.preferences) {
-      return { preferences: nextProps.preferences }
-    } else return null
-  }
-
-  // Improve this
-  getAreaObjectFromName = (areaName) => {
-    const { areas } = this.props
-    for (let i = 0; i < areas.length; i++) {
-      const area = areas[i]
-      if (area.fields.title.toLowerCase() === areaName) return area
-    }
-  }
-
-  getImage = (areaObject) => 'https:' + areaObject.fields.image.fields.file.url
-
-  getAreaDescription = (areaObject) => areaObject.fields.description
-
-  sortAreaObjectsOnName = (arr) => {
+  const sortAreaObjectsOnName = (arr) => {
     return arr.sort((a, b) => {
       if (a.area > b.area) return 1
       else if (a.area < b.area) return -1
@@ -44,14 +22,11 @@ class ChosenPreferences extends Component {
     })
   }
 
-  getSelectItems = () => {
-    const { areas } = this.props
-    const preferences = this.sortAreaObjectsOnName(this.state.preferences)
+  const getSelectItems = () => {
+    const sortedPreferences = sortAreaObjectsOnName(preferences)
     return areas ? (
-      preferences.map((preference, index) => {
-        const areaObject = this.getAreaObjectFromName(
-          preference.area.toLowerCase()
-        )
+      sortedPreferences.map((preference, index) => {
+        const areaObject = getAreaObjectFromName(preference.area.toLowerCase())
         return (
           <ChosenPreferenceCard
             preference={preference}
@@ -66,34 +41,30 @@ class ChosenPreferences extends Component {
     )
   }
 
-  render() {
-    const { classes } = this.props
-    const { preferences } = this.state
-    return (
-      <Container
-        className={classes.chosenPreferences}
-        component="main"
-        maxWidth="md"
+  return (
+    <Container
+      className={classes.chosenPreferences}
+      component="main"
+      maxWidth="md"
+    >
+      <Typography
+        variant="h4"
+        color="textPrimary"
+        component="h2"
+        className={classes.header}
       >
-        <Typography
-          variant="h4"
-          color="textPrimary"
-          component="h2"
-          className={classes.header}
-        >
-          Your subscription
-        </Typography>
-        {preferences.length > 0 ? (
-          <Grid container spacing={10}>
-            {this.getSelectItems()}
-          </Grid>
-        ) : (
-          <NoPreferences />
-        )}
-        <AddButton to="profile/modify" />
-      </Container>
-    )
-  }
+        Your subscription
+      </Typography>
+      {preferences.length > 0 ? (
+        <Grid container spacing={10}>
+          {getSelectItems()}
+        </Grid>
+      ) : (
+        <NoPreferences />
+      )}
+      <AddButton to="profile/modify" />
+    </Container>
+  )
 }
 
 export default withStyles(styles)(ChosenPreferences)

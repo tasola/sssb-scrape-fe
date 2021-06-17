@@ -1,4 +1,5 @@
-import React, { Component } from 'react'
+import React from 'react'
+
 import BaseDialog from '../BaseDialog/BaseDialog.jsx'
 
 const unsubscribeDialogText = {
@@ -8,23 +9,25 @@ const unsubscribeDialogText = {
   primaryButtonLabel: 'Unsubscribe',
 }
 
-class UnsubscribeDialog extends Component {
-  render() {
-    const { handleDialogClose, openDialog, unsubscribeAction } = this.props
-    const { heading, text, secondaryButtonLabel, primaryButtonLabel } =
-      unsubscribeDialogText
-    return (
-      <BaseDialog
-        handleDialogClose={handleDialogClose}
-        openDialog={openDialog}
-        heading={heading}
-        text={text}
-        secondaryButtonLabel={secondaryButtonLabel}
-        primaryButtonLabel={primaryButtonLabel}
-        primaryAction={unsubscribeAction}
-      />
-    )
-  }
+const UnsubscribeDialog = ({
+  handleDialogClose,
+  openDialog,
+  unsubscribeAction,
+}) => {
+  const { heading, text, secondaryButtonLabel, primaryButtonLabel } =
+    unsubscribeDialogText
+
+  return (
+    <BaseDialog
+      handleDialogClose={handleDialogClose}
+      openDialog={openDialog}
+      heading={heading}
+      text={text}
+      secondaryButtonLabel={secondaryButtonLabel}
+      primaryButtonLabel={primaryButtonLabel}
+      primaryAction={unsubscribeAction}
+    />
+  )
 }
 
 export default UnsubscribeDialog

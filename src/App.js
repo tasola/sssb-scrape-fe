@@ -1,13 +1,13 @@
 import React from 'react'
 
-import { Route, Switch } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { Route, Switch } from 'react-router-dom'
 
-import ProtectedRoute from './pages/ProtectedRoute/ProtectedRoute'
-import ProfilePage from './pages/ProfilePage/ProfilePage'
-import SignUpPage from './pages/SignUpPage/SignUpPage'
 import Login from './pages/LoginPage/LoginPage'
 import ProfileModifyPage from './pages/ProfileModifyPage/ProfileModifyPage'
+import ProfilePage from './pages/ProfilePage/ProfilePage'
+import ProtectedRoute from './pages/ProtectedRoute/ProtectedRoute'
+import SignUpPage from './pages/SignUpPage/SignUpPage'
 import verifyEmailPage from './pages/VerifyEmailPage/VerifyEmailPage'
 
 import './App.css'

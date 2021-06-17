@@ -6,7 +6,7 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import ChosenPreferenceCard from 'src/components/ChosenPreferenceCard/ChosenPreferenceCard'
 
-import AddButton from '../Buttons/AddButton/AddButton'
+import AddButton from '../Buttons/AddButton/AddButton.tsx'
 import NoPreferences from '../NoPreferences/NoPreferences.jsx'
 import styles from './ChosenPreferencesStyles'
 

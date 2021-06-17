@@ -16,19 +16,18 @@ const INITIAL_STATE = {
 }
 
 export default (state = INITIAL_STATE, action) => {
-  const preferenceFetchFailed = false
   switch (action.type) {
     case FETCH_PREFERENCES_REQUEST:
       return {
         ...state,
-        preferenceFetchFailed: preferenceFetchFailed,
+        preferenceFetchFailed: false,
         isFetchingPreferences: true,
       }
     case FETCH_PREFERENCES_SUCCESS:
       return {
         ...state,
         preferences: action.payload,
-        preferenceFetchFailed: preferenceFetchFailed,
+        preferenceFetchFailed: false,
         isFetchingPreferences: false,
       }
     case FETCH_PREFERENCES_FAILURE:

@@ -23,7 +23,6 @@ const TextSelect = ({
   const handleOpen = () => setIsOpen(true)
 
   const getSelectItems = () => {
-    console.log(selectItems)
     return selectItems.map((item) => (
       <MenuItem key={item} value={item}>
         {item}

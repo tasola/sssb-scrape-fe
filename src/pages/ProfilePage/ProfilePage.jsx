@@ -1,133 +1,141 @@
-import React, { Component } from 'react'
-import { bindActionCreators } from 'redux'
+import React from 'react'
+import { useState } from 'react'
+import { useEffect } from 'react'
+
 import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 
-import { logoutUser } from '../../actions/auth/auth'
-import { fetchPreferences } from '../../actions/firebase-db/firebase-db'
 import { fetchApartmentMetaData } from '../../actions/contentful'
-
+import { fetchPreferences } from '../../actions/firebase-db/firebase-db'
 import ChosenPreferences from '../../components/ChosenPreferences/ChosenPreferences'
-
 import { range, arraysEqual } from '../../utils/utils'
 
-class ProfilePage extends Component {
-  constructor(props) {
-    super(props)
-    this.state = { isLoading: false, fetchDataIsNecessary: true }
-  }
+const ProfilePage = ({
+  actions,
+  location,
+  preferences: basePreferences,
+  user,
+  isLoggingOut,
+  preferenceFetchFailed,
+  areas,
+}) => {
+  const [isLoading, setIsLoading] = useState(false)
+  const [isFromProfileModify, setIsFromProfileModify] = useState(false)
+  const [preferences, setPreferences] = useState([])
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.preferences !== prevState.preferences) {
-      return { preferences: nextProps.preferences }
-    } else if (nextProps.areas !== prevState.areas) {
-      return { areas: nextProps.areas }
-    } else return null
-  }
-
-  async componentDidMount() {
-    const { location, preferences } = this.props
+  useEffect(() => {
     if (location.isFromProfileModify) {
-      const newPreferences = this.renderObjectFromLocationState(
-        preferences,
+      setIsFromProfileModify(true)
+    } else {
+      const { uid } = user
+      if (preferences && preferences.length) {
+        return
+      }
+
+      setIsLoading(true)
+      Promise.all([
+        actions.fetchPreferences(uid),
+        actions.fetchApartmentMetaData(),
+      ]).then(() => {
+        setPreferences(basePreferences)
+        setIsLoading(false)
+      })
+    }
+  }, [])
+
+  useEffect(() => {
+    if (isFromProfileModify) {
+      const newPreferences = renderObjectFromLocationState(
+        basePreferences,
         location.state
       )
-      this.setState({ preferences: newPreferences })
-    } else {
-      const { uid } = this.props.user
-      this.setState({ isLoading: true })
-      await this.props.actions.fetchPreferences(uid)
-      await this.props.actions.fetchApartmentMetaData()
-      this.setState({ isLoading: false })
+      setPreferences(newPreferences)
     }
-  }
+  }, [isFromProfileModify])
 
-  handleLogout = () => {
-    this.props.actions.logoutUser()
-  }
+  useEffect(() => {
+    if (!isFromProfileModify) {
+      setPreferences(basePreferences)
+    }
+  }, [basePreferences])
 
   // Modifies the state so that the application does not have to wait for
   // Firebase to load the changes from /modify
-  renderObjectFromLocationState = (preferences, locationState) => {
+  const renderObjectFromLocationState = (_preferences, locationState) => {
     let isNewArea = true
-    preferences &&
-      preferences.map((pref) => {
-        if (pref.area === locationState.area) isNewArea = false
-        return this.checkPreferenceUpdate(pref, locationState)
-      })
-    isNewArea &&
-      preferences &&
-      preferences.push({
+
+    let newPreferences = _preferences.map((preference) => {
+      if (preference.area === locationState.area) {
+        isNewArea = false
+      }
+      return checkPreferenceUpdate(preference, locationState)
+    })
+
+    if (isNewArea) {
+      newPreferences.push({
         area: locationState.area,
         floors: locationState.floor,
         types: locationState.types,
       })
+    }
 
-    this.forceUpdate()
-    return preferences
+    return newPreferences
   }
 
-  checkPreferenceUpdate = (preference, locationState) => {
+  const checkPreferenceUpdate = (preference, locationState) => {
     if (preference.area === locationState.area) {
-      this.handleFloorUpdate(preference, locationState)
-      this.handleTypeUpdate(preference, locationState)
+      handleFloorUpdate(preference, locationState)
+      handleTypeUpdate(preference, locationState)
     }
     return preference
   }
 
   // Checks if the floors have updated from /modify, and modifies state accordingly
-  handleFloorUpdate = (preference, locationState) => {
+  const handleFloorUpdate = (preference, locationState) => {
     if (preference.floors !== range(locationState.floor)) {
       preference.floors = locationState.floor
     }
   }
 
   // Checks if the types have updated from /modify, and modifies state accordingly
-  handleTypeUpdate = (preference, locationState) => {
+  const handleTypeUpdate = (preference, locationState) => {
     if (!arraysEqual(preference.types, locationState.types)) {
       preference.types = locationState.types
     }
   }
 
-  render() {
-    const { isLoading, isLoggingOut, logoutError, areas } = this.props
-    const { preferences } = this.state
-    return !isLoading ? (
-      <div>
-        {isLoggingOut && <p>Logging Out....</p>}
-        {logoutError && <p>Error logging out</p>}
-        {preferences && areas.length > 0 && (
-          <ChosenPreferences preferences={preferences} areas={areas} />
-        )}
-      </div>
-    ) : (
-      <div>Loading...</div>
-    )
-  }
+  return isLoading ? (
+    <div>Loading...</div>
+  ) : (
+    <div>
+      {isLoggingOut && <p>Logging Out....</p>}
+      {preferenceFetchFailed && (
+        <p>Error fetching preferences, please try again in a bit</p>
+      )}
+      {preferences && areas.length > 0 && (
+        <ChosenPreferences preferences={preferences} areas={areas} />
+      )}
+    </div>
+  )
 }
 
-const mapStateToProps = (state) => {
-  return {
-    isLoggingOut: state.auth.isLoggingOut,
-    logoutError: state.auth.logoutError,
-    user: state.auth.user,
-    areas: state.contentful.areas,
-    preferences: state.firebaseDb.preferences,
-    isFetchingPreferences: state.firebaseDb.isFetchingPreferences,
-    preferenceFetchFailed: state.firebaseDb.preferenceFetchFailed,
-  }
-}
+const mapStateToProps = (state) => ({
+  isLoggingOut: state.auth.isLoggingOut,
+  user: state.auth.user,
+  areas: state.contentful.areas,
+  preferences: state.firebaseDb.preferences,
+  isFetchingPreferences: state.firebaseDb.isFetchingPreferences,
+  preferenceFetchFailed: state.firebaseDb.preferenceFetchFailed,
+})
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    actions: bindActionCreators(
-      {
-        fetchPreferences,
-        fetchApartmentMetaData,
-        logoutUser,
-      },
-      dispatch
-    ),
-  }
-}
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators(
+    {
+      fetchPreferences,
+      fetchApartmentMetaData,
+    },
+    dispatch
+  ),
+})
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage)

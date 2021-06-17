@@ -1,19 +1,17 @@
 import React from 'react'
-import { Redirect } from 'react-router-dom'
+
+import Button from '@material-ui/core/Button'
+import Container from '@material-ui/core/Container'
+import Grid from '@material-ui/core/Grid'
+import { makeStyles, withStyles } from '@material-ui/core/styles'
+import Typography from '@material-ui/core/Typography'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
 
 import { verifyAuth } from '../../actions/auth/auth'
-
 import { GmailLogo } from '../../assets/email-logos/gmail.js'
 import { OutlookLogo } from '../../assets/email-logos/outlook.js'
-
-import Container from '@material-ui/core/Container'
-import Typography from '@material-ui/core/Typography'
-import Grid from '@material-ui/core/Grid'
-import Button from '@material-ui/core/Button'
-
-import { makeStyles, withStyles } from '@material-ui/core/styles'
 import styles from './VerifyEmailPageStyles'
 
 const useStyles = makeStyles((theme) => ({
@@ -29,22 +27,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const VerifyEmailPage = (props) => {
+const VerifyEmailPage = ({ actions, user, classes }) => {
+  const styles = useStyles()
+
   const goHome = async () => {
-    await props.actions.verifyAuth()
+    await actions.verifyAuth()
     window.location.reload()
   }
 
-  const goToGmail = () => {
-    window.open('https://gmail.com', '_blank')
-  }
+  const goToGmail = () => window.open('https://gmail.com', '_blank')
 
-  const goToOutlook = () => {
-    window.open('https://outlook.com', '_blank')
-  }
+  const goToOutlook = () => window.open('https://outlook.com', '_blank')
 
-  const styles = useStyles()
-  const { user, classes } = props
   return user.emailVerified ? (
     <Redirect to="/" />
   ) : (
@@ -103,22 +97,18 @@ const VerifyEmailPage = (props) => {
   )
 }
 
-const mapStateToProps = (state) => {
-  return {
-    user: state.auth.user,
-  }
-}
+const mapStateToProps = (state) => ({
+  user: state.auth.user,
+})
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    actions: bindActionCreators(
-      {
-        verifyAuth,
-      },
-      dispatch
-    ),
-  }
-}
+const mapDispatchToProps = (dispatch) => ({
+  actions: bindActionCreators(
+    {
+      verifyAuth,
+    },
+    dispatch
+  ),
+})
 
 export default withStyles(styles)(
   connect(mapStateToProps, mapDispatchToProps)(VerifyEmailPage)

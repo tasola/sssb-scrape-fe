@@ -15,22 +15,23 @@ import { Redirect, Link } from 'react-router-dom'
 
 import { loginUser } from '../../actions/auth/auth'
 import styles from './LoginPageStyles'
+import { Props, StateToProps } from './types'
 
 const Login = ({
-  dispatch,
   loginError,
   isAuthenticated,
   isLoggingIn,
+  dispatch,
   classes,
-}) => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+}: Props): JSX.Element => {
+  const [email, setEmail] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
 
-  const handleEmailChange = ({ target }) => setEmail(target.value)
+  const handleEmailChange = ({ target }): void => setEmail(target.value)
 
-  const handlePasswordChange = ({ target }) => setPassword(target.value)
+  const handlePasswordChange = ({ target }): void => setPassword(target.value)
 
-  const handleSubmit = () => dispatch(loginUser(email, password))
+  const handleSubmit = (): void => dispatch(loginUser(email, password))
 
   if (isAuthenticated) {
     return <Redirect to="/" />
@@ -86,7 +87,7 @@ const Login = ({
           )}
         </Button>
         <Typography className={classes.alreadyGotAnAccount}>
-          Don't have an account?{' '}
+          Don&apos;t have an account?{' '}
           <Link className={classes.goToSignUp} to="/sign-up">
             Sign up here
           </Link>
@@ -96,7 +97,7 @@ const Login = ({
   )
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state): StateToProps => ({
   isLoggingIn: state.auth.isLoggingIn,
   loginError: state.auth.loginError,
   isAuthenticated: state.auth.isAuthenticated,

@@ -53,8 +53,7 @@ const ProfilePage = ({
   const renderObjectFromLocationState = useCallback(
     (_preferences, locationState) => {
       let isNewArea = true
-
-      let newPreferences = _preferences.map((preference) => {
+      const newPreferences = _preferences.map((preference) => {
         if (preference.area === locationState.area) {
           isNewArea = false
         }
@@ -64,7 +63,7 @@ const ProfilePage = ({
       if (isNewArea) {
         newPreferences.push({
           area: locationState.area,
-          floors: locationState.floor,
+          floors: locationState.floors,
           types: locationState.types,
         })
       }
@@ -105,8 +104,8 @@ const ProfilePage = ({
 
   // Checks if the floors have updated from /modify, and modifies state accordingly
   const handleFloorUpdate = (preference, locationState) => {
-    if (preference.floors !== range(locationState.floor)) {
-      preference.floors = locationState.floor
+    if (preference.floors !== range(locationState.floors)) {
+      preference.floors = locationState.floors
     }
   }
 

@@ -1,8 +1,8 @@
 export type Props = {
-  selectItems: string[];
+  selectItems: string[] | number[];
   title: string;
   className: string;
-  handleChange: () => void;
-  value: string;
+  handleChange: (e) => void;
+  value: string | number;
   isDisabled: boolean;
 }

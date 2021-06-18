@@ -5,24 +5,27 @@ import { useEffect } from 'react'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { Preference } from 'src/components/ChosenPreferenceCard/types'
 import ChosenPreferences from 'src/components/ChosenPreferences/ChosenPreferences'
 
 import { fetchApartmentMetaData } from '../../actions/contentful'
 import { fetchPreferences } from '../../actions/firebase-db/firebase-db'
-import { range, arraysEqual } from '../../utils/utils'
+import { arraysEqual } from '../../utils/utils'
+import { LocationState } from '../ProfileModifyPage/types'
+import { Props, StateToProps } from './types'
 
 const ProfilePage = ({
-  actions,
   location,
   preferences: basePreferences,
   user,
   isLoggingOut,
   preferenceFetchFailed,
   areas,
-}) => {
-  const [isLoading, setIsLoading] = useState(false)
-  const [isFromProfileModify, setIsFromProfileModify] = useState(false)
-  const [preferences, setPreferences] = useState([])
+  actions,
+}: Props): JSX.Element => {
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [isFromProfileModify, setIsFromProfileModify] = useState<boolean>(false)
+  const [preferences, setPreferences] = useState<Preference[]>([])
 
   const fetchPreferences = useCallback(() => {
     const { uid } = user
@@ -40,10 +43,31 @@ const ProfilePage = ({
     })
   }, [preferences, user, actions, basePreferences])
 
+  // Checks if the floors have updated from /modify, and modifies state accordingly
+  const handleFloorUpdate = (preference: Preference, locationState: LocationState): number[] => {
+     if (!arraysEqual(preference.floors, locationState.floors)) {
+       return locationState.floors
+     }
+     return preference.floors
+  }
+
+  // Checks if the types have updated from /modify, and modifies state accordingly
+  const handleTypeUpdate = (preference: Preference, locationState: LocationState): string[] => {
+    if (!arraysEqual(preference.types, locationState.types)) {
+      return locationState.types
+    }
+    return preference.types
+  }
+
   const checkPreferenceUpdate = useCallback((preference, locationState) => {
     if (preference.area === locationState.area) {
-      handleFloorUpdate(preference, locationState)
-      handleTypeUpdate(preference, locationState)
+      const updatedFloors = handleFloorUpdate(preference, locationState)
+      const updatedTypes = handleTypeUpdate(preference, locationState)
+      return {
+        ...preference,
+        floors: updatedFloors,
+        types: updatedTypes
+      }
     }
     return preference
   }, [])
@@ -51,7 +75,7 @@ const ProfilePage = ({
   // Modifies the state so that the application does not have to wait for
   // Firebase to load the changes from /modify
   const renderObjectFromLocationState = useCallback(
-    (_preferences, locationState) => {
+    (_preferences: Preference[], locationState: LocationState) => {
       let isNewArea = true
       const newPreferences = _preferences.map((preference) => {
         if (preference.area === locationState.area) {
@@ -102,20 +126,6 @@ const ProfilePage = ({
     }
   }, [isFromProfileModify, basePreferences])
 
-  // Checks if the floors have updated from /modify, and modifies state accordingly
-  const handleFloorUpdate = (preference, locationState) => {
-    if (preference.floors !== range(locationState.floors)) {
-      preference.floors = locationState.floors
-    }
-  }
-
-  // Checks if the types have updated from /modify, and modifies state accordingly
-  const handleTypeUpdate = (preference, locationState) => {
-    if (!arraysEqual(preference.types, locationState.types)) {
-      preference.types = locationState.types
-    }
-  }
-
   return isLoading ? (
     <div>Loading...</div>
   ) : (
@@ -131,12 +141,11 @@ const ProfilePage = ({
   )
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state): StateToProps => ({
   isLoggingOut: state.auth.isLoggingOut,
   user: state.auth.user,
   areas: state.contentful.areas,
   preferences: state.firebaseDb.preferences,
-  isFetchingPreferences: state.firebaseDb.isFetchingPreferences,
   preferenceFetchFailed: state.firebaseDb.preferenceFetchFailed,
 })
 

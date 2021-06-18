@@ -19,7 +19,7 @@ export type HistoryPushObject = {
   state: LocationState;
 }
 
-type Location = {
+export type Location = {
   hash: string;
   key: string;
   pathname: string;
@@ -27,21 +27,21 @@ type Location = {
   state: LocationState;
 }
 
-type LocationState = {
+export type LocationState = {
   area: string;
   floors: number[];
   types: string[];
   areaObject?: Area | null;
 }
 
-type User = {
+export type User = {
   additionalUserInfo: AdditionalUserInfo;
   operationType: string;
   user: FirebaseUser;
   credential?: string;
 }
 
-type FirebaseUser = {
+export type FirebaseUser = {
   uid: string;
   displayName?: string;
   email: string;

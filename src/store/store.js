@@ -1,8 +1,9 @@
 import { applyMiddleware, createStore } from 'redux'
+import promise from 'redux-promise'
 import thunkMiddleware from 'redux-thunk'
+
 import { verifyAuth } from '../actions/auth/auth'
 import rootReducer from '../reducers/'
-import promise from 'redux-promise'
 
 export default function configureStore(persistedState) {
   const store = createStore(

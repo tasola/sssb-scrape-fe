@@ -6,15 +6,17 @@ import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import ChosenPreferenceCard from 'src/components/ChosenPreferenceCard/ChosenPreferenceCard'
 
-import AddButton from '../Buttons/AddButton/AddButton.tsx'
+import AddButton from '../Buttons/AddButton/AddButton'
+import { Area, Preference } from '../ChosenPreferenceCard/types'
 import NoPreferences from '../NoPreferences/NoPreferences.jsx'
 import styles from './ChosenPreferencesStyles'
+import { Props } from './types'
 
-const ChosenPreferences = ({ areas, classes, preferences }) => {
-  const getAreaObjectFromName = (areaName) =>
+const ChosenPreferences = ({ areas, preferences, classes }: Props): JSX.Element => {
+  const getAreaObjectFromName = (areaName: string): Area | undefined =>
     areas.find((area) => area.fields.title.toLowerCase() === areaName)
 
-  const sortAreaObjectsOnName = (arr) => {
+  const sortPreferencesOnName = (arr: Preference[]): Preference[] => {
     return arr.sort((a, b) => {
       if (a.area > b.area) return 1
       else if (a.area < b.area) return -1
@@ -22,11 +24,15 @@ const ChosenPreferences = ({ areas, classes, preferences }) => {
     })
   }
 
-  const getSelectItems = () => {
-    const sortedPreferences = sortAreaObjectsOnName(preferences)
+  const getSelectItems = (): JSX.Element[] | JSX.Element => {
+    const sortedPreferences = sortPreferencesOnName(preferences)
     return areas ? (
       sortedPreferences.map((preference, index) => {
         const areaObject = getAreaObjectFromName(preference.area.toLowerCase())
+        if (!areaObject) {
+          return <></>
+        }
+        
         return (
           <ChosenPreferenceCard
             preference={preference}
@@ -43,7 +49,6 @@ const ChosenPreferences = ({ areas, classes, preferences }) => {
 
   return (
     <Container
-      className={classes.chosenPreferences}
       component="main"
       maxWidth="md"
     >

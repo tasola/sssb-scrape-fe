@@ -4,11 +4,12 @@ import { withStyles } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
 
 import styles from './NoPreferencesStyles'
+import { Props } from './types'
 
-const NoPreferences = ({ classes }) => (
+const NoPreferences = ({ classes }: Props): JSX.Element => (
   <div className={classes.noPreferences}>
     <Typography variant="h6" color="textPrimary" component="h4">
-      You don't have any subscriptions... <br /> Add one below!
+      You don&apos;t have any subscriptions... <br /> Add one below!
     </Typography>
   </div>
 )

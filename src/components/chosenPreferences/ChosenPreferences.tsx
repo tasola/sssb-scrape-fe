@@ -8,7 +8,7 @@ import ChosenPreferenceCard from 'src/components/ChosenPreferenceCard/ChosenPref
 
 import AddButton from '../Buttons/AddButton/AddButton'
 import { Area, Preference } from '../ChosenPreferenceCard/types'
-import NoPreferences from '../NoPreferences/NoPreferences.jsx'
+import NoPreferences from '../NoPreferences/NoPreferences'
 import styles from './ChosenPreferencesStyles'
 import { Props } from './types'
 

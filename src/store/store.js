@@ -5,7 +5,7 @@ import thunkMiddleware from 'redux-thunk'
 import { verifyAuth } from '../actions/auth/auth'
 import rootReducer from '../reducers/'
 
-export default function configureStore(persistedState) {
+const configureStore = (persistedState) => {
   const store = createStore(
     rootReducer,
     persistedState,
@@ -14,3 +14,5 @@ export default function configureStore(persistedState) {
   store.dispatch(verifyAuth())
   return store
 }
+
+export default configureStore

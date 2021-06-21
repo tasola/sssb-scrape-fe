@@ -1,3 +1,5 @@
+import { Preference } from 'src/components/ChosenPreferenceCard/types'
+
 import {
   FETCH_PREFERENCES_REQUEST,
   FETCH_PREFERENCES_SUCCESS,
@@ -9,13 +11,23 @@ import {
 
 const INITIAL_STATE = {
   areas: [],
+  preferences: [],
   preferenceFetchFailed: false,
   isFetchingPreferences: false,
   isRemovingPreference: false,
   preferenceRemovalFailed: false,
 }
 
-export default (state = INITIAL_STATE, action) => {
+type State = {
+  areas: string[];
+  preferences: Preference[];
+  preferenceFetchFailed: boolean;
+  isFetchingPreferences: boolean;
+  isRemovingPreference: boolean;
+  preferenceRemovalFailed: boolean;
+}
+
+export default (state = INITIAL_STATE, action): State => {
   switch (action.type) {
     case FETCH_PREFERENCES_REQUEST:
       return {

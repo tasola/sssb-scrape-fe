@@ -15,7 +15,7 @@ const ProtectedRoute = ({
   return (
     <Route
       {...rest}
-      render={(props): JSX.Element =>
+      render={(props): React.ReactNode =>
         isVerifying ? (
           <div />
         ) : !isEmailVerified && isEmailVerified !== undefined ? (

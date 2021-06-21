@@ -1,3 +1,5 @@
+import { FirebaseUser } from 'src/pages/ProfileModifyPage/types'
+
 import {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
@@ -9,6 +11,17 @@ import {
   VERIFY_SUCCESS,
 } from '../actions/auth/types'
 
+type State = {
+  isLoggingIn: boolean;
+  isLoggingOut: boolean;
+  isVerifying: boolean;
+  loginError: boolean;
+  logoutError: boolean;
+  isAuthenticated: boolean;
+  verifyingError: boolean;
+  user: FirebaseUser | {};
+}
+
 export default (
   state = {
     isLoggingIn: false,
@@ -16,11 +29,12 @@ export default (
     isVerifying: false,
     loginError: false,
     logoutError: false,
+    verifyingError: false,
     isAuthenticated: false,
     user: {},
   },
   action
-) => {
+): State => {
   switch (action.type) {
     case LOGIN_REQUEST:
       return {

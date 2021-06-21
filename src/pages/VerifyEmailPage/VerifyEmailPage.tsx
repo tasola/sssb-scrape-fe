@@ -12,6 +12,7 @@ import { bindActionCreators } from 'redux'
 import { verifyAuth } from '../../actions/auth/auth'
 import { GmailLogo } from '../../assets/email-logos/gmail.js'
 import { OutlookLogo } from '../../assets/email-logos/outlook.js'
+import { Props, StateToProps } from './types'
 import styles from './VerifyEmailPageStyles'
 
 const useStyles = makeStyles((theme) => ({
@@ -27,17 +28,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const VerifyEmailPage = ({ actions, user, classes }) => {
+const VerifyEmailPage = ({ user, actions, classes }: Props): JSX.Element => {
   const styles = useStyles()
 
-  const goHome = async () => {
+  const goHome = async (): Promise<void> => {
     await actions.verifyAuth()
     window.location.reload()
   }
 
-  const goToGmail = () => window.open('https://gmail.com', '_blank')
+  const goToGmail = (): void => {
+    window.open('https://gmail.com', '_blank')
+  }
 
-  const goToOutlook = () => window.open('https://outlook.com', '_blank')
+  const goToOutlook = (): void => {
+    window.open('https://outlook.com', '_blank')
+  }
 
   return user.emailVerified ? (
     <Redirect to="/" />
@@ -64,7 +69,7 @@ const VerifyEmailPage = ({ actions, user, classes }) => {
                 variant="contained"
                 color="primary"
                 onClick={goToGmail}
-                className={`${classes.verifyEmailButton} ${classes.gmail}`}
+                className={classes.gmail}
               >
                 <GmailLogo className={classes.svg} />
                 Gmail
@@ -75,7 +80,7 @@ const VerifyEmailPage = ({ actions, user, classes }) => {
                 variant="contained"
                 color="primary"
                 onClick={goToOutlook}
-                className={`${classes.verifyEmailButton} ${classes.outlook}`}
+                className={classes.outlook}
               >
                 <OutlookLogo className={classes.svg} />
                 Outlook
@@ -97,7 +102,7 @@ const VerifyEmailPage = ({ actions, user, classes }) => {
   )
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state): StateToProps => ({
   user: state.auth.user,
 })
 

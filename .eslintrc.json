@@ -7,6 +7,7 @@
         "plugin:import/typescript"
       ],
     "env": {
+        "browser": true,
         "node": true,
         "es6": true
     },
@@ -27,6 +28,7 @@
         "quotes": ["error", "single"],
         "semi": ["error", "never"],
         "no-multi-spaces": ["error"],
+        "no-use-before-define": ["error", { "variables": false }],
         "import/order": [
             "error",
             {

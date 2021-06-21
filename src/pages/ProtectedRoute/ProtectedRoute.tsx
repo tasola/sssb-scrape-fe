@@ -3,17 +3,19 @@ import React from 'react'
 import { Route, Redirect } from 'react-router-dom'
 import Navbar from 'src/components/Navbar/Navbar'
 
+import { Props } from './types'
+
 const ProtectedRoute = ({
   component: Component,
   isAuthenticated,
   isVerifying,
   isEmailVerified,
   ...rest
-}) => {
+}: Props): JSX.Element => {
   return (
     <Route
       {...rest}
-      render={(props) =>
+      render={(props): JSX.Element =>
         isVerifying ? (
           <div />
         ) : !isEmailVerified && isEmailVerified !== undefined ? (

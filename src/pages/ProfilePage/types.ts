@@ -3,7 +3,7 @@ import { HistoryPushObject, FirebaseUser } from 'src/pages/ProfileModifyPage/typ
 
 export type Props = StateToProps & {
   location: HistoryPushObject;
-  actions: Actions;
+  actions: ProfilePageActions;
 }
 
 export type StateToProps = {
@@ -14,7 +14,7 @@ export type StateToProps = {
   preferenceFetchFailed: boolean;
 }
 
-type Actions = {
+type ProfilePageActions = {
   fetchPreferences: (uid: string) => void;
   fetchApartmentMetaData: () => void;
 }

@@ -3,9 +3,9 @@ import { Area } from 'src/components/ChosenPreferenceCard/types'
 
 import styles from './ProfileModifyPageStyles'
 
-export type Props = StateToProps & WithStyles<typeof styles> & StateToProps & {
+export type Props = StateToProps & WithStyles<typeof styles> & {
   location: Location;
-  actions: Actions;
+  actions: ProfileModifyPageActions;
 }
 
 export type StateToProps = {
@@ -59,7 +59,7 @@ type AdditionalUserInfo = {
   providerId: string;
 }
 
-type Actions = {
+type ProfileModifyPageActions = {
   fetchApartmentMetaData: () => void;
   modifyProfile: (user: User, chosenArea: string, chosenFloorRange: number[], chosenTypes: string[]) => void;
   removePreferenceFromDb: (user: User, chosenArea: string) => void;

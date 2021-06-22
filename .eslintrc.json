@@ -28,7 +28,8 @@
         "quotes": ["error", "single"],
         "semi": ["error", "never"],
         "no-multi-spaces": ["error"],
-        "no-use-before-define": ["error", { "variables": false }],
+        "no-use-before-define": "off",
+        "@typescript-eslint/no-use-before-define": ["error", { "variables": false, "functions": false }],
         "import/order": [
             "error",
             {

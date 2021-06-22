@@ -1,4 +1,4 @@
-import { getClient } from '../contentful/contenful'
+import { getClient } from '../contentful/contentful'
 
 export const FETCH_APARTMENT_META_DATA = 'FETCH_APARTMENT_META_DATA'
 

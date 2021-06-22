@@ -1,7 +1,7 @@
-export const capitalizeFirstLetter = (string) =>
+export const capitalizeFirstLetter = (string: string): string =>
   string && string.charAt(0).toUpperCase() + string.slice(1)
 
-export const anglifySwedishLetters = (string) => {
+export const anglifySwedishLetters = (string: string): string => {
   return string
     .split('')
     .map((l) => {
@@ -21,28 +21,24 @@ export const arraysEqual = (a, b) => {
   a.sort()
   b.sort()
 
-  for (var i = 0; i < a.length; ++i) {
+  for (let i = 0; i < a.length; ++i) {
     if (a[i] !== b[i]) return false
   }
   return true
 }
 
-export const range = (start, stop, step) => {
+export const range = (start: number, stop?: number, step = 1): number[] => {
   if (typeof stop == 'undefined') {
     stop = start
     start = 0
-  }
-
-  if (typeof step == 'undefined') {
-    step = 1
   }
 
   if ((step > 0 && start >= stop) || (step < 0 && start <= stop)) {
     return []
   }
 
-  var result = []
-  for (var i = start; step > 0 ? i < stop : i > stop; i += step) {
+  const result: number[] = []
+  for (let i = start; step > 0 ? i < stop : i > stop; i += step) {
     result.push(i)
   }
 

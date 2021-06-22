@@ -5,11 +5,13 @@ import AddIcon from '@material-ui/icons/Add'
 import { Link } from 'react-router-dom'
 
 import styles from './AddButtonStyles'
+import { Props } from './types'
 
-const AddButton = (props) => {
+
+const AddButton = ({ to, classes }: Props): JSX.Element => {
   return (
-    <Link to={props.to} style={{ textDecoration: 'none', color: 'inherit' }}>
-      <button className={props.classes.addButton}>
+    <Link to={to} style={{ textDecoration: 'none', color: 'inherit' }}>
+      <button className={classes.addButton}>
         <AddIcon />
       </button>
     </Link>

@@ -12,14 +12,20 @@ import { Link } from 'react-router-dom'
 
 import { anglifySwedishLetters, capitalizeFirstLetter } from '../../utils/utils'
 import styles from './ChosenPreferenceCardStyles'
+import { Area, Preference, Props } from './types'
 
-const ChosenPreferenceCard = ({ preference, areaObject, id, classes }) => {
-  const getImageUrl = (areaObject) =>
+const ChosenPreferenceCard = ({
+  preference,
+  areaObject,
+  id,
+  classes,
+}: Props): JSX.Element => {
+  const getImageUrl = (areaObject: Area): string =>
     'https:' + areaObject.fields.image.fields.file.url
 
-  const getAreaDescription = (areaObject) => areaObject.fields.description
+  const getAreaDescription = (areaObject: Area): string => areaObject.fields.description
 
-  const getFloorsOfInterestText = (preference) => {
+  const getFloorsOfInterestText = (preference: Preference): string => {
     return preference.floors.length > 1
       ? `Floors of interest: ${preference.floors[0]} - ${
           preference.floors[preference.floors.length - 1]
@@ -27,7 +33,7 @@ const ChosenPreferenceCard = ({ preference, areaObject, id, classes }) => {
       : `Floor of interest: ${preference.floors[0]}`
   }
 
-  const generateCollapsableDescription = (description) => {
+  const generateCollapsableDescription = (description: string): JSX.Element => {
     const preview = description.substr(0, 150)
     const rest = description.substr(150, description.length)
     return (
@@ -39,22 +45,24 @@ const ChosenPreferenceCard = ({ preference, areaObject, id, classes }) => {
     )
   }
 
-  const showMore = () => {
+  const showMore = (): void => {
     const dots = document.getElementById(`dots${id}`)
     const rest = document.getElementsByClassName(`rest${id}`)[0]
     const buttonText = document.getElementById(`readMoreButton${id}`)
-    if (dots.style.display === 'none') {
-      dots.style.display = 'inline'
-      buttonText.innerHTML = 'Read more'
-      rest.style.display = 'none'
-    } else {
-      dots.style.display = 'none'
-      buttonText.innerHTML = 'Read less'
-      rest.style.display = 'inline'
+    if (buttonText && rest instanceof HTMLElement) {
+      if (dots?.style.display === 'none') {
+        dots.style.display = 'inline'
+        buttonText.innerHTML = 'Read more'
+        rest.style.display = 'none'
+      } else if (dots) {
+        dots.style.display = 'none'
+        buttonText.innerHTML = 'Read less'
+        rest.style.display = 'inline'
+      }
     }
   }
 
-  const navigateToSssb = (areaObject) => {
+  const navigateToSssb = (areaObject: Area): void => {
     let area =
       areaObject.fields.title === 'Hugin' || areaObject.fields.title === 'Munin'
         ? 'hugin-munin'
@@ -108,7 +116,7 @@ const ChosenPreferenceCard = ({ preference, areaObject, id, classes }) => {
             size="small"
             color="primary"
             className={classes.toSssbButton}
-            onClick={() => navigateToSssb(areaObject)}
+            onClick={(): void => navigateToSssb(areaObject)}
           >
             See more at SSSB
           </Button>

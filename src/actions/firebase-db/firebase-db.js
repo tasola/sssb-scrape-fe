@@ -70,7 +70,7 @@ export const fetchPreferences = (userId) => async (dispatch) => {
   }
 }
 
-export const removePrefenceFromDb = (user, area) => async (dispatch) => {
+export const removePreferenceFromDb = (user, area) => async (dispatch) => {
   dispatch(requestPreferenceRemoval())
   try {
     await db

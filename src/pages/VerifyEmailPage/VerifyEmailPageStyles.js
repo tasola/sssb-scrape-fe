@@ -1,24 +1,25 @@
-import { GmailLogo } from '../../assets/email-logos/gmail'
+import createStyles from '@material-ui/styles/createStyles'
 
-const styles = () => ({
-  verifyEmail: {
-    backgroundColor: '#f5f5f5',
-  },
-  button: {
-    marginRight: 10,
-  },
-  gmail: {
-    backgroundColor: '#de5246',
-    '&:hover': {
-      backgroundColor: '#de2818',
+const styles = () =>
+  createStyles({
+    verifyEmail: {
+      backgroundColor: '#f5f5f5',
     },
-  },
-  outlook: {
-    backgroundColor: '#0072c6',
-  },
-  svg: {
-    marginRight: 10,
-  },
-})
+    button: {
+      marginRight: 10,
+    },
+    gmail: {
+      backgroundColor: '#de5246',
+      '&:hover': {
+        backgroundColor: '#de2818',
+      },
+    },
+    outlook: {
+      backgroundColor: '#0072c6',
+    },
+    svg: {
+      marginRight: 10,
+    },
+  })
 
 export default styles

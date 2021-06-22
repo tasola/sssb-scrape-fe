@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { useState } from 'react'
 
 import Avatar from '@material-ui/core/Avatar'
@@ -15,38 +15,39 @@ import { Redirect, Link } from 'react-router-dom'
 
 import { signUpUser } from '../../actions/auth/auth'
 import styles from './SignUpPageStyles'
+import { Props, StateToProps } from './types'
 
 const SignUpPage = ({
-  dispatch,
   loginError,
   isAuthenticated,
   user,
   isLoggingIn,
+  dispatch,
   classes,
-}) => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [passwordVerification, setPasswordVerification] = useState('')
-  const [passwordsMatch, setPasswordsMatch] = useState(false)
-  const [hasCheckedPasswords, setHasCheckedPasswords] = useState(false)
+}: Props): JSX.Element => {
+  const [email, setEmail] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
+  const [passwordVerification, setPasswordVerification] = useState<string>('')
+  const [passwordsMatch, setPasswordsMatch] = useState<boolean>(false)
+  const [hasCheckedPasswords, setHasCheckedPasswords] = useState<boolean>(false)
 
-  const handleEmailChange = ({ target }) => setEmail(target.value)
+  const handleEmailChange = ({ target }): void => setEmail(target.value)
 
-  const handlePasswordChange = ({ target }) => setPassword(target.value)
+  const handlePasswordChange = ({ target }): void => setPassword(target.value)
 
-  const handlePasswordVerificationChange = ({ target }) =>
+  const handlePasswordVerificationChange = ({ target }): void =>
     setPasswordVerification(target.value)
 
-  const handleSubmit = () => {
-    if (!passwordMatches()) return
-    dispatch(signUpUser(email, password))
-  }
-
-  const passwordMatches = () => {
+  const passwordMatches = (): boolean => {
     const _passwordsMatch = password === passwordVerification
     setPasswordsMatch(_passwordsMatch)
     setHasCheckedPasswords(true)
     return _passwordsMatch
+  }
+
+  const handleSubmit = (): void => {
+    if (!passwordMatches()) return
+    dispatch(signUpUser(email, password))
   }
 
   if (isAuthenticated && user.emailVerified) {
@@ -99,7 +100,7 @@ const SignUpPage = ({
           )}
           {hasCheckedPasswords && !passwordsMatch && (
             <Typography component="p" className={classes.errorText}>
-              Passwords don't match
+              Passwords don&apos;t match
             </Typography>
           )}
           <Button
@@ -131,7 +132,7 @@ const SignUpPage = ({
   }
 }
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state): StateToProps => ({
   isLoggingIn: state.auth.isLoggingIn,
   loginError: state.auth.loginError,
   isAuthenticated: state.auth.isAuthenticated,

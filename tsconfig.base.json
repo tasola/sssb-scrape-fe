@@ -1,0 +1,69 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "jsx": "preserve",
+    "lib": [
+      "dom",
+      "esnext"
+    ],
+    "module": "esnext",
+    "noEmit": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "strict": true,
+    "target": "esnext",
+    "allowJs": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noImplicitAny": false,
+    "allowSyntheticDefaultImports": true,
+    "paths": {
+      "src/*": ["src/*"]
+    }
+  },
+  "import/order": [
+    "error",
+    {
+      "groups": [
+        "builtin",
+        "external",
+        "internal",
+        [
+          "parent",
+          "sibling"
+        ]
+      ],
+      "pathGroups": [
+        {
+          "pattern": "react",
+          "group": "external",
+          "position": "before"
+        },
+        {
+          "pattern": "@components/**",
+          "group": "internal"
+        }
+      ],
+      "pathGroupsExcludedImportTypes": [
+        "react",
+        "builtin"
+      ],
+      "newlines-between": "always",
+      "alphabetize": {
+        "order": "asc",
+        "caseInsensitive": true
+      }
+    }
+  ],
+  "exclude": [
+    "node_modules",
+    "**/node_modules/*"
+  ],
+  "include": [
+    "src"
+  ]
+}

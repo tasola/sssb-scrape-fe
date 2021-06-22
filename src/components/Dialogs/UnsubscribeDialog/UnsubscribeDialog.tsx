@@ -1,6 +1,7 @@
 import React from 'react'
 
-import BaseDialog from '../BaseDialog/BaseDialog.jsx'
+import BaseDialog from '../BaseDialog/BaseDialog'
+import { Props } from './types'
 
 const unsubscribeDialogText = {
   heading: 'Do you really want to unsubscribe?',
@@ -13,7 +14,7 @@ const UnsubscribeDialog = ({
   handleDialogClose,
   openDialog,
   unsubscribeAction,
-}) => {
+}: Props): JSX.Element => {
   const { heading, text, secondaryButtonLabel, primaryButtonLabel } =
     unsubscribeDialogText
 

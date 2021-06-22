@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { useState } from 'react'
 
 import FormControl from '@material-ui/core/FormControl'
@@ -7,6 +7,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Select from '@material-ui/core/Select'
 
 import { capitalizeFirstLetter } from '../../utils/utils'
+import { Props } from './types'
 
 const TextSelect = ({
   selectItems,
@@ -15,14 +16,14 @@ const TextSelect = ({
   handleChange,
   value,
   isDisabled,
-}) => {
-  const [isOpen, setIsOpen] = useState(false)
+}: Props): JSX.Element => {
+  const [isOpen, setIsOpen] = useState<boolean>(false)
 
-  const handleClose = () => setIsOpen(false)
+  const handleClose = (): void => setIsOpen(false)
 
-  const handleOpen = () => setIsOpen(true)
+  const handleOpen = (): void => setIsOpen(true)
 
-  const getSelectItems = () => {
+  const getSelectItems = (): JSX.Element[] => {
     return selectItems.map((item) => (
       <MenuItem key={item} value={item}>
         {item}

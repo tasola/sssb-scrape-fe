@@ -12,11 +12,12 @@ import { connect } from 'react-redux'
 import { useLocation } from 'react-router'
 import { Link } from 'react-router-dom'
 import { bindActionCreators } from 'redux'
+import logo from 'src/assets/favicon.ico'
 
 import { logoutUser } from '../../actions/auth/auth'
-import logo from '../../assets/favicon.ico'
 import { pathnameDict } from '../../utils/pathname-dict'
 import styles from './NavbarStyles'
+import { Props, StateToProps } from './types'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,19 +31,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Navbar = ({ actions, username, userEmail, classes }) => {
+const Navbar = ({ username, userEmail, actions, classes }: Props): JSX.Element => {
   const [anchorEl, setAnchorEl] = useState(null)
 
   const styles = useStyles()
   const location = useLocation()
 
-  const handleMenu = (event) => setAnchorEl(event.currentTarget)
+  const handleMenu = (event): void => {
+    event.preventDefault()
+    setAnchorEl(event.currentTarget)
+  }
 
-  const handleClose = () => setAnchorEl(null)
+  const handleClose = (): void => setAnchorEl(null)
 
-  const handleLogout = () => actions.logoutUser()
+  const handleLogout = (): void => actions.logoutUser()
 
-  const displayUsername = () => {
+  const displayUsername = (): string => {
     if (username) {
       return username
     } else if (userEmail) {
@@ -108,7 +112,7 @@ const Navbar = ({ actions, username, userEmail, classes }) => {
   )
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state): StateToProps => {
   return {
     userEmail: state.auth.user.email || state.auth.user.user.email,
   }

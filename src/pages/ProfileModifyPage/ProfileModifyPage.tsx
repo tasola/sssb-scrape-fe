@@ -6,22 +6,21 @@ import Button from '@material-ui/core/Button'
 import Container from '@material-ui/core/Container'
 import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/styles'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { bindActionCreators } from 'redux'
-import { Area } from 'src/components/ChosenPreferenceCard/types'
+import { fetchApartmentMetaData } from 'src/redux/functions/contentful'
+import { removePreferenceFromDb, modifyProfile } from 'src/redux/functions/user'
+import { Area } from 'src/redux/slices/contentful/types'
+import { RootState } from 'src/redux/store/store'
 
-import { modifyProfile } from '../../actions'
-import { fetchApartmentMetaData } from '../../actions/contentful'
-import { removePreferenceFromDb } from '../../actions/firebase-db/firebase-db'
 import CheckboxGroup from '../../components/Checkbox/CheckboxGroup/CheckboxGroup'
 import UnsubscribeDialog from '../../components/Dialogs/UnsubscribeDialog/UnsubscribeDialog'
 import TextSelect from '../../components/TextSelect/TextSelect'
 import { range, capitalizeFirstLetter } from '../../utils/utils'
 import styles from './ProfileModifyPageStyles'
-import { Props, StateToProps, HistoryPushObject } from './types'
+import { Props, HistoryPushObject } from './types'
 
-const ProfileModifyPage = ({ areas, user, location, actions, classes }: Props): JSX.Element => {
+const ProfileModifyPage = ({ location, classes }: Props): JSX.Element => {
   const [chosenArea, setChosenArea] = useState<string>('')
   const [maxFloor, setMaxFloor] = useState<number | undefined>(undefined)
   const [chosenFloor, setChosenFloor] = useState<number | null>(null)
@@ -31,6 +30,9 @@ const ProfileModifyPage = ({ areas, user, location, actions, classes }: Props): 
   const [openDialog, setOpenDialog] = useState<boolean>(false)
   const [availableTypes, setAvailableTypes] = useState<string[]>([])
   const [checkedItems, setCheckedItems] = useState<Map<string, boolean>>(new Map())
+
+  const { areas } = useSelector((state: RootState) => state.contentful)
+  const { user } = useSelector((state: RootState) => state.auth)
 
   const history = useHistory()
 
@@ -89,7 +91,7 @@ const ProfileModifyPage = ({ areas, user, location, actions, classes }: Props): 
   }
 
   useEffect(() => {
-    actions.fetchApartmentMetaData()
+    fetchApartmentMetaData()
     if (location?.state) {
       const { area, floors, types } = location.state
       setupStateFromLinkLocation(area, floors[0], types)
@@ -137,7 +139,7 @@ const ProfileModifyPage = ({ areas, user, location, actions, classes }: Props): 
   const handleDialogClose = (): void => setOpenDialog(false)
 
   const handleRemove = async (): Promise<void> => {
-    await actions.removePreferenceFromDb(user, chosenArea)
+    await removePreferenceFromDb(user, chosenArea)
     handleDialogClose()
     goHome()
   }
@@ -162,7 +164,7 @@ const ProfileModifyPage = ({ areas, user, location, actions, classes }: Props): 
     const chosenAreaToLowerCase = chosenArea.toLowerCase()
     const _chosenFloorRange = setFloorRange(chosenFloorRange)
 
-    actions.modifyProfile(user, chosenArea, _chosenFloorRange, chosenTypes)
+    modifyProfile(user, chosenArea, _chosenFloorRange, chosenTypes)
 
     const historyPushObject = {
       pathname: '/',
@@ -256,22 +258,4 @@ const ProfileModifyPage = ({ areas, user, location, actions, classes }: Props): 
   )
 }
 
-const mapStateToProps = (state): StateToProps => ({
-  user: state.auth.user,
-  areas: state.contentful.areas,
-})
-
-const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators(
-    {
-      fetchApartmentMetaData,
-      modifyProfile,
-      removePreferenceFromDb,
-    },
-    dispatch
-  ),
-})
-
-export default withStyles(styles)(
-  connect(mapStateToProps, mapDispatchToProps)(ProfileModifyPage)
-)
+export default withStyles(styles)(ProfileModifyPage)

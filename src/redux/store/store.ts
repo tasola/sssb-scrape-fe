@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { applyMiddleware, combineReducers, createStore } from 'redux'
+import { combineReducers } from 'redux'
 import { persistReducer } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import promise from 'redux-promise'
@@ -9,23 +9,14 @@ import contentfulReducer from 'src/redux/slices/contentful/contentful'
 import userReducer from 'src/redux/slices/user/user'
 
 import { verifyAuth } from '../../actions/auth/auth'
-import rootReducer from '../../reducers'
-
-// const configureStore = (persistedState) => {
-//   const store = createStore(
-//     rootReducer,
-//     persistedState,
-//     applyMiddleware(thunkMiddleware, promise)
-//   )
-//   store.dispatch(verifyAuth())
-//   return store
-// }
 
 const reducers = combineReducers({
-  authReducer,
-  contentfulReducer,
-  userReducer,
+  auth: authReducer,
+  contentful: contentfulReducer,
+  user: userReducer,
 })
+
+export type RootState = ReturnType<typeof reducers>
 
 const persistConfig = {
   key: 'root',

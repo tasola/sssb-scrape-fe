@@ -1,5 +1,6 @@
 import { WithStyles } from '@material-ui/core'
-import { Area } from 'src/components/ChosenPreferenceCard/types'
+import { User as FirebaseUser } from 'src/redux/slices/auth/types'
+import { Area } from 'src/redux/slices/contentful/types'
 
 import styles from './ProfileModifyPageStyles'
 
@@ -39,19 +40,6 @@ export type User = {
   operationType: string;
   user: FirebaseUser;
   credential?: string;
-}
-
-export type FirebaseUser = {
-  uid: string;
-  displayName?: string;
-  email: string;
-  refreshToken: string;
-  emailVerified: boolean;
-  isAnonymous: boolean;
-  metadata: {
-    creationTime: string;
-    lastSignInTime: string;
-  };
 }
 
 type AdditionalUserInfo = {

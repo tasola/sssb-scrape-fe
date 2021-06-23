@@ -1,19 +1,22 @@
-import { createSlice } from '@reduxjs/toolkit'
-import { getClient } from 'src/contentful/contentful'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+
+import { InitialState, Area } from './types'
+
+const initialState: InitialState = {
+  areas: [],
+  isFetchingAreas: false,
+  fetchingAreasSucceeded: false,
+  fetchingAreasFailed: false
+}
 
 export const slice = createSlice({
   name: 'areas',
-  initialState: {
-    areas: [],
-    isFetchingAreas: false,
-    fetchingAreasSucceeded: false,
-    fetchingAreasFailed: false
-  },
+  initialState,
   reducers: {
     requestAreas: (state): void => {
       state.isFetchingAreas = true
     },
-    receiveAreas: (state, action): void => {
+    receiveAreas: (state, action: PayloadAction<Area[]>): void => {
       state.areas = action.payload
       state.isFetchingAreas = false
       state.fetchingAreasSucceeded = true
@@ -28,17 +31,5 @@ export const slice = createSlice({
 })
 
 export const { requestAreas, receiveAreas, areasFetchFailed } = slice.actions
-
-export const fetchApartmentMetaData = () => async (dispatch): Promise<void> => {
-  dispatch(requestAreas())
-  try {
-    const client = await getClient()
-    const res = await client.getEntries()
-    dispatch(receiveAreas(res))
-  } catch (error) {
-    console.error('Failed to fetch areas from Contentful')
-    dispatch(areasFetchFailed())
-  }
-}
 
 export default slice.reducer

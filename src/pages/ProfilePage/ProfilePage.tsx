@@ -3,29 +3,27 @@ import { useCallback } from 'react'
 import { useState } from 'react'
 import { useEffect } from 'react'
 
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import { Preference } from 'src/components/ChosenPreferenceCard/types'
+import { useSelector } from 'react-redux'
 import ChosenPreferences from 'src/components/ChosenPreferences/ChosenPreferences'
+import { fetchApartmentMetaData } from 'src/redux/functions/contentful'
+import { fetchPreferences as fetchUserPreferences } from 'src/redux/functions/user'
+import { Preference } from 'src/redux/slices/user/types'
+import { RootState } from 'src/redux/store/store'
 
-import { fetchApartmentMetaData } from '../../actions/contentful'
-import { fetchPreferences } from '../../actions/firebase-db/firebase-db'
+
 import { arraysEqual } from '../../utils/utils'
 import { LocationState } from '../ProfileModifyPage/types'
-import { Props, StateToProps } from './types'
+import { Props } from './types'
 
-const ProfilePage = ({
-  location,
-  preferences: basePreferences,
-  user,
-  isLoggingOut,
-  preferenceFetchFailed,
-  areas,
-  actions,
-}: Props): JSX.Element => {
+
+const ProfilePage = ({ location }: Props): JSX.Element => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isFromProfileModify, setIsFromProfileModify] = useState<boolean>(false)
   const [preferences, setPreferences] = useState<Preference[]>([])
+
+  const { user, isLoggingOut } = useSelector((state: RootState) => state.auth)
+  const { preferences: basePreferences, preferencesFetchFailed } = useSelector((state: RootState) => state.user)
+  const { areas } = useSelector((state: RootState) => state.contentful)
 
   const fetchPreferences = useCallback(() => {
     const { uid } = user
@@ -35,13 +33,13 @@ const ProfilePage = ({
 
     setIsLoading(true)
     Promise.all([
-      actions.fetchPreferences(uid),
-      actions.fetchApartmentMetaData(),
+      fetchUserPreferences(uid),
+      fetchApartmentMetaData(),
     ]).then(() => {
       setPreferences(basePreferences)
       setIsLoading(false)
     })
-  }, [preferences, user, actions, basePreferences])
+  }, [preferences, user, basePreferences])
 
   // Checks if the floors have updated from /modify, and modifies state accordingly
   const handleFloorUpdate = (preference: Preference, locationState: LocationState): number[] => {
@@ -131,7 +129,7 @@ const ProfilePage = ({
   ) : (
     <div>
       {isLoggingOut && <p>Logging Out....</p>}
-      {preferenceFetchFailed && (
+      {preferencesFetchFailed && (
         <p>Error fetching preferences, please try again in a bit</p>
       )}
       {preferences && areas.length > 0 && (
@@ -141,22 +139,4 @@ const ProfilePage = ({
   )
 }
 
-const mapStateToProps = (state): StateToProps => ({
-  isLoggingOut: state.auth.isLoggingOut,
-  user: state.auth.user,
-  areas: state.contentful.areas,
-  preferences: state.firebaseDb.preferences,
-  preferenceFetchFailed: state.firebaseDb.preferenceFetchFailed,
-})
-
-const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators(
-    {
-      fetchPreferences,
-      fetchApartmentMetaData,
-    },
-    dispatch
-  ),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(ProfilePage)
+export default (ProfilePage)

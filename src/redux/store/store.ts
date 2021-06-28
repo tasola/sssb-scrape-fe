@@ -1,16 +1,25 @@
-import { configureStore } from '@reduxjs/toolkit'
+import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit'
 import { combineReducers } from 'redux'
-import { persistReducer } from 'redux-persist'
+import { persistReducer,
+  persistStore,
+  FLUSH,
+  REHYDRATE,
+  PAUSE,
+  PERSIST,
+  PURGE,
+  REGISTER,
+ } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
-import promise from 'redux-promise'
+import promise from 'redux-promise-middleware'
 import thunkMiddleware from 'redux-thunk'
 import authReducer from 'src/redux/slices/auth/auth'
 import contentfulReducer from 'src/redux/slices/contentful/contentful'
 import userReducer from 'src/redux/slices/user/user'
 
-import { verifyAuth } from '../../actions/auth/auth'
 
-const reducers = combineReducers({
+// import { verifyAuth } from '../../actions/auth/auth'
+
+export const reducers = combineReducers({
   auth: authReducer,
   contentful: contentfulReducer,
   user: userReducer,
@@ -27,7 +36,13 @@ const persistedReducer = persistReducer(persistConfig, reducers)
 
 export const store = configureStore({
   reducer: persistedReducer,
-  middleware: [thunkMiddleware, promise],
+  middleware: getDefaultMiddleware({
+    serializableCheck: {
+      ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER], // https://redux-toolkit.js.org/usage/usage-guide#use-with-redux-persist
+    }
+  }).concat([thunkMiddleware, promise]),
 })
 
-export default configureStore
+export const persistor = persistStore(store)
+
+// export default configureStore

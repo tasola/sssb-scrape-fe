@@ -14,15 +14,18 @@ export const anglifySwedishLetters = (string: string): string => {
 
 // Sort arrays as the order of the items does not matter
 export const arraysEqual = (a, b) => {
-  if (a === b) return true
-  if (a == null || b == null) return false
-  if (a.length !== b.length) return false
+  const _a = a.slice()
+  const _b = b.slice()
 
-  a.sort()
-  b.sort()
+  if (_a === _b) return true
+  if (_a == null || _b == null) return false
+  if (_a.length !== _b.length) return false
 
-  for (let i = 0; i < a.length; ++i) {
-    if (a[i] !== b[i]) return false
+  _a.sort()
+  _b.sort()
+
+  for (let i = 0; i < _a.length; ++i) {
+    if (_a[i] !== _b[i]) return false
   }
   return true
 }

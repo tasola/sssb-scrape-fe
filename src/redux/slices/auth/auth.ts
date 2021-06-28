@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { reducers } from 'src/redux/store/store'
 
 import { InitialState, User } from './types'
 
@@ -40,6 +41,7 @@ export const slice = createSlice({
     },
     receiveLogin: (state, action): void => {
       state.user = action.payload
+
       state.isAuthenticated = true
 
       state.isLoggingIn = false

@@ -1,19 +1,13 @@
-import { Metadata, Sys } from 'contentful'
+import { Entry, Metadata, Sys } from 'contentful'
 
 export type InitialState = {
-  areas: Area[];
+  areas: Entry<Area>[];
   isFetchingAreas: boolean;
   fetchingAreasSucceeded: boolean;
   fetchingAreasFailed: boolean;
 }
 
 export type Area = {
-  fields: Fields;
-  metadata: Metadata;
-  sys: Sys;
-}
-
-type Fields = {
   address: string;
   cardinalDirection: string;
   description: string;

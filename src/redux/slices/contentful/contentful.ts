@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { Entry } from 'contentful'
 
 import { InitialState, Area } from './types'
 
 const initialState: InitialState = {
-  areas: [],
+  areas: [] as Entry<Area>[],
   isFetchingAreas: false,
   fetchingAreasSucceeded: false,
   fetchingAreasFailed: false
@@ -16,7 +17,7 @@ export const slice = createSlice({
     requestAreas: (state): void => {
       state.isFetchingAreas = true
     },
-    receiveAreas: (state, action: PayloadAction<Area[]>): void => {
+    receiveAreas: (state, action: PayloadAction<Entry<Area>[]>): void => {
       state.areas = action.payload
       state.isFetchingAreas = false
       state.fetchingAreasSucceeded = true

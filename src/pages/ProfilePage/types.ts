@@ -1,5 +1,8 @@
-import { Preference, Area } from 'src/components/ChosenPreferenceCard/types'
-import { HistoryPushObject, FirebaseUser } from 'src/pages/ProfileModifyPage/types'
+import { Entry } from 'contentful'
+import { HistoryPushObject } from 'src/pages/ProfileModifyPage/types'
+import { User as FirebaseUser } from 'src/redux/slices/auth/types'
+import { Area } from 'src/redux/slices/contentful/types'
+import { Preference } from 'src/redux/slices/user/types'
 
 export type Props = StateToProps & {
   location: HistoryPushObject;
@@ -9,7 +12,7 @@ export type Props = StateToProps & {
 export type StateToProps = {
   isLoggingOut: boolean;
   user: FirebaseUser;
-  areas: Area[];
+  areas: Entry<Area>[];
   preferences: Preference[];
   preferenceFetchFailed: boolean;
 }

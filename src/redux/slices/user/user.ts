@@ -23,13 +23,13 @@ export const slice = createSlice({
       state.isModifyingProfile = true
     },
     receiveProfileModification: (state): void => {
-      state.isModifyingProfile = false,
-      state.profileModificationSucceeded = true,
+      state.isModifyingProfile = false
+      state.profileModificationSucceeded = true
       state.profileModificationFailed = false
     },
     profileModificationFailed: (state): void => {
-      state.isModifyingProfile = false,
-      state.profileModificationSucceeded = false,
+      state.isModifyingProfile = false
+      state.profileModificationSucceeded = false
       state.profileModificationFailed = true
     },
     requestPreferences: (state): void => {
@@ -42,8 +42,8 @@ export const slice = createSlice({
       state.preferencesFetchFailed = false
     },
     preferencesFetchFailed: (state): void => {
-      state.isFetchingPreferences = false,
-      state.preferencesFetchSucceeded = false,
+      state.isFetchingPreferences = false
+      state.preferencesFetchSucceeded = false
       state.preferencesFetchFailed = true
     },
     requestPreferenceRemoval: (state): void => {

@@ -12,9 +12,9 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import { withStyles } from '@material-ui/styles'
 import { useDispatch, useSelector } from 'react-redux'
 import { Redirect, Link } from 'react-router-dom'
+import { loginUser } from 'src/redux/functions/auth'
 import { RootState } from 'src/redux/store/store'
 
-import { loginUser } from '../../actions/auth/auth'
 import styles from './LoginPageStyles'
 import { Props } from './types'
 
@@ -22,9 +22,9 @@ const Login = ({ classes }: Props): JSX.Element => {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
 
-  const { loginFailed, isAuthenticated, isLoggingIn } = useSelector((state: RootState) => state.auth)
-  
   const dispatch = useDispatch()
+
+  const { loginFailed, isAuthenticated, isLoggingIn } = useSelector((state: RootState) => state.auth)
 
   const handleEmailChange = ({ target }): void => setEmail(target.value)
 

@@ -1,6 +1,6 @@
 import { WithStyles } from '@material-ui/core'
+import { User as FirebaseUser } from 'src/redux/slices/auth/types'
 
-import { FirebaseUser } from '../ProfileModifyPage/types'
 import styles from './VerifyEmailPageStyles'
 
 export type Props = StateToProps & WithStyles<typeof styles> & {

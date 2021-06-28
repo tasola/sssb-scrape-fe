@@ -1,4 +1,5 @@
 import { WithStyles } from '@material-ui/core'
+import { Entry } from 'contentful'
 import { User as FirebaseUser } from 'src/redux/slices/auth/types'
 import { Area } from 'src/redux/slices/contentful/types'
 
@@ -10,7 +11,7 @@ export type Props = StateToProps & WithStyles<typeof styles> & {
 }
 
 export type StateToProps = {
-  areas: Area[];
+  areas: Entry<Area>[];
   user: User;
 }
 
@@ -32,7 +33,7 @@ export type LocationState = {
   area: string;
   floors: number[];
   types: string[];
-  areaObject?: Area | null;
+  areaObject?: Entry<Area> | null;
 }
 
 export type User = {

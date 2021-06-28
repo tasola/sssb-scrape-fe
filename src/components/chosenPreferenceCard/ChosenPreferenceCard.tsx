@@ -8,11 +8,14 @@ import CardContent from '@material-ui/core/CardContent'
 import CardMedia from '@material-ui/core/CardMedia'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
+import { Entry } from 'contentful'
 import { Link } from 'react-router-dom'
+import { Area } from 'src/redux/slices/contentful/types'
+import { Preference } from 'src/redux/slices/user/types'
 
 import { anglifySwedishLetters, capitalizeFirstLetter } from '../../utils/utils'
 import styles from './ChosenPreferenceCardStyles'
-import { Area, Preference, Props } from './types'
+import { Props } from './types'
 
 const ChosenPreferenceCard = ({
   preference,
@@ -20,16 +23,15 @@ const ChosenPreferenceCard = ({
   id,
   classes,
 }: Props): JSX.Element => {
-  const getImageUrl = (areaObject: Area): string =>
+  const getImageUrl = (areaObject: Entry<Area>): string =>
     'https:' + areaObject.fields.image.fields.file.url
 
-  const getAreaDescription = (areaObject: Area): string => areaObject.fields.description
+  const getAreaDescription = (areaObject: Entry<Area>): string => areaObject.fields.description
 
   const getFloorsOfInterestText = (preference: Preference): string => {
     return preference.floors.length > 1
-      ? `Floors of interest: ${preference.floors[0]} - ${
-          preference.floors[preference.floors.length - 1]
-        }`
+      ? `Floors of interest: ${preference.floors[0]} - ${preference.floors[preference.floors.length - 1]
+      }`
       : `Floor of interest: ${preference.floors[0]}`
   }
 
@@ -62,15 +64,14 @@ const ChosenPreferenceCard = ({
     }
   }
 
-  const navigateToSssb = (areaObject: Area): void => {
+  const navigateToSssb = (areaObject: Entry<Area>): void => {
     let area =
       areaObject.fields.title === 'Hugin' || areaObject.fields.title === 'Munin'
         ? 'hugin-munin'
         : areaObject.fields.title
     area = anglifySwedishLetters(area)
-    const sssbLink = `https://www.sssb.se/en/our-housing/our-areas-in-the-${
-      areaObject.fields.cardinalDirection
-    }/${area.toLowerCase()}`
+    const sssbLink = `https://www.sssb.se/en/our-housing/our-areas-in-the-${areaObject.fields.cardinalDirection
+      }/${area.toLowerCase()}`
     window.open(sssbLink, '_blank')
   }
 

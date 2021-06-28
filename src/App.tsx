@@ -1,26 +1,23 @@
 import React from 'react'
 
-import { connect } from 'react-redux'
+import { connect, useSelector } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
+import { User as FirebaseUser } from 'src/redux/slices/auth/types'
 
 import Login from './pages/LoginPage/LoginPage'
 import ProfileModifyPage from './pages/ProfileModifyPage/ProfileModifyPage'
-import { FirebaseUser } from './pages/ProfileModifyPage/types'
 import ProfilePage from './pages/ProfilePage/ProfilePage'
 import ProtectedRoute from './pages/ProtectedRoute/ProtectedRoute'
 import SignUpPage from './pages/SignUpPage/SignUpPage'
 import verifyEmailPage from './pages/VerifyEmailPage/VerifyEmailPage'
 
 import './App.css'
+import { logoutUser } from './redux/functions/auth'
+import { RootState } from './redux/store/store'
 
-type StateToProps = {
-  isAuthenticated: boolean;
-  isVerifying: boolean;
-  user: FirebaseUser;
-}
+const App = (): JSX.Element => {
+  const { user, loginFailed, isAuthenticated, isLoggingIn, isVerifying } = useSelector((state: RootState) => state.auth)
 
-
-const App = ({ isAuthenticated, isVerifying, user }: StateToProps): JSX.Element => {
   return (
     <Switch>
       <ProtectedRoute
@@ -46,12 +43,4 @@ const App = ({ isAuthenticated, isVerifying, user }: StateToProps): JSX.Element 
   )
 }
 
-const mapStateToProps = (state): StateToProps => {
-  return {
-    isAuthenticated: state.auth.isAuthenticated,
-    isVerifying: state.auth.isVerifying,
-    user: state.auth.user,
-  }
-}
-
-export default connect(mapStateToProps)(App)
+export default App

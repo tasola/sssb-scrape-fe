@@ -3,7 +3,7 @@ import { useCallback } from 'react'
 import { useState } from 'react'
 import { useEffect } from 'react'
 
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import ChosenPreferences from 'src/components/ChosenPreferences/ChosenPreferences'
 import { fetchApartmentMetaData } from 'src/redux/functions/contentful'
 import { fetchPreferences as fetchUserPreferences } from 'src/redux/functions/user'
@@ -21,9 +21,12 @@ const ProfilePage = ({ location }: Props): JSX.Element => {
   const [isFromProfileModify, setIsFromProfileModify] = useState<boolean>(false)
   const [preferences, setPreferences] = useState<Preference[]>([])
 
+  const dispatch = useDispatch()
+
   const { user, isLoggingOut } = useSelector((state: RootState) => state.auth)
   const { preferences: basePreferences, preferencesFetchFailed } = useSelector((state: RootState) => state.user)
   const { areas } = useSelector((state: RootState) => state.contentful)
+
 
   const fetchPreferences = useCallback(() => {
     const { uid } = user
@@ -33,8 +36,8 @@ const ProfilePage = ({ location }: Props): JSX.Element => {
 
     setIsLoading(true)
     Promise.all([
-      fetchUserPreferences(uid),
-      fetchApartmentMetaData(),
+      dispatch(fetchUserPreferences(uid)),
+      dispatch(fetchApartmentMetaData()),
     ]).then(() => {
       setPreferences(basePreferences)
       setIsLoading(false)
@@ -43,10 +46,10 @@ const ProfilePage = ({ location }: Props): JSX.Element => {
 
   // Checks if the floors have updated from /modify, and modifies state accordingly
   const handleFloorUpdate = (preference: Preference, locationState: LocationState): number[] => {
-     if (!arraysEqual(preference.floors, locationState.floors)) {
-       return locationState.floors
-     }
-     return preference.floors
+    if (!arraysEqual(preference.floors, locationState.floors)) {
+      return locationState.floors
+    }
+    return preference.floors
   }
 
   // Checks if the types have updated from /modify, and modifies state accordingly
@@ -132,7 +135,7 @@ const ProfilePage = ({ location }: Props): JSX.Element => {
       {preferencesFetchFailed && (
         <p>Error fetching preferences, please try again in a bit</p>
       )}
-      {preferences && areas.length > 0 && (
+      {preferences && areas?.length > 0 && (
         <ChosenPreferences preferences={preferences} areas={areas} />
       )}
     </div>

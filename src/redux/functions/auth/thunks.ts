@@ -14,6 +14,7 @@ import {
   requestVerification,
   verificationFailed,
 } from 'src/redux/slices/auth/auth'
+import { persistor } from 'src/redux/store/store'
 
 import { extractUserClassToObject, sendVerification } from './helpers'
 
@@ -66,6 +67,7 @@ export const logoutUser =
     try {
       await myFirebase.auth().signOut()
       dispatch(receiveLogout())
+      persistor.purge()
     } catch (error) {
       console.error(error)
       dispatch(logoutError())

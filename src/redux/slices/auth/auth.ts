@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { reducers } from 'src/redux/store/store'
 
 import { InitialState, User } from './types'
 
@@ -16,7 +15,7 @@ const initialState: InitialState = {
   logOutFailed: false,
   logOutSucceeded: false,
   isVerifying: false,
-  verificationFailed: false
+  verificationFailed: false,
 }
 
 export const slice = createSlice({
@@ -74,8 +73,8 @@ export const slice = createSlice({
     verificationFailed: (state): void => {
       state.isVerifying = false
       state.verificationFailed = true
-    }
-  }
+    },
+  },
 })
 
 export const { requestSignUp, receiveSignUp, signUpError } = slice.actions

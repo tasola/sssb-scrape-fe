@@ -12,7 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import { withStyles } from '@material-ui/styles'
 import { connect } from 'react-redux'
 import { Redirect, Link } from 'react-router-dom'
-import { signUpUser } from 'src/redux/functions/auth'
+import { signUpUser } from 'src/redux/functions/auth/thunks'
 
 import styles from './SignUpPageStyles'
 import { Props, StateToProps } from './types'

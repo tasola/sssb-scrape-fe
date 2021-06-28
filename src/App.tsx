@@ -1,8 +1,7 @@
 import React from 'react'
 
-import { connect, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
-import { User as FirebaseUser } from 'src/redux/slices/auth/types'
 
 import Login from './pages/LoginPage/LoginPage'
 import ProfileModifyPage from './pages/ProfileModifyPage/ProfileModifyPage'
@@ -10,10 +9,9 @@ import ProfilePage from './pages/ProfilePage/ProfilePage'
 import ProtectedRoute from './pages/ProtectedRoute/ProtectedRoute'
 import SignUpPage from './pages/SignUpPage/SignUpPage'
 import verifyEmailPage from './pages/VerifyEmailPage/VerifyEmailPage'
+import { RootState } from './redux/store/store'
 
 import './App.css'
-import { logoutUser } from './redux/functions/auth'
-import { RootState } from './redux/store/store'
 
 const App = (): JSX.Element => {
   const { user, loginFailed, isAuthenticated, isLoggingIn, isVerifying } = useSelector((state: RootState) => state.auth)

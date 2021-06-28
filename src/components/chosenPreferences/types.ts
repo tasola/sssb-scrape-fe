@@ -6,6 +6,6 @@ import { Preference } from 'src/redux/slices/user/types'
 import styles from './ChosenPreferencesStyles'
 
 export type Props = WithStyles<typeof styles> & {
-  areas: Entry<Area>[];
-  preferences: Preference[];
+  areas: Entry<Area>[]
+  preferences: Preference[]
 }

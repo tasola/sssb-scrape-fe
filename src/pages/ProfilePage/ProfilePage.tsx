@@ -5,8 +5,8 @@ import { useEffect } from 'react'
 
 import { useDispatch, useSelector } from 'react-redux'
 import ChosenPreferences from 'src/components/ChosenPreferences/ChosenPreferences'
-import { fetchApartmentMetaData } from 'src/redux/functions/contentful'
-import { fetchPreferences as fetchUserPreferences } from 'src/redux/functions/user'
+import { fetchApartmentMetaData } from 'src/redux/functions/contentful/thunks'
+import { fetchPreferences as fetchUserPreferences } from 'src/redux/functions/user/thunks'
 import { Preference } from 'src/redux/slices/user/types'
 import { RootState } from 'src/redux/store/store'
 

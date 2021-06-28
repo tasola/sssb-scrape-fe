@@ -1,53 +1,57 @@
 {
-    "parser": "@typescript-eslint/parser",
-    "extends": [
-        "eslint:recommended",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:react/recommended",
-        "plugin:import/typescript"
-      ],
-    "env": {
-        "browser": true,
-        "node": true,
-        "es6": true
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:import/typescript"
+  ],
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
     },
-    "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true
-        },
-        "ecmaVersion": 9,
-        "sourceType": "module"
+    "ecmaVersion": 9,
+    "sourceType": "module"
+  },
+  "plugins": ["@typescript-eslint", "react", "jsx-a11y", "import"],
+  "rules": {
+    "quotes": ["error", "single"],
+    "semi": ["error", "never"],
+    "no-multi-spaces": ["error"],
+    "no-use-before-define": "off",
+    "multiline": {
+      "delimiter": "0"
     },
-    "plugins": [
-        "@typescript-eslint",
-        "react",
-        "jsx-a11y",
-        "import"
+    "singleline": {
+      "delimiter": "0"
+    },
+    "@typescript-eslint/no-use-before-define": [
+      "error",
+      { "variables": false, "functions": false }
     ],
-    "rules": {
-        "quotes": ["error", "single"],
-        "semi": ["error", "never"],
-        "no-multi-spaces": ["error"],
-        "no-use-before-define": "off",
-        "@typescript-eslint/no-use-before-define": ["error", { "variables": false, "functions": false }],
-        "import/order": [
-            "error",
-            {
-                "groups": ["builtin", "external", "internal"],
-                "pathGroups": [
-                {
-                    "pattern": "react",
-                    "group": "external",
-                    "position": "before"
-                }
-                ],
-                "pathGroupsExcludedImportTypes": ["react"],
-                "newlines-between": "always",
-                "alphabetize": {
-                "order": "asc",
-                "caseInsensitive": true
-                }
-            }
-        ]
-    }
+    "import/order": [
+      "error",
+      {
+        "groups": ["builtin", "external", "internal"],
+        "pathGroups": [
+          {
+            "pattern": "react",
+            "group": "external",
+            "position": "before"
+          }
+        ],
+        "pathGroupsExcludedImportTypes": ["react"],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ]
+  }
 }

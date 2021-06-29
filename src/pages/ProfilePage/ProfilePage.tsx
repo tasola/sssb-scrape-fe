@@ -120,16 +120,18 @@ const ProfilePage = ({ location }: Props): JSX.Element => {
     [checkPreferenceUpdate]
   )
 
-  return isLoading ? (
-    <div>Loading...</div>
-  ) : (
+  return (
     <div>
       {isLoggingOut && <p>Logging Out....</p>}
       {preferencesFetchFailed && (
         <p>Error fetching preferences, please try again in a bit</p>
       )}
       {preferences && areas?.length > 0 && (
-        <ChosenPreferences preferences={preferences} areas={areas} />
+        <ChosenPreferences
+          preferences={preferences}
+          areas={areas}
+          isLoading={isLoading}
+        />
       )}
     </div>
   )

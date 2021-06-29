@@ -8,4 +8,5 @@ import styles from './ChosenPreferencesStyles'
 export type Props = WithStyles<typeof styles> & {
   areas: Entry<Area>[]
   preferences: Preference[]
+  isLoading: boolean
 }

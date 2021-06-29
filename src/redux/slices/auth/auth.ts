@@ -11,6 +11,7 @@ const initialState: InitialState = {
   isLoggingIn: false,
   loginFailed: false,
   loginSucceeded: false,
+  loginError: false,
   isLoggingOut: false,
   logOutFailed: false,
   logOutSucceeded: false,

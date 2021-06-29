@@ -10,26 +10,26 @@ import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import { withStyles } from '@material-ui/styles'
-import { connect } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Redirect, Link } from 'react-router-dom'
 import { signUpUser } from 'src/redux/functions/auth/thunks'
 
 import styles from './SignUpPageStyles'
-import { Props, StateToProps } from './types'
+import { Props } from './types'
+import { RootState } from 'src/redux/store/store'
 
-const SignUpPage = ({
-  loginError,
-  isAuthenticated,
-  user,
-  isLoggingIn,
-  dispatch,
-  classes,
-}: Props): JSX.Element => {
+const SignUpPage = ({ classes }: Props): JSX.Element => {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [passwordVerification, setPasswordVerification] = useState<string>('')
   const [passwordsMatch, setPasswordsMatch] = useState<boolean>(false)
   const [hasCheckedPasswords, setHasCheckedPasswords] = useState<boolean>(false)
+
+  const dispatch = useDispatch()
+
+  const { user, isAuthenticated, isLoggingIn, loginError } = useSelector(
+    (state: RootState) => state.auth
+  )
 
   const handleEmailChange = ({ target }): void => setEmail(target.value)
 
@@ -132,11 +132,4 @@ const SignUpPage = ({
   }
 }
 
-const mapStateToProps = (state): StateToProps => ({
-  isLoggingIn: state.auth.isLoggingIn,
-  loginError: state.auth.loginError,
-  isAuthenticated: state.auth.isAuthenticated,
-  user: state.auth.user,
-})
-
-export default withStyles(styles)(connect(mapStateToProps)(SignUpPage))
+export default withStyles(styles)(SignUpPage)

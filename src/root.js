@@ -3,12 +3,11 @@ import React from 'react'
 import { Provider } from 'react-redux'
 import { BrowserRouter as Router } from 'react-router-dom'
 import { PersistGate } from 'redux-persist/es/integration/react'
-import { persistor, store } from 'src/redux/store/store'
+import { persistor, setupStore } from 'src/redux/store/store'
 
 import App from './App'
-// import configureStore from './store/store'
 
-// const store = configureStore()
+const store = setupStore()
 
 const Root = () => {
   return (

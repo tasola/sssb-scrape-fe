@@ -10,11 +10,9 @@ import { fetchPreferences as fetchUserPreferences } from 'src/redux/functions/us
 import { Preference } from 'src/redux/slices/user/types'
 import { RootState } from 'src/redux/store/store'
 
-
 import { arraysEqual } from '../../utils/utils'
 import { LocationState } from '../ProfileModifyPage/types'
 import { Props } from './types'
-
 
 const ProfilePage = ({ location }: Props): JSX.Element => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -24,9 +22,10 @@ const ProfilePage = ({ location }: Props): JSX.Element => {
   const dispatch = useDispatch()
 
   const { user, isLoggingOut } = useSelector((state: RootState) => state.auth)
-  const { preferences: basePreferences, preferencesFetchFailed } = useSelector((state: RootState) => state.user)
+  const { preferences: basePreferences, preferencesFetchFailed } = useSelector(
+    (state: RootState) => state.user
+  )
   const { areas } = useSelector((state: RootState) => state.contentful)
-
 
   const fetchPreferences = useCallback(() => {
     const { uid } = user
@@ -42,10 +41,13 @@ const ProfilePage = ({ location }: Props): JSX.Element => {
       setPreferences(basePreferences)
       setIsLoading(false)
     })
-  }, [preferences, user, basePreferences])
+  }, [user])
 
   // Checks if the floors have updated from /modify, and modifies state accordingly
-  const handleFloorUpdate = (preference: Preference, locationState: LocationState): number[] => {
+  const handleFloorUpdate = (
+    preference: Preference,
+    locationState: LocationState
+  ): number[] => {
     if (!arraysEqual(preference.floors, locationState.floors)) {
       return locationState.floors
     }
@@ -53,7 +55,10 @@ const ProfilePage = ({ location }: Props): JSX.Element => {
   }
 
   // Checks if the types have updated from /modify, and modifies state accordingly
-  const handleTypeUpdate = (preference: Preference, locationState: LocationState): string[] => {
+  const handleTypeUpdate = (
+    preference: Preference,
+    locationState: LocationState
+  ): string[] => {
     if (!arraysEqual(preference.types, locationState.types)) {
       return locationState.types
     }
@@ -67,7 +72,7 @@ const ProfilePage = ({ location }: Props): JSX.Element => {
       return {
         ...preference,
         floors: updatedFloors,
-        types: updatedTypes
+        types: updatedTypes,
       }
     }
     return preference
@@ -142,4 +147,4 @@ const ProfilePage = ({ location }: Props): JSX.Element => {
   )
 }
 
-export default (ProfilePage)
+export default ProfilePage

@@ -12,7 +12,7 @@ const initialState: InitialState = {
   preferencesFetchFailed: false,
   isRemovingPreference: false,
   preferenceRemovalSucceeded: false,
-  preferenceRemovalFailed: false
+  preferenceRemovalFailed: false,
 }
 
 export const slice = createSlice({
@@ -37,6 +37,7 @@ export const slice = createSlice({
     },
     receivePreferences: (state, action): void => {
       state.preferences = action.payload
+
       state.isFetchingPreferences = false
       state.preferencesFetchSucceeded = true
       state.preferencesFetchFailed = false
@@ -58,12 +59,24 @@ export const slice = createSlice({
       state.isRemovingPreference = false
       state.preferenceRemovalSucceeded = false
       state.preferenceRemovalFailed = true
-    }
-  }
+    },
+  },
 })
 
-export const { requestProfileModification, receiveProfileModification, profileModificationFailed } = slice.actions
-export const { requestPreferences, receivePreferences, preferencesFetchFailed } = slice.actions
-export const { requestPreferenceRemoval, receivePreferenceRemoval, preferenceRemovalFailed } = slice.actions
+export const {
+  requestProfileModification,
+  receiveProfileModification,
+  profileModificationFailed,
+} = slice.actions
+export const {
+  requestPreferences,
+  receivePreferences,
+  preferencesFetchFailed,
+} = slice.actions
+export const {
+  requestPreferenceRemoval,
+  receivePreferenceRemoval,
+  preferenceRemovalFailed,
+} = slice.actions
 
 export default slice.reducer

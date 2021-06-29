@@ -42,6 +42,7 @@ export const slice = createSlice({
       state.user = action.payload
 
       state.isAuthenticated = true
+      state.isVerifying = false
 
       state.isLoggingIn = false
       state.loginFailed = false

@@ -10,7 +10,10 @@ import { Entry } from 'contentful'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import { fetchApartmentMetaData } from 'src/redux/functions/contentful/thunks'
-import { removePreferenceFromDb, modifyProfile } from 'src/redux/functions/user/thunks'
+import {
+  removePreferenceFromDb,
+  modifyProfile,
+} from 'src/redux/functions/user/thunks'
 import { Area } from 'src/redux/slices/contentful/types'
 import { RootState } from 'src/redux/store/store'
 
@@ -27,17 +30,20 @@ const ProfileModifyPage = ({ location, classes }: Props): JSX.Element => {
   const [chosenFloor, setChosenFloor] = useState<number | null>(null)
   const [chosenFloorRange, setChosenFloorRange] = useState<number[]>([])
   const [availableFloors, setAvailableFloors] = useState<number[]>([])
-  const [chosenAreaObject, setChosenAreaObject] = useState<Entry<Area> | null>(null)
+  const [chosenAreaObject, setChosenAreaObject] = useState<Entry<Area> | null>(
+    null
+  )
   const [openDialog, setOpenDialog] = useState<boolean>(false)
   const [availableTypes, setAvailableTypes] = useState<string[]>([])
-  const [checkedItems, setCheckedItems] = useState<Map<string, boolean>>(new Map())
+  const [checkedItems, setCheckedItems] = useState<Map<string, boolean>>(
+    new Map()
+  )
 
   const dispatch = useDispatch()
   const history = useHistory()
 
   const { areas } = useSelector((state: RootState) => state.contentful)
   const { user } = useSelector((state: RootState) => state.auth)
-
 
   const generateChosenTypesMap = (types: string[]): Map<string, boolean> => {
     const typesMap = new Map()
@@ -53,7 +59,12 @@ const ProfileModifyPage = ({ location, classes }: Props): JSX.Element => {
     }
   }
 
-  const updateState = (areaObject: Entry<Area>, area?: string, floor?: number, savedTypes?: string[]): void => {
+  const updateState = (
+    areaObject: Entry<Area>,
+    area?: string,
+    floor?: number,
+    savedTypes?: string[]
+  ): void => {
     const title = area || areaObject.fields.title
     const maxFloor = areaObject.fields?.floors
     const chosenFloorRange = floor ? range(floor, maxFloor) : range(maxFloor)
@@ -73,13 +84,17 @@ const ProfileModifyPage = ({ location, classes }: Props): JSX.Element => {
     setCheckedItems(chosenTypesMap || new Map())
   }
 
-  const getAreaObjectFromName = (areaName: string): Entry<Area> | undefined=> {
+  const getAreaObjectFromName = (areaName: string): Entry<Area> | undefined => {
     return areas.find(
       (area) => area.fields.title.toLowerCase() === areaName.toLowerCase()
     )
   }
 
-  const setupStateFromLinkLocation = (area: string, floor: number, savedTypes: string[]): void => {
+  const setupStateFromLinkLocation = (
+    area: string,
+    floor: number,
+    savedTypes: string[]
+  ): void => {
     const areaObject = getAreaObjectFromName(area)
     if (!areaObject) {
       return
@@ -114,7 +129,7 @@ const ProfileModifyPage = ({ location, classes }: Props): JSX.Element => {
     const areaObject = getAreaObjectFromName(target.value)
 
     if (!areaObject) {
-      return 
+      return
     }
 
     updateState(areaObject)
@@ -162,7 +177,9 @@ const ProfileModifyPage = ({ location, classes }: Props): JSX.Element => {
     const chosenAreaToLowerCase = chosenArea.toLowerCase()
     const _chosenFloorRange = setFloorRange(chosenFloorRange)
 
-    await dispatch(modifyProfile(user, chosenArea, _chosenFloorRange, chosenTypes))
+    await dispatch(
+      modifyProfile(user, chosenArea, _chosenFloorRange, chosenTypes)
+    )
 
     const historyPushObject = {
       pathname: '/',
@@ -236,7 +253,9 @@ const ProfileModifyPage = ({ location, classes }: Props): JSX.Element => {
             variant="contained"
             color="primary"
             disabled={
-              chosenArea === '' || chosenFloor === undefined || checkedItemsIsEmpty()
+              chosenArea === '' ||
+              chosenFloor === undefined ||
+              checkedItemsIsEmpty()
             }
             onClick={handleSubmit}
           >

@@ -23,14 +23,14 @@ export const signUpUser =
   async (dispatch: Dispatch): Promise<void> => {
     dispatch(requestSignUp())
     try {
-      const user = await myFirebase
+      const userCredential = await myFirebase
         .auth()
         .createUserWithEmailAndPassword(email, password)
 
-      if (user.user) {
-        await createUserDocument(user.user)
+      if (userCredential.user) {
+        await createUserDocument(userCredential.user)
         dispatch(receiveSignUp())
-        sendVerification(user.user)
+        sendVerification(userCredential.user)
       } else {
         dispatch(signUpError())
       }
@@ -80,8 +80,10 @@ export const verifyAuth =
     dispatch(requestVerification())
     myFirebase.auth().onAuthStateChanged((user) => {
       if (user !== null) {
-        dispatch(receiveLogin(user))
+        const serializableUser = extractUserClassToObject(user)
+        dispatch(receiveLogin(serializableUser))
+      } else {
+        dispatch(verificationFailed())
       }
-      dispatch(verificationFailed())
     })
   }

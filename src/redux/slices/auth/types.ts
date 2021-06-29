@@ -7,7 +7,6 @@ export type InitialState = {
   isLoggingIn: boolean
   loginFailed: boolean
   loginSucceeded: boolean
-  loginError: boolean
   isLoggingOut: boolean
   logOutFailed: boolean
   logOutSucceeded: boolean

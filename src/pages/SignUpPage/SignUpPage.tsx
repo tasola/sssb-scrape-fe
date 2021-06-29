@@ -27,9 +27,14 @@ const SignUpPage = ({ classes }: Props): JSX.Element => {
 
   const dispatch = useDispatch()
 
-  const { user, isAuthenticated, isLoggingIn, loginError } = useSelector(
-    (state: RootState) => state.auth
-  )
+  const {
+    user,
+    isAuthenticated,
+    isLoggingIn,
+    loginFailed,
+    isSigningUp,
+    signUpFailed,
+  } = useSelector((state: RootState) => state.auth)
 
   const handleEmailChange = ({ target }): void => setEmail(target.value)
 
@@ -93,7 +98,7 @@ const SignUpPage = ({ classes }: Props): JSX.Element => {
             id="passwordVerification"
             onChange={handlePasswordVerificationChange}
           />
-          {passwordsMatch && loginError && (
+          {passwordsMatch && loginFailed && (
             <Typography component="p" className={classes.errorText}>
               Incorrect email or password.
             </Typography>
@@ -101,6 +106,11 @@ const SignUpPage = ({ classes }: Props): JSX.Element => {
           {hasCheckedPasswords && !passwordsMatch && (
             <Typography component="p" className={classes.errorText}>
               Passwords don&apos;t match
+            </Typography>
+          )}
+          {signUpFailed && (
+            <Typography component="p" className={classes.errorText}>
+              Sign up failed. Please try again later
             </Typography>
           )}
           <Button
@@ -111,7 +121,7 @@ const SignUpPage = ({ classes }: Props): JSX.Element => {
             className={classes.submit}
             onClick={handleSubmit}
           >
-            {isLoggingIn ? (
+            {isLoggingIn || isSigningUp ? (
               <>
                 <CircularProgress className={classes.loading} size={18} />{' '}
                 Loading...{' '}

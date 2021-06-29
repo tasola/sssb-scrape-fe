@@ -32,7 +32,9 @@ const VerifyEmailPage = ({ classes }: Props): JSX.Element => {
   const styles = useStyles()
   const dispatch = useDispatch()
 
-  const { user } = useSelector((state: RootState) => state.auth)
+  const { user, verificationFailed } = useSelector(
+    (state: RootState) => state.auth
+  )
 
   const goHome = (): void => {
     dispatch(verifyAuth())

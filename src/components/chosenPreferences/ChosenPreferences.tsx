@@ -9,11 +9,14 @@ import { Entry } from 'contentful'
 import ChosenPreferenceCard from 'src/components/ChosenPreferenceCard/ChosenPreferenceCard'
 import { Area } from 'src/redux/slices/contentful/types'
 import { Preference } from 'src/redux/slices/user/types'
+import ErrorContainer from 'src/components/ErrorContainer/ErrorContainer'
 
 import AddButton from '../Buttons/AddButton/AddButton'
 import NoPreferences from '../NoPreferences/NoPreferences'
 import styles from './ChosenPreferencesStyles'
 import { Props } from './types'
+import { useSelector } from 'react-redux'
+import { RootState } from 'src/redux/store/store'
 
 const ChosenPreferences = ({
   areas,
@@ -21,6 +24,10 @@ const ChosenPreferences = ({
   isLoading,
   classes,
 }: Props): JSX.Element => {
+  const { isFetchingAreas, fetchingAreasFailed } = useSelector(
+    (state: RootState) => state.contentful
+  )
+
   const getAreaObjectFromName = (areaName: string): Entry<Area> | undefined =>
     areas.find((area) => area.fields.title.toLowerCase() === areaName)
 
@@ -34,29 +41,29 @@ const ChosenPreferences = ({
 
   const getSelectItems = (): JSX.Element[] | JSX.Element => {
     const sortedPreferences = sortPreferencesOnName(preferences)
-    return areas ? (
-      sortedPreferences.map((preference, index) => {
-        const areaObject = getAreaObjectFromName(preference.area.toLowerCase())
-        if (!areaObject) {
-          return <></>
-        }
+    return sortedPreferences.map((preference, index) => {
+      const areaObject = getAreaObjectFromName(preference.area.toLowerCase())
+      if (!areaObject) {
+        return <></>
+      }
 
-        return (
-          <ChosenPreferenceCard
-            preference={preference}
-            areaObject={areaObject}
-            id={index}
-            key={index}
-          />
-        )
-      })
-    ) : (
-      <h1>Loading...</h1>
-    )
+      return (
+        <ChosenPreferenceCard
+          preference={preference}
+          areaObject={areaObject}
+          id={index}
+          key={index}
+        />
+      )
+    })
   }
 
   const getChosenPreferences = () => {
-    if (isLoading) {
+    if (fetchingAreasFailed) {
+      return <ErrorContainer failingActionText="fetch your preferences" />
+    }
+
+    if (isLoading || isFetchingAreas) {
       return (
         <div className={classes.spinnerWrapper}>
           <CircularProgress />

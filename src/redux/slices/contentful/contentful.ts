@@ -7,7 +7,7 @@ const initialState: InitialState = {
   areas: [] as Entry<Area>[],
   isFetchingAreas: false,
   fetchingAreasSucceeded: false,
-  fetchingAreasFailed: false
+  fetchingAreasFailed: false,
 }
 
 export const slice = createSlice({
@@ -27,8 +27,8 @@ export const slice = createSlice({
       state.isFetchingAreas = false
       state.fetchingAreasSucceeded = false
       state.fetchingAreasFailed = true
-    }
-  }
+    },
+  },
 })
 
 export const { requestAreas, receiveAreas, areasFetchFailed } = slice.actions

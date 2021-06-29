@@ -177,9 +177,7 @@ const ProfileModifyPage = ({ location, classes }: Props): JSX.Element => {
     const chosenAreaToLowerCase = chosenArea.toLowerCase()
     const _chosenFloorRange = setFloorRange(chosenFloorRange)
 
-    await dispatch(
-      modifyProfile(user, chosenArea, _chosenFloorRange, chosenTypes)
-    )
+    dispatch(modifyProfile(user, chosenArea, _chosenFloorRange, chosenTypes))
 
     const historyPushObject = {
       pathname: '/',

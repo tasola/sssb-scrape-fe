@@ -16,7 +16,6 @@ import { Props } from './types'
 
 const ProfilePage = ({ location }: Props): JSX.Element => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [isFromProfileModify, setIsFromProfileModify] = useState<boolean>(false)
   const [preferences, setPreferences] = useState<Preference[]>([])
 
   const dispatch = useDispatch()
@@ -27,21 +26,52 @@ const ProfilePage = ({ location }: Props): JSX.Element => {
   )
   const { areas } = useSelector((state: RootState) => state.contentful)
 
+  useEffect(() => {
+    if (location.isFromProfileModify) {
+      const newPreferences = renderObjectFromLocationState(
+        basePreferences,
+        location.state
+      )
+      setPreferences(newPreferences)
+    } else {
+      fetchPreferences()
+    }
+  }, [])
+
+  useEffect(() => {
+    if (!location?.isFromProfileModify) {
+      setPreferences(basePreferences)
+    }
+  }, [location.isFromProfileModify, basePreferences])
+
   const fetchPreferences = useCallback(() => {
     const { uid } = user
-    if (preferences && preferences.length) {
-      return
-    }
-
     setIsLoading(true)
+
     Promise.all([
       dispatch(fetchUserPreferences(uid)),
       dispatch(fetchApartmentMetaData()),
-    ]).then(() => {
-      setPreferences(basePreferences)
-      setIsLoading(false)
-    })
+    ])
+      .then(() => {
+        setPreferences(basePreferences)
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }, [user])
+
+  const checkPreferenceUpdate = useCallback((preference, locationState) => {
+    if (preference.area === locationState.area) {
+      const updatedFloors = handleFloorUpdate(preference, locationState)
+      const updatedTypes = handleTypeUpdate(preference, locationState)
+      return {
+        ...preference,
+        floors: updatedFloors,
+        types: updatedTypes,
+      }
+    }
+    return preference
+  }, [])
 
   // Checks if the floors have updated from /modify, and modifies state accordingly
   const handleFloorUpdate = (
@@ -64,19 +94,6 @@ const ProfilePage = ({ location }: Props): JSX.Element => {
     }
     return preference.types
   }
-
-  const checkPreferenceUpdate = useCallback((preference, locationState) => {
-    if (preference.area === locationState.area) {
-      const updatedFloors = handleFloorUpdate(preference, locationState)
-      const updatedTypes = handleTypeUpdate(preference, locationState)
-      return {
-        ...preference,
-        floors: updatedFloors,
-        types: updatedTypes,
-      }
-    }
-    return preference
-  }, [])
 
   // Modifies the state so that the application does not have to wait for
   // Firebase to load the changes from /modify
@@ -102,35 +119,6 @@ const ProfilePage = ({ location }: Props): JSX.Element => {
     },
     [checkPreferenceUpdate]
   )
-
-  useEffect(() => {
-    if (location.isFromProfileModify) {
-      setIsFromProfileModify(true)
-    } else {
-      fetchPreferences()
-    }
-  }, [location, fetchPreferences])
-
-  useEffect(() => {
-    if (isFromProfileModify) {
-      const newPreferences = renderObjectFromLocationState(
-        basePreferences,
-        location.state
-      )
-      setPreferences(newPreferences)
-    }
-  }, [
-    isFromProfileModify,
-    renderObjectFromLocationState,
-    basePreferences,
-    location,
-  ])
-
-  useEffect(() => {
-    if (!isFromProfileModify) {
-      setPreferences(basePreferences)
-    }
-  }, [isFromProfileModify, basePreferences])
 
   return isLoading ? (
     <div>Loading...</div>

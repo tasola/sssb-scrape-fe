@@ -58,14 +58,10 @@ export const slice = createSlice({
     requestLogout: (state): void => {
       state.isLoggingOut = false
     },
-    receiveLogout: (state): void => {
-      state.isLoggingOut = false
-      state.logOutFailed = false
-      state.logOutSucceeded = true
-
-      state.user = {} as User
-      state.isAuthenticated = false
-    },
+    receiveLogout: (): InitialState => ({
+      ...initialState,
+      logOutSucceeded: true,
+    }),
     logoutError: (state): void => {
       state.isLoggingOut = false
       state.logOutFailed = true

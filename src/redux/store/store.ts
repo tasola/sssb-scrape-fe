@@ -18,7 +18,7 @@ import contentfulReducer from 'src/redux/slices/contentful/contentful'
 import userReducer from 'src/redux/slices/user/user'
 import { verifyAuth } from '../functions/auth/thunks'
 
-export const reducers = combineReducers({
+const reducers = combineReducers({
   auth: authReducer,
   contentful: contentfulReducer,
   user: userReducer,

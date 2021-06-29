@@ -8,16 +8,16 @@ import { makeStyles, withStyles } from '@material-ui/core/styles'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import AccountCircle from '@material-ui/icons/AccountCircle'
-import { connect } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router'
 import { Link } from 'react-router-dom'
-import { bindActionCreators } from 'redux'
 import logo from 'src/assets/favicon.ico'
+import { logoutUser } from 'src/redux/functions/auth/thunks'
+import { RootState } from 'src/redux/store/store'
 
-import { logoutUser } from '../../actions/auth/auth'
 import { pathnameDict } from '../../utils/pathname-dict'
 import styles from './NavbarStyles'
-import { Props, StateToProps } from './types'
+import { Props } from './types'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -31,11 +31,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const Navbar = ({ username, userEmail, actions, classes }: Props): JSX.Element => {
+const Navbar = ({ classes }: Props): JSX.Element => {
   const [anchorEl, setAnchorEl] = useState(null)
 
   const styles = useStyles()
   const location = useLocation()
+  const dispatch = useDispatch()
+
+  const { user } = useSelector((state: RootState) => state.auth)
 
   const handleMenu = (event): void => {
     event.preventDefault()
@@ -44,13 +47,13 @@ const Navbar = ({ username, userEmail, actions, classes }: Props): JSX.Element =
 
   const handleClose = (): void => setAnchorEl(null)
 
-  const handleLogout = (): void => actions.logoutUser()
+  const handleLogout = (): void => {
+    dispatch(logoutUser())
+  }
 
   const displayUsername = (): string => {
-    if (username) {
-      return username
-    } else if (userEmail) {
-      return userEmail.substring(0, userEmail.indexOf('@'))
+    if (user.email) {
+      return user.email.substring(0, user.email.indexOf('@'))
     } else return ''
   }
 
@@ -112,23 +115,4 @@ const Navbar = ({ username, userEmail, actions, classes }: Props): JSX.Element =
   )
 }
 
-const mapStateToProps = (state): StateToProps => {
-  return {
-    userEmail: state.auth.user.email || state.auth.user.user.email,
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    actions: bindActionCreators(
-      {
-        logoutUser,
-      },
-      dispatch
-    ),
-  }
-}
-
-export default withStyles(styles)(
-  connect(mapStateToProps, mapDispatchToProps)(Navbar)
-)
+export default withStyles(styles)(Navbar)

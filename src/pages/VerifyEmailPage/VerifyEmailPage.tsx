@@ -5,14 +5,14 @@ import Container from '@material-ui/core/Container'
 import Grid from '@material-ui/core/Grid'
 import { makeStyles, withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
-import { connect } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import { bindActionCreators } from 'redux'
+import { verifyAuth } from 'src/redux/functions/auth/thunks'
+import { RootState } from 'src/redux/store/store.js'
 
-import { verifyAuth } from '../../actions/auth/auth'
 import { GmailLogo } from '../../assets/email-logos/gmail.js'
 import { OutlookLogo } from '../../assets/email-logos/outlook.js'
-import { Props, StateToProps } from './types'
+import { Props } from './types'
 import styles from './VerifyEmailPageStyles'
 
 const useStyles = makeStyles((theme) => ({
@@ -28,11 +28,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const VerifyEmailPage = ({ user, actions, classes }: Props): JSX.Element => {
+const VerifyEmailPage = ({ classes }: Props): JSX.Element => {
   const styles = useStyles()
+  const dispatch = useDispatch()
 
-  const goHome = async (): Promise<void> => {
-    await actions.verifyAuth()
+  const { user } = useSelector((state: RootState) => state.auth)
+
+  const goHome = (): void => {
+    dispatch(verifyAuth())
     window.location.reload()
   }
 
@@ -102,19 +105,4 @@ const VerifyEmailPage = ({ user, actions, classes }: Props): JSX.Element => {
   )
 }
 
-const mapStateToProps = (state): StateToProps => ({
-  user: state.auth.user,
-})
-
-const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators(
-    {
-      verifyAuth,
-    },
-    dispatch
-  ),
-})
-
-export default withStyles(styles)(
-  connect(mapStateToProps, mapDispatchToProps)(VerifyEmailPage)
-)
+export default withStyles(styles)(VerifyEmailPage)

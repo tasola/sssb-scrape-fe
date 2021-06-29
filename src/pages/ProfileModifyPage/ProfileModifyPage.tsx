@@ -6,33 +6,44 @@ import Button from '@material-ui/core/Button'
 import Container from '@material-ui/core/Container'
 import Typography from '@material-ui/core/Typography'
 import { withStyles } from '@material-ui/styles'
-import { connect } from 'react-redux'
+import { Entry } from 'contentful'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import { bindActionCreators } from 'redux'
-import { Area } from 'src/components/ChosenPreferenceCard/types'
+import { fetchApartmentMetaData } from 'src/redux/functions/contentful/thunks'
+import {
+  removePreferenceFromDb,
+  modifyProfile,
+} from 'src/redux/functions/user/thunks'
+import { Area } from 'src/redux/slices/contentful/types'
+import { RootState } from 'src/redux/store/store'
 
-import { modifyProfile } from '../../actions'
-import { fetchApartmentMetaData } from '../../actions/contentful'
-import { removePreferenceFromDb } from '../../actions/firebase-db/firebase-db'
 import CheckboxGroup from '../../components/Checkbox/CheckboxGroup/CheckboxGroup'
 import UnsubscribeDialog from '../../components/Dialogs/UnsubscribeDialog/UnsubscribeDialog'
 import TextSelect from '../../components/TextSelect/TextSelect'
 import { range, capitalizeFirstLetter } from '../../utils/utils'
 import styles from './ProfileModifyPageStyles'
-import { Props, StateToProps, HistoryPushObject } from './types'
+import { Props, HistoryPushObject } from './types'
 
-const ProfileModifyPage = ({ areas, user, location, actions, classes }: Props): JSX.Element => {
+const ProfileModifyPage = ({ location, classes }: Props): JSX.Element => {
   const [chosenArea, setChosenArea] = useState<string>('')
   const [maxFloor, setMaxFloor] = useState<number | undefined>(undefined)
   const [chosenFloor, setChosenFloor] = useState<number | null>(null)
   const [chosenFloorRange, setChosenFloorRange] = useState<number[]>([])
   const [availableFloors, setAvailableFloors] = useState<number[]>([])
-  const [chosenAreaObject, setChosenAreaObject] = useState<Area | null>(null)
+  const [chosenAreaObject, setChosenAreaObject] = useState<Entry<Area> | null>(
+    null
+  )
   const [openDialog, setOpenDialog] = useState<boolean>(false)
   const [availableTypes, setAvailableTypes] = useState<string[]>([])
-  const [checkedItems, setCheckedItems] = useState<Map<string, boolean>>(new Map())
+  const [checkedItems, setCheckedItems] = useState<Map<string, boolean>>(
+    new Map()
+  )
 
+  const dispatch = useDispatch()
   const history = useHistory()
+
+  const { areas } = useSelector((state: RootState) => state.contentful)
+  const { user } = useSelector((state: RootState) => state.auth)
 
   const generateChosenTypesMap = (types: string[]): Map<string, boolean> => {
     const typesMap = new Map()
@@ -40,20 +51,20 @@ const ProfileModifyPage = ({ areas, user, location, actions, classes }: Props): 
     return typesMap
   }
 
-  const getAvailableTypes = (areaObject: Area): string[] => {
-    if (
-      areaObject &&
-      areaObject.fields &&
-      areaObject.fields.types &&
-      areaObject.fields.types.types
-    ) {
+  const getAvailableTypes = (areaObject: Entry<Area>): string[] => {
+    if (areaObject.fields?.types?.types) {
       return areaObject.fields.types.types
     } else {
       return []
     }
   }
 
-  const updateState = (areaObject: Area, area?: string, floor?: number, savedTypes?: string[]): void => {
+  const updateState = (
+    areaObject: Entry<Area>,
+    area?: string,
+    floor?: number,
+    savedTypes?: string[]
+  ): void => {
     const title = area || areaObject.fields.title
     const maxFloor = areaObject.fields?.floors
     const chosenFloorRange = floor ? range(floor, maxFloor) : range(maxFloor)
@@ -73,13 +84,17 @@ const ProfileModifyPage = ({ areas, user, location, actions, classes }: Props): 
     setCheckedItems(chosenTypesMap || new Map())
   }
 
-  const getAreaObjectFromName = (areaName: string): Area | undefined=> {
+  const getAreaObjectFromName = (areaName: string): Entry<Area> | undefined => {
     return areas.find(
       (area) => area.fields.title.toLowerCase() === areaName.toLowerCase()
     )
   }
 
-  const setupStateFromLinkLocation = (area: string, floor: number, savedTypes: string[]): void => {
+  const setupStateFromLinkLocation = (
+    area: string,
+    floor: number,
+    savedTypes: string[]
+  ): void => {
     const areaObject = getAreaObjectFromName(area)
     if (!areaObject) {
       return
@@ -89,7 +104,7 @@ const ProfileModifyPage = ({ areas, user, location, actions, classes }: Props): 
   }
 
   useEffect(() => {
-    actions.fetchApartmentMetaData()
+    dispatch(fetchApartmentMetaData())
     if (location?.state) {
       const { area, floors, types } = location.state
       setupStateFromLinkLocation(area, floors[0], types)
@@ -114,7 +129,7 @@ const ProfileModifyPage = ({ areas, user, location, actions, classes }: Props): 
     const areaObject = getAreaObjectFromName(target.value)
 
     if (!areaObject) {
-      return 
+      return
     }
 
     updateState(areaObject)
@@ -137,7 +152,7 @@ const ProfileModifyPage = ({ areas, user, location, actions, classes }: Props): 
   const handleDialogClose = (): void => setOpenDialog(false)
 
   const handleRemove = async (): Promise<void> => {
-    await actions.removePreferenceFromDb(user, chosenArea)
+    dispatch(removePreferenceFromDb(user, chosenArea))
     handleDialogClose()
     goHome()
   }
@@ -157,12 +172,12 @@ const ProfileModifyPage = ({ areas, user, location, actions, classes }: Props): 
 
   // historyPushObject is for instant preference representation, instead of
   // having to wait for firestore to update and then fetch
-  const handleSubmit = (): void => {
+  const handleSubmit = async (): Promise<void> => {
     const chosenTypes = generateChosenTypes()
     const chosenAreaToLowerCase = chosenArea.toLowerCase()
     const _chosenFloorRange = setFloorRange(chosenFloorRange)
 
-    actions.modifyProfile(user, chosenArea, _chosenFloorRange, chosenTypes)
+    dispatch(modifyProfile(user, chosenArea, _chosenFloorRange, chosenTypes))
 
     const historyPushObject = {
       pathname: '/',
@@ -236,7 +251,9 @@ const ProfileModifyPage = ({ areas, user, location, actions, classes }: Props): 
             variant="contained"
             color="primary"
             disabled={
-              chosenArea === '' || chosenFloor === undefined || checkedItemsIsEmpty()
+              chosenArea === '' ||
+              chosenFloor === undefined ||
+              checkedItemsIsEmpty()
             }
             onClick={handleSubmit}
           >
@@ -256,22 +273,4 @@ const ProfileModifyPage = ({ areas, user, location, actions, classes }: Props): 
   )
 }
 
-const mapStateToProps = (state): StateToProps => ({
-  user: state.auth.user,
-  areas: state.contentful.areas,
-})
-
-const mapDispatchToProps = (dispatch) => ({
-  actions: bindActionCreators(
-    {
-      fetchApartmentMetaData,
-      modifyProfile,
-      removePreferenceFromDb,
-    },
-    dispatch
-  ),
-})
-
-export default withStyles(styles)(
-  connect(mapStateToProps, mapDispatchToProps)(ProfileModifyPage)
-)
+export default withStyles(styles)(ProfileModifyPage)

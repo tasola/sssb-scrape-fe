@@ -10,28 +10,29 @@ import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import { withStyles } from '@material-ui/styles'
-import { connect } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Redirect, Link } from 'react-router-dom'
+import { loginUser } from 'src/redux/functions/auth/thunks'
+import { RootState } from 'src/redux/store/store'
 
-import { loginUser } from '../../actions/auth/auth'
 import styles from './LoginPageStyles'
-import { Props, StateToProps } from './types'
+import { Props } from './types'
 
-const Login = ({
-  loginError,
-  isAuthenticated,
-  isLoggingIn,
-  dispatch,
-  classes,
-}: Props): JSX.Element => {
+const Login = ({ classes }: Props): JSX.Element => {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
+
+  const dispatch = useDispatch()
+
+  const { loginFailed, isAuthenticated, isLoggingIn } = useSelector((state: RootState) => state.auth)
 
   const handleEmailChange = ({ target }): void => setEmail(target.value)
 
   const handlePasswordChange = ({ target }): void => setPassword(target.value)
 
-  const handleSubmit = (): void => dispatch(loginUser(email, password))
+  const handleSubmit = (): void => {
+    dispatch(loginUser(email, password))
+  }
 
   if (isAuthenticated) {
     return <Redirect to="/" />
@@ -65,7 +66,7 @@ const Login = ({
           id="password"
           onChange={handlePasswordChange}
         />
-        {loginError && (
+        {loginFailed && (
           <Typography component="p" className={classes.errorText}>
             Incorrect email or password.
           </Typography>
@@ -97,10 +98,4 @@ const Login = ({
   )
 }
 
-const mapStateToProps = (state): StateToProps => ({
-  isLoggingIn: state.auth.isLoggingIn,
-  loginError: state.auth.loginError,
-  isAuthenticated: state.auth.isAuthenticated,
-})
-
-export default withStyles(styles)(connect(mapStateToProps)(Login))
+export default withStyles(styles)(Login)

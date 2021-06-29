@@ -4,20 +4,22 @@ import { withStyles } from '@material-ui/core'
 import Container from '@material-ui/core/Container'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
+import { Entry } from 'contentful'
 import ChosenPreferenceCard from 'src/components/ChosenPreferenceCard/ChosenPreferenceCard'
+import { Area } from 'src/redux/slices/contentful/types'
+import { Preference } from 'src/redux/slices/user/types'
 
 import AddButton from '../Buttons/AddButton/AddButton'
-import { Area, Preference } from '../ChosenPreferenceCard/types'
 import NoPreferences from '../NoPreferences/NoPreferences'
 import styles from './ChosenPreferencesStyles'
 import { Props } from './types'
 
 const ChosenPreferences = ({ areas, preferences, classes }: Props): JSX.Element => {
-  const getAreaObjectFromName = (areaName: string): Area | undefined =>
+  const getAreaObjectFromName = (areaName: string): Entry<Area> | undefined =>
     areas.find((area) => area.fields.title.toLowerCase() === areaName)
 
   const sortPreferencesOnName = (arr: Preference[]): Preference[] => {
-    return arr.sort((a, b) => {
+    return arr.slice().sort((a, b) => {
       if (a.area > b.area) return 1
       else if (a.area < b.area) return -1
       return 0
@@ -32,7 +34,7 @@ const ChosenPreferences = ({ areas, preferences, classes }: Props): JSX.Element 
         if (!areaObject) {
           return <></>
         }
-        
+
         return (
           <ChosenPreferenceCard
             preference={preference}

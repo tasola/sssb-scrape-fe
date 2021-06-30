@@ -16,9 +16,12 @@ export const slice = createSlice({
   reducers: {
     requestAreas: (state): void => {
       state.isFetchingAreas = true
+      state.fetchingAreasSucceeded = false
+      state.fetchingAreasFailed = false
     },
     receiveAreas: (state, action: PayloadAction<Entry<Area>[]>): void => {
       state.areas = action.payload
+
       state.isFetchingAreas = false
       state.fetchingAreasSucceeded = true
       state.fetchingAreasFailed = false

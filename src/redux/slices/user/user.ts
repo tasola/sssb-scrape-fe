@@ -21,6 +21,8 @@ export const slice = createSlice({
   reducers: {
     requestProfileModification: (state): void => {
       state.isModifyingProfile = true
+      state.profileModificationSucceeded = false
+      state.profileModificationFailed = false
     },
     receiveProfileModification: (state): void => {
       state.isModifyingProfile = false
@@ -34,6 +36,8 @@ export const slice = createSlice({
     },
     requestPreferences: (state): void => {
       state.isFetchingPreferences = true
+      state.preferencesFetchSucceeded = false
+      state.preferencesFetchFailed = false
     },
     receivePreferences: (state, action): void => {
       state.preferences = action.payload
@@ -49,6 +53,8 @@ export const slice = createSlice({
     },
     requestPreferenceRemoval: (state): void => {
       state.isRemovingPreference = true
+      state.preferenceRemovalSucceeded = false
+      state.preferenceRemovalFailed = false
     },
     receivePreferenceRemoval: (state): void => {
       state.isRemovingPreference = false

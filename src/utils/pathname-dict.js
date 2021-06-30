@@ -1,4 +1,5 @@
 export const pathnameDict = {
-  '/': 'Home',
+  '/': 'Subscriptons',
+  '/account': 'Account',
   '/subscription/modify': 'Edit subscription',
 }

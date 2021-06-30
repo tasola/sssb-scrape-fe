@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography'
 import AccountCircle from '@material-ui/icons/AccountCircle'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation } from 'react-router'
-import { Link } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 import logo from 'src/assets/favicon.ico'
 import { logoutUser } from 'src/redux/functions/auth/thunks'
 import { RootState } from 'src/redux/store/store'
@@ -37,6 +37,7 @@ const Navbar = ({ classes }: Props): JSX.Element => {
   const styles = useStyles()
   const location = useLocation()
   const dispatch = useDispatch()
+  const history = useHistory()
 
   const { user } = useSelector((state: RootState) => state.auth)
 
@@ -46,6 +47,16 @@ const Navbar = ({ classes }: Props): JSX.Element => {
   }
 
   const handleClose = (): void => setAnchorEl(null)
+
+  const goToSubscriptions = (): void => {
+    handleClose()
+    history.push('/')
+  }
+
+  const goToAccount = (): void => {
+    handleClose()
+    history.push('/account')
+  }
 
   const handleLogout = (): void => {
     dispatch(logoutUser())
@@ -102,8 +113,8 @@ const Navbar = ({ classes }: Props): JSX.Element => {
               open={!!anchorEl}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose}>My subscriptions</MenuItem>
-              <MenuItem onClick={handleClose}>My account</MenuItem>
+              <MenuItem onClick={goToSubscriptions}>My subscriptions</MenuItem>
+              <MenuItem onClick={goToAccount}>My account</MenuItem>
               <MenuItem onClick={handleLogout} className={classes.logout}>
                 Logout
               </MenuItem>

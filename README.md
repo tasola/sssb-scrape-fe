@@ -26,9 +26,9 @@ To get the app up and running, simply `npm install` and then `npm run start`, an
 This project has been built in my spare time during a fairly long period of time (at least when comparing to the speed of JS progression). When I have sat down to develop this further, I have unfortunately prioritized new features instead of refactoring/updating. When reading through the code, a few things come to mind that should be done to make the code base easier to maintain, and to prevent it from in turns getting deprecated. Some of these issues are addressed in the [Issues](https://github.com/tasola/sssb-scrape-fe/issues)-section.
 
 Refactor:
-* [Make whole project run on hooks](https://github.com/tasola/sssb-scrape-fe/issues/15)
-* Extract more general components
-* Add TypeScript
+* :white_check_mark: [Make whole project run on hooks](https://github.com/tasola/sssb-scrape-fe/issues/15)
+* :white_check_mark: Extract more general components
+* :white_check_mark: Add TypeScript
 
 Functionality:
 * Make the app GDPR safe; add [delete account functionality](https://github.com/tasola/sssb-scrape-fe/tree/feature/remove-account) and possibility to get your saved user data

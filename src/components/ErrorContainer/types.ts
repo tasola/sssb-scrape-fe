@@ -1,7 +1,7 @@
 import { WithStyles } from '@material-ui/core'
 
-import styles from './SignUpPageStyles'
+import styles from './ErrorContainerStyles'
 
 export type Props = WithStyles<typeof styles> & {
-  dispatch: any
+  failingActionText: string
 }

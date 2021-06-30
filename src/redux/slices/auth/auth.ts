@@ -24,6 +24,8 @@ export const slice = createSlice({
   reducers: {
     requestSignUp: (state): void => {
       state.isSigningUp = true
+      state.signUpFailed = false
+      state.signUpSucceeded = false
     },
     receiveSignUp: (state): void => {
       state.isSigningUp = false
@@ -37,6 +39,8 @@ export const slice = createSlice({
     },
     requestLogin: (state): void => {
       state.isLoggingIn = true
+      state.loginFailed = false
+      state.loginSucceeded = false
     },
     receiveLogin: (state, action): void => {
       state.user = action.payload
@@ -56,16 +60,14 @@ export const slice = createSlice({
       state.loginSucceeded = false
     },
     requestLogout: (state): void => {
-      state.isLoggingOut = false
-    },
-    receiveLogout: (state): void => {
-      state.isLoggingOut = false
+      state.isLoggingOut = true
       state.logOutFailed = false
-      state.logOutSucceeded = true
-
-      state.user = {} as User
-      state.isAuthenticated = false
+      state.logOutSucceeded = false
     },
+    receiveLogout: (): InitialState => ({
+      ...initialState,
+      logOutSucceeded: true,
+    }),
     logoutError: (state): void => {
       state.isLoggingOut = false
       state.logOutFailed = true
@@ -73,6 +75,7 @@ export const slice = createSlice({
     },
     requestVerification: (state): void => {
       state.isVerifying = true
+      state.verificationFailed = false
     },
     verificationFailed: (state): void => {
       state.isVerifying = false

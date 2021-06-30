@@ -26,12 +26,14 @@ const ChosenPreferenceCard = ({
   const getImageUrl = (areaObject: Entry<Area>): string =>
     'https:' + areaObject.fields.image.fields.file.url
 
-  const getAreaDescription = (areaObject: Entry<Area>): string => areaObject.fields.description
+  const getAreaDescription = (areaObject: Entry<Area>): string =>
+    areaObject.fields.description
 
   const getFloorsOfInterestText = (preference: Preference): string => {
     return preference.floors.length > 1
-      ? `Floors of interest: ${preference.floors[0]} - ${preference.floors[preference.floors.length - 1]
-      }`
+      ? `Floors of interest: ${preference.floors[0]} - ${
+          preference.floors[preference.floors.length - 1]
+        }`
       : `Floor of interest: ${preference.floors[0]}`
   }
 
@@ -70,8 +72,9 @@ const ChosenPreferenceCard = ({
         ? 'hugin-munin'
         : areaObject.fields.title
     area = anglifySwedishLetters(area)
-    const sssbLink = `https://www.sssb.se/en/our-housing/our-areas-in-the-${areaObject.fields.cardinalDirection
-      }/${area.toLowerCase()}`
+    const sssbLink = `https://www.sssb.se/en/our-housing/our-areas-in-the-${
+      areaObject.fields.cardinalDirection
+    }/${area.toLowerCase()}`
     window.open(sssbLink, '_blank')
   }
 

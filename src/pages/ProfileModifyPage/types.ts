@@ -5,15 +5,8 @@ import { Area } from 'src/redux/slices/contentful/types'
 
 import styles from './ProfileModifyPageStyles'
 
-export type Props = StateToProps &
-  WithStyles<typeof styles> & {
-    location: Location
-    actions: ProfileModifyPageActions
-  }
-
-export type StateToProps = {
-  areas: Entry<Area>[]
-  user: User
+export type Props = WithStyles<typeof styles> & {
+  location: Location
 }
 
 export type HistoryPushObject = {
@@ -47,15 +40,4 @@ export type User = {
 type AdditionalUserInfo = {
   isNewUser: boolean
   providerId: string
-}
-
-type ProfileModifyPageActions = {
-  fetchApartmentMetaData: () => void
-  modifyProfile: (
-    user: User,
-    chosenArea: string,
-    chosenFloorRange: number[],
-    chosenTypes: string[]
-  ) => void
-  removePreferenceFromDb: (user: User, chosenArea: string) => void
 }

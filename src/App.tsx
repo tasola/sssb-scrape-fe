@@ -14,7 +14,9 @@ import { RootState } from './redux/store/store'
 import './App.css'
 
 const App = (): JSX.Element => {
-  const { user, loginFailed, isAuthenticated, isLoggingIn, isVerifying } = useSelector((state: RootState) => state.auth)
+  const { user, isAuthenticated, isVerifying } = useSelector(
+    (state: RootState) => state.auth
+  )
 
   return (
     <Switch>

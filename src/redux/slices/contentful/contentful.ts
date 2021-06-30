@@ -7,7 +7,7 @@ const initialState: InitialState = {
   areas: [] as Entry<Area>[],
   isFetchingAreas: false,
   fetchingAreasSucceeded: false,
-  fetchingAreasFailed: false
+  fetchingAreasFailed: false,
 }
 
 export const slice = createSlice({
@@ -16,9 +16,12 @@ export const slice = createSlice({
   reducers: {
     requestAreas: (state): void => {
       state.isFetchingAreas = true
+      state.fetchingAreasSucceeded = false
+      state.fetchingAreasFailed = false
     },
     receiveAreas: (state, action: PayloadAction<Entry<Area>[]>): void => {
       state.areas = action.payload
+
       state.isFetchingAreas = false
       state.fetchingAreasSucceeded = true
       state.fetchingAreasFailed = false
@@ -27,8 +30,8 @@ export const slice = createSlice({
       state.isFetchingAreas = false
       state.fetchingAreasSucceeded = false
       state.fetchingAreasFailed = true
-    }
-  }
+    },
+  },
 })
 
 export const { requestAreas, receiveAreas, areasFetchFailed } = slice.actions

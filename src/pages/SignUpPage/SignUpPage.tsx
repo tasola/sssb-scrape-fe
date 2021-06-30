@@ -10,26 +10,31 @@ import TextField from '@material-ui/core/TextField'
 import Typography from '@material-ui/core/Typography'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import { withStyles } from '@material-ui/styles'
-import { connect } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Redirect, Link } from 'react-router-dom'
 import { signUpUser } from 'src/redux/functions/auth/thunks'
 
 import styles from './SignUpPageStyles'
-import { Props, StateToProps } from './types'
+import { Props } from './types'
+import { RootState } from 'src/redux/store/store'
 
-const SignUpPage = ({
-  loginError,
-  isAuthenticated,
-  user,
-  isLoggingIn,
-  dispatch,
-  classes,
-}: Props): JSX.Element => {
+const SignUpPage = ({ classes }: Props): JSX.Element => {
   const [email, setEmail] = useState<string>('')
   const [password, setPassword] = useState<string>('')
   const [passwordVerification, setPasswordVerification] = useState<string>('')
   const [passwordsMatch, setPasswordsMatch] = useState<boolean>(false)
   const [hasCheckedPasswords, setHasCheckedPasswords] = useState<boolean>(false)
+
+  const dispatch = useDispatch()
+
+  const {
+    user,
+    isAuthenticated,
+    isLoggingIn,
+    loginFailed,
+    isSigningUp,
+    signUpFailed,
+  } = useSelector((state: RootState) => state.auth)
 
   const handleEmailChange = ({ target }): void => setEmail(target.value)
 
@@ -93,7 +98,7 @@ const SignUpPage = ({
             id="passwordVerification"
             onChange={handlePasswordVerificationChange}
           />
-          {passwordsMatch && loginError && (
+          {passwordsMatch && loginFailed && (
             <Typography component="p" className={classes.errorText}>
               Incorrect email or password.
             </Typography>
@@ -101,6 +106,11 @@ const SignUpPage = ({
           {hasCheckedPasswords && !passwordsMatch && (
             <Typography component="p" className={classes.errorText}>
               Passwords don&apos;t match
+            </Typography>
+          )}
+          {signUpFailed && (
+            <Typography component="p" className={classes.errorText}>
+              Sign up failed. Please try again later
             </Typography>
           )}
           <Button
@@ -111,7 +121,7 @@ const SignUpPage = ({
             className={classes.submit}
             onClick={handleSubmit}
           >
-            {isLoggingIn ? (
+            {isLoggingIn || isSigningUp ? (
               <>
                 <CircularProgress className={classes.loading} size={18} />{' '}
                 Loading...{' '}
@@ -132,11 +142,4 @@ const SignUpPage = ({
   }
 }
 
-const mapStateToProps = (state): StateToProps => ({
-  isLoggingIn: state.auth.isLoggingIn,
-  loginError: state.auth.loginError,
-  isAuthenticated: state.auth.isAuthenticated,
-  user: state.auth.user,
-})
-
-export default withStyles(styles)(connect(mapStateToProps)(SignUpPage))
+export default withStyles(styles)(SignUpPage)

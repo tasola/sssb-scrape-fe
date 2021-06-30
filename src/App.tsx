@@ -4,8 +4,8 @@ import { useSelector } from 'react-redux'
 import { Route, Switch } from 'react-router-dom'
 
 import Login from './pages/LoginPage/LoginPage'
-import ProfileModifyPage from './pages/ProfileModifyPage/ProfileModifyPage'
-import ProfilePage from './pages/ProfilePage/ProfilePage'
+import SubscriptionModificationPage from './pages/SubscriptionModificationPage/SubscriptionModificationPage'
+import SubscriptionsPage from './pages/SubscriptionsPage/SubscriptionsPage'
 import ProtectedRoute from './pages/ProtectedRoute/ProtectedRoute'
 import SignUpPage from './pages/SignUpPage/SignUpPage'
 import verifyEmailPage from './pages/VerifyEmailPage/VerifyEmailPage'
@@ -23,15 +23,15 @@ const App = (): JSX.Element => {
       <ProtectedRoute
         exact
         path="/"
-        component={ProfilePage}
+        component={SubscriptionsPage}
         isAuthenticated={isAuthenticated}
         isVerifying={isVerifying}
         isEmailVerified={user.emailVerified}
       />
       <ProtectedRoute
         exact
-        path="/profile/modify"
-        component={ProfileModifyPage}
+        path="/subscription/modify"
+        component={SubscriptionModificationPage}
         isAuthenticated={isAuthenticated}
         isVerifying={isVerifying}
         isEmailVerified={user.emailVerified}

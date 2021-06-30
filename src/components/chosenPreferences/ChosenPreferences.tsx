@@ -89,7 +89,7 @@ const ChosenPreferences = ({
       <Grid container spacing={10} className={classes.grid}>
         {getChosenPreferences()}
       </Grid>
-      <AddButton to="profile/modify" />
+      <AddButton to="subscription/modify" />
     </Container>
   )
 }

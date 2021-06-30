@@ -102,7 +102,7 @@ const Navbar = ({ classes }: Props): JSX.Element => {
               open={!!anchorEl}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose}>Profile</MenuItem>
+              <MenuItem onClick={handleClose}>My subscriptions</MenuItem>
               <MenuItem onClick={handleClose}>My account</MenuItem>
               <MenuItem onClick={handleLogout} className={classes.logout}>
                 Logout

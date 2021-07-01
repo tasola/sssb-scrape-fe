@@ -7,11 +7,22 @@ import AccordionSummary from '@material-ui/core/AccordionSummary'
 import AccordionDetails from '@material-ui/core/AccordionDetails'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import Typography from '@material-ui/core/Typography'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Switch from '@material-ui/core/Switch'
 
 import styles from './AccountPageStyles'
 import { Props } from './types'
+import { contentText } from './text'
 
 const AccountPage = ({ classes }: Props) => {
+  let isActive = true
+
+  const subscriptionContent = isActive
+    ? contentText.subscription.active
+    : contentText.subscription.inactive
+
+  const handleChange = () => (isActive = !isActive)
+
   return (
     <Container component="main" maxWidth="md">
       <Typography
@@ -32,36 +43,26 @@ const AccountPage = ({ classes }: Props) => {
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <Typography
-          // className={classes.heading}
-          >
-            Accordion 1
+          <Typography className={classes.accordionHeader}>
+            {subscriptionContent.title}
           </Typography>
         </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
+        <AccordionDetails className={classes.detailsWrapper}>
+          <Typography className={classes.text}>
+            {subscriptionContent.text}
           </Typography>
-        </AccordionDetails>
-      </Accordion>
-      <Accordion>
-        <AccordionSummary
-          expandIcon={<ExpandMoreIcon />}
-          aria-controls="panel2a-content"
-          id="panel2a-header"
-        >
-          <Typography
-          // className={classes.heading}
-          >
-            Accordion 2
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
+          <FormControlLabel
+            className={classes.switch}
+            control={
+              <Switch
+                checked={isActive}
+                onChange={handleChange}
+                name="activitySwitch"
+                color="primary"
+              />
+            }
+            label="Active"
+          />
         </AccordionDetails>
       </Accordion>
     </Container>

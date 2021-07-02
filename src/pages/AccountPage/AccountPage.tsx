@@ -22,6 +22,7 @@ import Typography from '@material-ui/core/Typography'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Switch from '@material-ui/core/Switch'
 import Chip from '@material-ui/core/Chip'
+import { green, red } from '@material-ui/core/colors'
 
 import styles from './AccountPageStyles'
 import { Props } from './types'
@@ -74,12 +75,12 @@ const AccountPage = ({ classes }: Props) => {
       accountActivenessModifcationSucceeded || accountActivenessFetchSucceeded
         ? {
             text: `${request.succeeded} ${subscriptionContent.status}`,
-            icon: <CheckIcon />,
+            icon: <CheckIcon style={{ color: green[500] }} />,
           }
         : accountActivenessFetchFailed || accountActivenessModificationFailed
         ? {
             text: request.failed,
-            icon: <ErrorIcon />,
+            icon: <ErrorIcon style={{ color: red[500] }} />,
           }
         : {
             text: undefined,
@@ -156,6 +157,10 @@ const AccountPage = ({ classes }: Props) => {
               {getChip()}
             </div>
           </div>
+          <Typography className={classes.removeAccount}>
+            To remove account entirely,{' '}
+            <a href="mailto:sssbscrape@gmail.com">send us an email</a>
+          </Typography>
         </AccordionDetails>
       </Accordion>
     </Container>

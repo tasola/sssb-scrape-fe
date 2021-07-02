@@ -17,6 +17,7 @@ const styles = () =>
       width: '100%',
     },
     switch: {
+      width: '100%',
       marginTop: '1.5em',
       display: 'flex',
     },
@@ -29,6 +30,15 @@ const styles = () =>
       transition: 'opacity 0.1s',
       '&.active': {
         opacity: 1,
+      },
+    },
+    removeAccount: {
+      marginLeft: 'auto',
+      marginTop: '1em',
+      fontSize: '10px',
+      color: 'gray',
+      '& a': {
+        color: 'inherit',
       },
     },
     MuiAccordionRoot: {

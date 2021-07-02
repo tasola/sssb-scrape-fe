@@ -127,7 +127,7 @@ const ChosenPreferenceCard = ({
           <Button size="small" color="primary">
             <Link
               to={{
-                pathname: 'profile/modify',
+                pathname: 'subscription/modify',
                 state: {
                   fromPreferenceCard: true,
                   area: preference.area,

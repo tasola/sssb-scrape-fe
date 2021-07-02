@@ -21,10 +21,13 @@ import CheckboxGroup from '../../components/Checkbox/CheckboxGroup/CheckboxGroup
 import UnsubscribeDialog from '../../components/Dialogs/UnsubscribeDialog/UnsubscribeDialog'
 import TextSelect from '../../components/TextSelect/TextSelect'
 import { range, capitalizeFirstLetter } from '../../utils/utils'
-import styles from './ProfileModifyPageStyles'
+import styles from './SubscriptionModificationPageStyles'
 import { Props, HistoryPushObject } from './types'
 
-const ProfileModifyPage = ({ location, classes }: Props): JSX.Element => {
+const SubscriptionModificationPage = ({
+  location,
+  classes,
+}: Props): JSX.Element => {
   const [chosenArea, setChosenArea] = useState<string>('')
   const [maxFloor, setMaxFloor] = useState<number | undefined>(undefined)
   const [chosenFloor, setChosenFloor] = useState<number | null>(null)
@@ -181,7 +184,7 @@ const ProfileModifyPage = ({ location, classes }: Props): JSX.Element => {
 
     const historyPushObject = {
       pathname: '/',
-      isFromProfileModify: true,
+      isFromSubscriptionModification: true,
       state: {
         area: chosenAreaToLowerCase,
         floors: _chosenFloorRange,
@@ -206,7 +209,7 @@ const ProfileModifyPage = ({ location, classes }: Props): JSX.Element => {
       <Container
         component="main"
         maxWidth="xs"
-        className={classes.profileModifyPage}
+        className={classes.subscriptionModificationPage}
       >
         <Typography component="h1" variant="h5">
           Apartment preferences
@@ -273,4 +276,4 @@ const ProfileModifyPage = ({ location, classes }: Props): JSX.Element => {
   )
 }
 
-export default withStyles(styles)(ProfileModifyPage)
+export default withStyles(styles)(SubscriptionModificationPage)

@@ -3,7 +3,7 @@ import { Entry } from 'contentful'
 import { User as FirebaseUser } from 'src/redux/slices/auth/types'
 import { Area } from 'src/redux/slices/contentful/types'
 
-import styles from './ProfileModifyPageStyles'
+import styles from './SubscriptionModificationPageStyles'
 
 export type Props = WithStyles<typeof styles> & {
   location: Location
@@ -11,7 +11,7 @@ export type Props = WithStyles<typeof styles> & {
 
 export type HistoryPushObject = {
   pathname: string
-  isFromProfileModify: boolean
+  isFromSubscriptionModification: boolean
   state: LocationState
 }
 

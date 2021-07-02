@@ -1,9 +1,14 @@
 import firebase from 'firebase'
 import { db } from 'src/firebase/firebase'
 
-export const createUserDocument = async (user: firebase.User): Promise<void> => {
+export const createUserDocument = async (
+  user: firebase.User
+): Promise<void> => {
   try {
-    await db.collection('users').doc(user.uid).set({ email: user.email })
+    await db
+      .collection('users')
+      .doc(user.uid)
+      .set({ email: user.email, isActive: true })
   } catch (error) {
     console.error(error)
   }

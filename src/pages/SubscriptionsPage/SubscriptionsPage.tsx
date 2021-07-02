@@ -11,10 +11,10 @@ import { Preference } from 'src/redux/slices/user/types'
 import { RootState } from 'src/redux/store/store'
 
 import { arraysEqual } from '../../utils/utils'
-import { LocationState } from '../ProfileModifyPage/types'
+import { LocationState } from '../SubscriptionModificationPage/types'
 import { Props } from './types'
 
-const ProfilePage = ({ location }: Props): JSX.Element => {
+const SubscriptionsPage = ({ location }: Props): JSX.Element => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [preferences, setPreferences] = useState<Preference[]>([])
 
@@ -27,7 +27,7 @@ const ProfilePage = ({ location }: Props): JSX.Element => {
   const { areas } = useSelector((state: RootState) => state.contentful)
 
   useEffect(() => {
-    if (location.isFromProfileModify) {
+    if (location.isFromSubscriptionModification) {
       const newPreferences = renderObjectFromLocationState(
         basePreferences,
         location.state
@@ -39,10 +39,10 @@ const ProfilePage = ({ location }: Props): JSX.Element => {
   }, [])
 
   useEffect(() => {
-    if (!location?.isFromProfileModify) {
+    if (!location?.isFromSubscriptionModification) {
       setPreferences(basePreferences)
     }
-  }, [location.isFromProfileModify, basePreferences])
+  }, [location.isFromSubscriptionModification, basePreferences])
 
   const fetchPreferences = useCallback(() => {
     const { uid } = user
@@ -137,4 +137,4 @@ const ProfilePage = ({ location }: Props): JSX.Element => {
   )
 }
 
-export default ProfilePage
+export default SubscriptionsPage

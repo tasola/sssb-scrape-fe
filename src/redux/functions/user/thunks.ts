@@ -3,15 +3,21 @@ import { db } from 'src/firebase/firebase'
 import { User } from 'src/redux/slices/auth/types'
 import { Preference } from 'src/redux/slices/user/types'
 import {
-  profileModificationFailed,
+  preferenceModificationFailed,
   receivePreferences,
-  receiveProfileModification,
+  receivePreferenceModification,
   requestPreferences,
-  requestProfileModification,
+  requestPreferenceModification,
   preferencesFetchFailed,
   requestPreferenceRemoval,
   receivePreferenceRemoval,
   preferenceRemovalFailed,
+  requestAcccountActiveness,
+  accountActivenessFetchFailed,
+  receiveAccountActiveness,
+  requestAccountActivenessModification,
+  accountActivenessModificationFailed,
+  receiveAccountActivenessModification,
 } from 'src/redux/slices/user/user'
 
 export const modifyProfile =
@@ -22,7 +28,7 @@ export const modifyProfile =
     chosenTypes: string[]
   ) =>
   async (dispatch: Dispatch): Promise<void> => {
-    dispatch(requestProfileModification())
+    dispatch(requestPreferenceModification())
     try {
       await db
         .collection('users')
@@ -36,10 +42,10 @@ export const modifyProfile =
           minFloor: chosenFloorRange[0],
           types: chosenTypes,
         })
-      dispatch(receiveProfileModification())
+      dispatch(receivePreferenceModification())
     } catch (error) {
       console.error(error)
-      dispatch(profileModificationFailed())
+      dispatch(preferenceModificationFailed())
     }
   }
 
@@ -87,5 +93,38 @@ export const removePreferenceFromDb =
     } catch (error) {
       console.error(error)
       dispatch(preferenceRemovalFailed())
+    }
+  }
+
+export const fetchAccountActiveness =
+  (user: User) =>
+  async (dispatch: Dispatch): Promise<void> => {
+    dispatch(requestAcccountActiveness())
+    try {
+      const userDocument = await db.collection('users').doc(user.uid).get()
+      const userData = userDocument.data()
+      if (userData) {
+        dispatch(receiveAccountActiveness(userData.isActive))
+      } else {
+        dispatch(accountActivenessFetchFailed())
+      }
+    } catch (error) {
+      console.error(error)
+      dispatch(accountActivenessFetchFailed())
+    }
+  }
+
+export const modifyAccountActiveness =
+  (isActive: boolean, user: User) =>
+  async (dispatch: Dispatch): Promise<void> => {
+    dispatch(requestAccountActivenessModification())
+    try {
+      await db.collection('users').doc(user.uid).update({
+        isActive,
+      })
+      dispatch(receiveAccountActivenessModification(isActive))
+    } catch (error) {
+      console.error(error)
+      dispatch(accountActivenessModificationFailed())
     }
   }

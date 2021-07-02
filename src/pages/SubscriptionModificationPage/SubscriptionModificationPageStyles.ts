@@ -2,7 +2,7 @@ import createStyles from '@material-ui/styles/createStyles'
 
 const styles = () =>
   createStyles({
-    profileModifyPage: {
+    subscriptionModificationPage: {
       '& h1': {
         marginTop: '1.5em',
       },

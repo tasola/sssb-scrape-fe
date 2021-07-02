@@ -13,15 +13,31 @@ import Switch from '@material-ui/core/Switch'
 import styles from './AccountPageStyles'
 import { Props } from './types'
 import { contentText } from './text'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  fetchAccountActiveness,
+  modifyAccountActiveness,
+} from 'src/redux/functions/user/thunks'
+import { RootState } from 'src/redux/store/store'
+import { useEffect } from 'react'
 
 const AccountPage = ({ classes }: Props) => {
-  let isActive = true
+  const dispatch = useDispatch()
+
+  const { user } = useSelector((state: RootState) => state.auth)
+  const { isActive } = useSelector((state: RootState) => state.user)
 
   const subscriptionContent = isActive
     ? contentText.subscription.active
     : contentText.subscription.inactive
 
-  const handleChange = () => (isActive = !isActive)
+  useEffect(() => {
+    dispatch(fetchAccountActiveness(user))
+  })
+
+  const handleChange = (): void => {
+    dispatch(modifyAccountActiveness(!isActive, user))
+  }
 
   return (
     <Container component="main" maxWidth="md">

@@ -4,35 +4,42 @@ import { InitialState } from './types'
 
 const initialState: InitialState = {
   preferences: [],
-  isModifyingProfile: false,
-  profileModificationSucceeded: false,
-  profileModificationFailed: false,
+  isActive: false,
+  isModifyingPreference: false,
+  preferenceModificationSucceeded: false,
+  preferenceModificationFailed: false,
   isFetchingPreferences: false,
   preferencesFetchSucceeded: false,
   preferencesFetchFailed: false,
   isRemovingPreference: false,
   preferenceRemovalSucceeded: false,
   preferenceRemovalFailed: false,
+  isFetchingAccountActiveness: false,
+  accountActivenessFetchSucceeded: false,
+  accountActivenessFetchFailed: false,
+  isModifyingAccountActiveness: false,
+  accountActivenessModifcationSucceeded: false,
+  accountActivenessModificationFailed: false,
 }
 
 export const slice = createSlice({
   name: 'firebase',
   initialState,
   reducers: {
-    requestProfileModification: (state): void => {
-      state.isModifyingProfile = true
-      state.profileModificationSucceeded = false
-      state.profileModificationFailed = false
+    requestPreferenceModification: (state): void => {
+      state.isModifyingPreference = true
+      state.preferenceModificationSucceeded = false
+      state.preferenceModificationFailed = false
     },
-    receiveProfileModification: (state): void => {
-      state.isModifyingProfile = false
-      state.profileModificationSucceeded = true
-      state.profileModificationFailed = false
+    receivePreferenceModification: (state): void => {
+      state.isModifyingPreference = false
+      state.preferenceModificationSucceeded = true
+      state.preferenceModificationFailed = false
     },
-    profileModificationFailed: (state): void => {
-      state.isModifyingProfile = false
-      state.profileModificationSucceeded = false
-      state.profileModificationFailed = true
+    preferenceModificationFailed: (state): void => {
+      state.isModifyingPreference = false
+      state.preferenceModificationSucceeded = false
+      state.preferenceModificationFailed = true
     },
     requestPreferences: (state): void => {
       state.isFetchingPreferences = true
@@ -66,13 +73,47 @@ export const slice = createSlice({
       state.preferenceRemovalSucceeded = false
       state.preferenceRemovalFailed = true
     },
+    requestAcccountActiveness: (state): void => {
+      state.isFetchingAccountActiveness = true
+      state.accountActivenessFetchSucceeded = false
+      state.accountActivenessFetchFailed = false
+    },
+    receiveAccountActiveness: (state, action): void => {
+      state.isActive = action.payload
+
+      state.isFetchingAccountActiveness = false
+      state.accountActivenessFetchSucceeded = true
+      state.accountActivenessFetchFailed = false
+    },
+    accountActivenessFetchFailed: (state): void => {
+      state.isFetchingAccountActiveness = false
+      state.accountActivenessFetchSucceeded = false
+      state.accountActivenessFetchFailed = true
+    },
+    requestAccountActivenessModification: (state): void => {
+      state.isModifyingAccountActiveness = true
+      state.accountActivenessModifcationSucceeded = false
+      state.accountActivenessModificationFailed = false
+    },
+    receiveAccountActivenessModification: (state, action): void => {
+      state.isActive = action.payload
+
+      state.isModifyingAccountActiveness = false
+      state.accountActivenessModifcationSucceeded = true
+      state.accountActivenessModificationFailed = false
+    },
+    accountActivenessModificationFailed: (state): void => {
+      state.isModifyingAccountActiveness = false
+      state.accountActivenessModifcationSucceeded = false
+      state.accountActivenessModificationFailed = true
+    },
   },
 })
 
 export const {
-  requestProfileModification,
-  receiveProfileModification,
-  profileModificationFailed,
+  requestPreferenceModification,
+  receivePreferenceModification,
+  preferenceModificationFailed,
 } = slice.actions
 export const {
   requestPreferences,
@@ -83,6 +124,16 @@ export const {
   requestPreferenceRemoval,
   receivePreferenceRemoval,
   preferenceRemovalFailed,
+} = slice.actions
+export const {
+  requestAcccountActiveness,
+  receiveAccountActiveness,
+  accountActivenessFetchFailed,
+} = slice.actions
+export const {
+  requestAccountActivenessModification,
+  receiveAccountActivenessModification,
+  accountActivenessModificationFailed,
 } = slice.actions
 
 export default slice.reducer

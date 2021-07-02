@@ -31,7 +31,7 @@ Refactor:
 * :white_check_mark: Add TypeScript
 
 Functionality:
-* Make the app GDPR safe; add [delete account functionality](https://github.com/tasola/sssb-scrape-fe/tree/feature/remove-account) and possibility to get your saved user data
+* :white_check_mark: Make the app GDPR safe; add [delete account functionality](https://github.com/tasola/sssb-scrape-fe/tree/feature/remove-account) and possibility to get your saved user data
 
 Environment:
 * Setup test environment

@@ -20,19 +20,3 @@ To get the app up and running, simply `npm install` and then `npm run start`, an
 * [Firebase](https://firebase.google.com/) - Serverless solution for user management + authentication logic. Deployment.
 * [Contentful](https://www.contentful.com/) - Headless CMS for admins to easily add/edit/remove possible areas for users to choose
 * [Material UI](https://material-ui.com/) - Component library
-
-
-### :memo: TODO
-This project has been built in my spare time during a fairly long period of time (at least when comparing to the speed of JS progression). When I have sat down to develop this further, I have unfortunately prioritized new features instead of refactoring/updating. When reading through the code, a few things come to mind that should be done to make the code base easier to maintain, and to prevent it from in turns getting deprecated. Some of these issues are addressed in the [Issues](https://github.com/tasola/sssb-scrape-fe/issues)-section.
-
-Refactor:
-* :white_check_mark: [Make whole project run on hooks](https://github.com/tasola/sssb-scrape-fe/issues/15)
-* :white_check_mark: Extract more general components
-* :white_check_mark: Add TypeScript
-
-Functionality:
-* :white_check_mark: Make the app GDPR safe; add [delete account functionality](https://github.com/tasola/sssb-scrape-fe/tree/feature/remove-account) and possibility to get your saved user data
-
-Environment:
-* Setup test environment
-* Setup CI/CD flow
